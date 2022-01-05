@@ -1,0 +1,49 @@
+---
+title: "lab 1 hw"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+## Victoria Liu 1/4/22
+
+
+2. R is the base program where all commands can be inputted, R Studio is a graphical representation of R that makes it easier to use. So, R is required to for R Studio. Github is useful to upload and share code.
+
+
+```{r}
++5-3*2
+```
+```{r}
++8/2**2
+```
+
+
+5. I guess the second expression suprised me because I don't know what the double asteriks means, I am assuming it means divide.
+```{r}
+(5-3)*2
+```
+```{r}
+(8/2)*2*2
+```
+
+
+```{r}
+pi <- 3.14159265359
+```
+```{r}
+pi*2
+```
+
+
+```{r}
+?mean
+x <- c(2, 8, 6, 6, 7, 4, 9, 9, 9, 10)
+mean(x)
+```
+```{r}
+x <- c(2, 8, 6, 6, 7, 4, 9, 9, 9, 10)
+median(x)
+```
+
