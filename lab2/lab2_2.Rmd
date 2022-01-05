@@ -144,8 +144,8 @@ total_earnings <-sum(global)
 
 2. Add this information to the data matrix. Hint: you are adding a row, not a column.  
 ```{r}
-all_harry_potter_matrix <- rbind(harry_potter_matrix,total_earnings)
-all_harry_potter_matrix
+total_harry_potter_matrix <- rbind(harry_potter_matrix,total_earnings)
+total_harry_potter_matrix
 ```
 
 ## A few Extras

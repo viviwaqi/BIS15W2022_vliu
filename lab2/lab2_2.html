@@ -413,8 +413,8 @@ all_harry_potter_matrix</code></pre>
 <ol start="2" style="list-style-type: decimal">
 <li>Add this information to the data matrix. Hint: you are adding a row, not a column.</li>
 </ol>
-<pre class="r"><code>all_harry_potter_matrix &lt;- rbind(harry_potter_matrix,total_earnings)
-all_harry_potter_matrix</code></pre>
+<pre class="r"><code>total_harry_potter_matrix &lt;- rbind(harry_potter_matrix,total_earnings)
+total_harry_potter_matrix</code></pre>
 <pre><code>##                          US non-US
 ## Philosophers_Stone    317.5  657.1
 ## Chamber_of_Secrets    261.9  616.9
@@ -437,7 +437,7 @@ all_harry_potter_matrix</code></pre>
 <p>We can also select values in an entire row or column. This can be useful for calculations. Here we calculate the mean of the entire second column.</p>
 <pre class="r"><code>non_us_earnings &lt;- all_harry_potter_matrix[ ,2]
 mean(non_us_earnings)</code></pre>
-<pre><code>## [1] 1450.611</code></pre>
+<pre><code>## [1] 666.6125</code></pre>
 </div>
 <div id="wrap-up" class="section level2">
 <h2>Wrap-up</h2>
