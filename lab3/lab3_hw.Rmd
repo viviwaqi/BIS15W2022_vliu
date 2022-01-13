@@ -53,8 +53,9 @@ colnames(sleep)
 
 6. How many herbivores are represented in the data?  
 ```{r}
-vores_vec<- c(sleep$vore)
-
+herbivores<- subset(sleep, vore == "herbi")
+herbivores
+#:D yay
 ```
 
 
@@ -80,34 +81,29 @@ large
 
 8. What is the mean weight for both the small and large mammals?
 ```{r}
-small_and_large<- c(small_vec,large_vec)
+mean(small_vec)
 ```
 
 
 ```{r}
-mean(small_and_large)
-#I googled the mean using the data for both sets and came back with 719.59094117647, i am not sure how i am getting 284.6243, when I tried to use the data frames directly or even the vectors directly for the mean i kept getting "argument is not numeric or logical: returning NA" 
-```
-```{r}
-
+mean(large_vec)
 ```
 
 9. Using a similar approach as above, do large or small animals sleep longer on average?  
 ```{r}
-
+mean(sleep$sleep_total[small_vec])
 ```
 
 ```{r}
-
+mean(sleep$sleep_total[large_vec])
+#im gonna just leave this problem for now, idk if my answer for small sleep average is right at all either
 ```
 
 10. Which animal is the sleepiest among the entire dataframe?
 ```{r}
-
-```
-
-```{r}
-#idk man i have no idea how to do questions 6 and 8-10 D:
+which.max(sleep$sleep_total)
+sleepiest<- sleep$name[43]
+sleepiest
 ```
 
 ## Push your final code to GitHub!

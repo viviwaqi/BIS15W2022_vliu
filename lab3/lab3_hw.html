@@ -388,7 +388,75 @@ sleep</code></pre>
 <ol start="6" style="list-style-type: decimal">
 <li>How many herbivores are represented in the data?</li>
 </ol>
-<pre class="r"><code>vores_vec&lt;- c(sleep$vore)</code></pre>
+<pre class="r"><code>herbivores&lt;- subset(sleep, vore == &quot;herbi&quot;)
+herbivores</code></pre>
+<pre><code>##                              name        genus  vore          order
+## 3                 Mountain beaver   Aplodontia herbi       Rodentia
+## 5                             Cow          Bos herbi   Artiodactyla
+## 6                Three-toed sloth     Bradypus herbi         Pilosa
+## 10                       Roe deer    Capreolus herbi   Artiodactyla
+## 11                           Goat        Capri herbi   Artiodactyla
+## 12                     Guinea pig        Cavis herbi       Rodentia
+## 14                     Chinchilla   Chinchilla herbi       Rodentia
+## 19                     Tree hyrax  Dendrohyrax herbi     Hyracoidea
+## 21                 Asian elephant      Elephas herbi    Proboscidea
+## 23                          Horse        Equus herbi Perissodactyla
+## 24                         Donkey        Equus herbi Perissodactyla
+## 27      Western american chipmunk     Eutamias herbi       Rodentia
+## 30                        Giraffe      Giraffa herbi   Artiodactyla
+## 33                     Gray hyrax  Heterohyrax herbi     Hyracoidea
+## 35                 Mongoose lemur        Lemur herbi       Primates
+## 36               African elephant    Loxodonta herbi    Proboscidea
+## 39               Mongolian gerbil     Meriones herbi       Rodentia
+## 40                 Golden hamster Mesocricetus herbi       Rodentia
+## 41                          Vole      Microtus herbi       Rodentia
+## 42                    House mouse          Mus herbi       Rodentia
+## 44           Round-tailed muskrat     Neofiber herbi       Rodentia
+## 46                           Degu      Octodon herbi       Rodentia
+## 48                         Rabbit  Oryctolagus herbi     Lagomorpha
+## 49                          Sheep         Ovis herbi   Artiodactyla
+## 61                        Potoroo     Potorous herbi  Diprotodontia
+## 64                 Laboratory rat       Rattus herbi       Rodentia
+## 68                     Cotton rat     Sigmodon herbi       Rodentia
+## 70         Arctic ground squirrel Spermophilus herbi       Rodentia
+## 71 Thirteen-lined ground squirrel Spermophilus herbi       Rodentia
+## 72 Golden-mantled ground squirrel Spermophilus herbi       Rodentia
+## 76      Eastern american chipmunk       Tamias herbi       Rodentia
+## 77                Brazilian tapir      Tapirus herbi Perissodactyla
+##    conservation sleep_total sleep_rem sleep_cycle awake brainwt   bodywt
+## 3            nt        14.4       2.4          NA   9.6      NA    1.350
+## 5  domesticated         4.0       0.7   0.6666667  20.0 0.42300  600.000
+## 6          &lt;NA&gt;        14.4       2.2   0.7666667   9.6      NA    3.850
+## 10           lc         3.0        NA          NA  21.0 0.09820   14.800
+## 11           lc         5.3       0.6          NA  18.7 0.11500   33.500
+## 12 domesticated         9.4       0.8   0.2166667  14.6 0.00550    0.728
+## 14 domesticated        12.5       1.5   0.1166667  11.5 0.00640    0.420
+## 19           lc         5.3       0.5          NA  18.7 0.01230    2.950
+## 21           en         3.9        NA          NA  20.1 4.60300 2547.000
+## 23 domesticated         2.9       0.6   1.0000000  21.1 0.65500  521.000
+## 24 domesticated         3.1       0.4          NA  20.9 0.41900  187.000
+## 27         &lt;NA&gt;        14.9        NA          NA   9.1      NA    0.071
+## 30           cd         1.9       0.4          NA  22.1      NA  899.995
+## 33           lc         6.3       0.6          NA  17.7 0.01227    2.625
+## 35           vu         9.5       0.9          NA  14.5      NA    1.670
+## 36           vu         3.3        NA          NA  20.7 5.71200 6654.000
+## 39           lc        14.2       1.9          NA   9.8      NA    0.053
+## 40           en        14.3       3.1   0.2000000   9.7 0.00100    0.120
+## 41         &lt;NA&gt;        12.8        NA          NA  11.2      NA    0.035
+## 42           nt        12.5       1.4   0.1833333  11.5 0.00040    0.022
+## 44           nt        14.6        NA          NA   9.4      NA    0.266
+## 46           lc         7.7       0.9          NA  16.3      NA    0.210
+## 48 domesticated         8.4       0.9   0.4166667  15.6 0.01210    2.500
+## 49 domesticated         3.8       0.6          NA  20.2 0.17500   55.500
+## 61         &lt;NA&gt;        11.1       1.5          NA  12.9      NA    1.100
+## 64           lc        13.0       2.4   0.1833333  11.0 0.00190    0.320
+## 68         &lt;NA&gt;        11.3       1.1   0.1500000  12.7 0.00118    0.148
+## 70           lc        16.6        NA          NA   7.4 0.00570    0.920
+## 71           lc        13.8       3.4   0.2166667  10.2 0.00400    0.101
+## 72           lc        15.9       3.0          NA   8.1      NA    0.205
+## 76         &lt;NA&gt;        15.8        NA          NA   8.2      NA    0.112
+## 77           vu         4.4       1.0   0.9000000  19.6 0.16900  207.501</code></pre>
+<pre class="r"><code>#:D yay</code></pre>
 <ol start="7" style="list-style-type: decimal">
 <li>We are interested in two groups; small and large mammals. Let’s define small as less than or equal to 1kg body weight and large as greater than or equal to 200kg body weight. Make two new dataframes (large and small) based on these parameters.</li>
 </ol>
@@ -448,15 +516,26 @@ large</code></pre>
 <ol start="8" style="list-style-type: decimal">
 <li>What is the mean weight for both the small and large mammals?</li>
 </ol>
-<pre class="r"><code>small_and_large&lt;- c(small_vec,large_vec)</code></pre>
-<pre class="r"><code>mean(small_and_large)</code></pre>
-<pre><code>## [1] 284.6243</code></pre>
-<pre class="r"><code>#I googled the mean using the data for both sets and came back with 719.59094117647, i am not sure how i am getting 284.6243, when I tried to use the data frames directly or even the vectors directly for the mean i kept getting &quot;argument is not numeric or logical: returning NA&quot; </code></pre>
+<pre class="r"><code>mean(small_vec)</code></pre>
+<pre><code>## [1] 0.2596667</code></pre>
+<pre class="r"><code>mean(large_vec)</code></pre>
+<pre><code>## [1] 1747.071</code></pre>
 <ol start="9" style="list-style-type: decimal">
-<li><p>Using a similar approach as above, do large or small animals sleep longer on average?</p></li>
-<li><p>Which animal is the sleepiest among the entire dataframe?</p></li>
+<li>Using a similar approach as above, do large or small animals sleep longer on average?</li>
 </ol>
-<pre class="r"><code>#idk man i have no idea how to do questions 6 and 8-10 D:</code></pre>
+<pre class="r"><code>mean(sleep$sleep_total[small_vec])</code></pre>
+<pre><code>## [1] 12.1</code></pre>
+<pre class="r"><code>mean(sleep$sleep_total[large_vec])</code></pre>
+<pre><code>## [1] NA</code></pre>
+<pre class="r"><code>#im gonna just leave this problem for now, idk if my answer for small sleep average is right at all either</code></pre>
+<ol start="10" style="list-style-type: decimal">
+<li>Which animal is the sleepiest among the entire dataframe?</li>
+</ol>
+<pre class="r"><code>which.max(sleep$sleep_total)</code></pre>
+<pre><code>## [1] 43</code></pre>
+<pre class="r"><code>sleepiest&lt;- sleep$name[43]
+sleepiest</code></pre>
+<pre><code>## [1] &quot;Little brown bat&quot;</code></pre>
 </div>
 <div id="push-your-final-code-to-github" class="section level2">
 <h2>Push your final code to GitHub!</h2>
