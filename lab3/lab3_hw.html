@@ -11,7 +11,7 @@
 
 <meta name="author" content="Victoria Liu" />
 
-<meta name="date" content="2022-01-11" />
+<meta name="date" content="2022-01-12" />
 
 <title>Lab 3 Homework</title>
 
@@ -167,7 +167,7 @@ pre code {
 
 <h1 class="title toc-ignore">Lab 3 Homework</h1>
 <h4 class="author">Victoria Liu</h4>
-<h4 class="date">2022-01-11</h4>
+<h4 class="date">2022-01-12</h4>
 
 </div>
 
@@ -186,458 +186,277 @@ pre code {
 <ol style="list-style-type: decimal">
 <li>For this assignment, we are going to use built-in data on mammal sleep patterns. From which publication are these data taken from? Since the data are built-in you can use the help function in R.</li>
 </ol>
-<pre class="r"><code>sleep &lt;- readr::read_csv(&quot;mammals_sleep_allison_cicchetti_1976.csv&quot;)</code></pre>
-<pre><code>## Rows: 62 Columns: 11</code></pre>
-<pre><code>## -- Column specification --------------------------------------------------------
-## Delimiter: &quot;,&quot;
-## chr  (1): species
-## dbl (10): body weight in kg, brain weight in g, slow wave (&quot;nondreaming&quot;) sl...</code></pre>
-<pre><code>## 
-## i Use `spec()` to retrieve the full column specification for this data.
-## i Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
-<pre class="r"><code>help(mammals_sleep_allison_cicchetti_1976.csv)</code></pre>
-<pre><code>## No documentation for &#39;mammals_sleep_allison_cicchetti_1976.csv&#39; in specified packages and libraries:
-## you could try &#39;??mammals_sleep_allison_cicchetti_1976.csv&#39;</code></pre>
-<pre class="r"><code>#Ecological and Constitutional Correlates&quot; by Allison, T.  and 
-#Cicchetti, D. (1976), _Science_, November 12, vol. 194,  pp.  #732-734. </code></pre>
-<pre class="r"><code>getwd()</code></pre>
-<pre><code>## [1] &quot;C:/Users/V/Documents/GitHub/BIS15W2022_vliu/lab3&quot;</code></pre>
+<pre class="r"><code>?msleep</code></pre>
+<pre><code>## starting httpd help server ... done</code></pre>
+<pre class="r"><code>#National Academy of Sciences, 104 (3):1051-1056, 2007 
+#V. M. Savage and G. B. West</code></pre>
 <ol start="2" style="list-style-type: decimal">
 <li>Store these data into a new data frame <code>sleep</code>.</li>
 </ol>
-<pre class="r"><code>sleep &lt;-data.frame(sleep)
+<pre class="r"><code>sleep &lt;-data.frame(msleep)
 sleep</code></pre>
-<pre><code>##                      species body.weight.in.kg brain.weight.in.g
-## 1           African elephant          6654.000           5712.00
-## 2  African giant pouched rat             1.000              6.60
-## 3                 Arctic Fox             3.385             44.50
-## 4     Arctic ground squirrel             0.920              5.70
-## 5             Asian elephant          2547.000           4603.00
-## 6                     Baboon            10.550            179.50
-## 7              Big brown bat             0.023              0.30
-## 8            Brazilian tapir           160.000            169.00
-## 9                        Cat             3.300             25.60
-## 10                Chimpanzee            52.160            440.00
-## 11                Chinchilla             0.425              6.40
-## 12                       Cow           465.000            423.00
-## 13           Desert hedgehog             0.550              2.40
-## 14                    Donkey           187.100            419.00
-## 15     Eastern American mole             0.075              1.20
-## 16                   Echidna             3.000             25.00
-## 17         European hedgehog             0.785              3.50
-## 18                    Galago             0.200              5.00
-## 19                     Genet             1.410             17.50
-## 20           Giant armadillo            60.000             81.00
-## 21                   Giraffe           529.000            680.00
-## 22                      Goat            27.660            115.00
-## 23            Golden hamster             0.120              1.00
-## 24                   Gorilla           207.000            406.00
-## 25                 Gray seal            85.000            325.00
-## 26                 Gray wolf            36.330            119.50
-## 27           Ground squirrel             0.101              4.00
-## 28                Guinea pig             1.040              5.50
-## 29                     Horse           521.000            655.00
-## 30                    Jaguar           100.000            157.00
-## 31                  Kangaroo            35.000             56.00
-## 32 Lesser short-tailed shrew             0.005              0.14
-## 33          Little brown bat             0.010              0.25
-## 34                       Man            62.000           1320.00
-## 35                  Mole rat             0.122              3.00
-## 36           Mountain beaver             1.350              8.10
-## 37                     Mouse             0.023              0.40
-## 38                Musk shrew             0.048              0.33
-## 39       N. American opossum             1.700              6.30
-## 40     Nine-banded armadillo             3.500             10.80
-## 41                     Okapi           250.000            490.00
-## 42                Owl monkey             0.480             15.50
-## 43              Patas monkey            10.000            115.00
-## 44                Phanlanger             1.620             11.40
-## 45                       Pig           192.000            180.00
-## 46                    Rabbit             2.500             12.10
-## 47                   Raccoon             4.288             39.20
-## 48                       Rat             0.280              1.90
-## 49                   Red fox             4.235             50.40
-## 50             Rhesus monkey             6.800            179.00
-## 51    Rock hyrax (Hetero. b)             0.750             12.30
-## 52 Rock hyrax (Procavia hab)             3.600             21.00
-## 53                  Roe deer            14.830             98.20
-## 54                     Sheep            55.500            175.00
-## 55                Slow loris             1.400             12.50
-## 56           Star nosed mole             0.060              1.00
-## 57                    Tenrec             0.900              2.60
-## 58                Tree hyrax             2.000             12.30
-## 59                Tree shrew             0.104              2.50
-## 60                    Vervet             4.190             58.00
-## 61             Water opossum             3.500              3.90
-## 62     Yellow-bellied marmot             4.050             17.00
-##    slow.wave...nondreaming...sleep..hrs.day.
-## 1                                     -999.0
-## 2                                        6.3
-## 3                                     -999.0
-## 4                                     -999.0
-## 5                                        2.1
-## 6                                        9.1
-## 7                                       15.8
-## 8                                        5.2
-## 9                                       10.9
-## 10                                       8.3
-## 11                                      11.0
-## 12                                       3.2
-## 13                                       7.6
-## 14                                    -999.0
-## 15                                       6.3
-## 16                                       8.6
-## 17                                       6.6
-## 18                                       9.5
-## 19                                       4.8
-## 20                                      12.0
-## 21                                    -999.0
-## 22                                       3.3
-## 23                                      11.0
-## 24                                    -999.0
-## 25                                       4.7
-## 26                                    -999.0
-## 27                                      10.4
-## 28                                       7.4
-## 29                                       2.1
-## 30                                    -999.0
-## 31                                    -999.0
-## 32                                       7.7
-## 33                                      17.9
-## 34                                       6.1
-## 35                                       8.2
-## 36                                       8.4
-## 37                                      11.9
-## 38                                      10.8
-## 39                                      13.8
-## 40                                      14.3
-## 41                                    -999.0
-## 42                                      15.2
-## 43                                      10.0
-## 44                                      11.9
-## 45                                       6.5
-## 46                                       7.5
-## 47                                    -999.0
-## 48                                      10.6
-## 49                                       7.4
-## 50                                       8.4
-## 51                                       5.7
-## 52                                       4.9
-## 53                                    -999.0
-## 54                                       3.2
-## 55                                    -999.0
-## 56                                       8.1
-## 57                                      11.0
-## 58                                       4.9
-## 59                                      13.2
-## 60                                       9.7
-## 61                                      12.8
-## 62                                    -999.0
-##    paradoxical...dreaming...sleep..hrs.day.
-## 1                                    -999.0
-## 2                                       2.0
-## 3                                    -999.0
-## 4                                    -999.0
-## 5                                       1.8
-## 6                                       0.7
-## 7                                       3.9
-## 8                                       1.0
-## 9                                       3.6
-## 10                                      1.4
-## 11                                      1.5
-## 12                                      0.7
-## 13                                      2.7
-## 14                                   -999.0
-## 15                                      2.1
-## 16                                      0.0
-## 17                                      4.1
-## 18                                      1.2
-## 19                                      1.3
-## 20                                      6.1
-## 21                                      0.3
-## 22                                      0.5
-## 23                                      3.4
-## 24                                   -999.0
-## 25                                      1.5
-## 26                                   -999.0
-## 27                                      3.4
-## 28                                      0.8
-## 29                                      0.8
-## 30                                   -999.0
-## 31                                   -999.0
-## 32                                      1.4
-## 33                                      2.0
-## 34                                      1.9
-## 35                                      2.4
-## 36                                      2.8
-## 37                                      1.3
-## 38                                      2.0
-## 39                                      5.6
-## 40                                      3.1
-## 41                                      1.0
-## 42                                      1.8
-## 43                                      0.9
-## 44                                      1.8
-## 45                                      1.9
-## 46                                      0.9
-## 47                                   -999.0
-## 48                                      2.6
-## 49                                      2.4
-## 50                                      1.2
-## 51                                      0.9
-## 52                                      0.5
-## 53                                   -999.0
-## 54                                      0.6
-## 55                                   -999.0
-## 56                                      2.2
-## 57                                      2.3
-## 58                                      0.5
-## 59                                      2.6
-## 60                                      0.6
-## 61                                      6.6
-## 62                                   -999.0
-##    total.sleep..hrs.day....sum.of.slow.wave.and.paradoxical.sleep.
-## 1                                                              3.3
-## 2                                                              8.3
-## 3                                                             12.5
-## 4                                                             16.5
-## 5                                                              3.9
-## 6                                                              9.8
-## 7                                                             19.7
-## 8                                                              6.2
-## 9                                                             14.5
-## 10                                                             9.7
-## 11                                                            12.5
-## 12                                                             3.9
-## 13                                                            10.3
-## 14                                                             3.1
-## 15                                                             8.4
-## 16                                                             8.6
-## 17                                                            10.7
-## 18                                                            10.7
-## 19                                                             6.1
-## 20                                                            18.1
-## 21                                                          -999.0
-## 22                                                             3.8
-## 23                                                            14.4
-## 24                                                            12.0
-## 25                                                             6.2
-## 26                                                            13.0
-## 27                                                            13.8
-## 28                                                             8.2
-## 29                                                             2.9
-## 30                                                            10.8
-## 31                                                          -999.0
-## 32                                                             9.1
-## 33                                                            19.9
-## 34                                                             8.0
-## 35                                                            10.6
-## 36                                                            11.2
-## 37                                                            13.2
-## 38                                                            12.8
-## 39                                                            19.4
-## 40                                                            17.4
-## 41                                                          -999.0
-## 42                                                            17.0
-## 43                                                            10.9
-## 44                                                            13.7
-## 45                                                             8.4
-## 46                                                             8.4
-## 47                                                            12.5
-## 48                                                            13.2
-## 49                                                             9.8
-## 50                                                             9.6
-## 51                                                             6.6
-## 52                                                             5.4
-## 53                                                             2.6
-## 54                                                             3.8
-## 55                                                            11.0
-## 56                                                            10.3
-## 57                                                            13.3
-## 58                                                             5.4
-## 59                                                            15.8
-## 60                                                            10.3
-## 61                                                            19.4
-## 62                                                          -999.0
-##    maximum.life.span..years. gestation.time..days. predation.index..1.5.
-## 1                       38.6                 645.0                     3
-## 2                        4.5                  42.0                     3
-## 3                       14.0                  60.0                     1
-## 4                     -999.0                  25.0                     5
-## 5                       69.0                 624.0                     3
-## 6                       27.0                 180.0                     4
-## 7                       19.0                  35.0                     1
-## 8                       30.4                 392.0                     4
-## 9                       28.0                  63.0                     1
-## 10                      50.0                 230.0                     1
-## 11                       7.0                 112.0                     5
-## 12                      30.0                 281.0                     5
-## 13                    -999.0                -999.0                     2
-## 14                      40.0                 365.0                     5
-## 15                       3.5                  42.0                     1
-## 16                      50.0                  28.0                     2
-## 17                       6.0                  42.0                     2
-## 18                      10.4                 120.0                     2
-## 19                      34.0                -999.0                     1
-## 20                       7.0                -999.0                     1
-## 21                      28.0                 400.0                     5
-## 22                      20.0                 148.0                     5
-## 23                       3.9                  16.0                     3
-## 24                      39.3                 252.0                     1
-## 25                      41.0                 310.0                     1
-## 26                      16.2                  63.0                     1
-## 27                       9.0                  28.0                     5
-## 28                       7.6                  68.0                     5
-## 29                      46.0                 336.0                     5
-## 30                      22.4                 100.0                     1
-## 31                      16.3                  33.0                     3
-## 32                       2.6                  21.5                     5
-## 33                      24.0                  50.0                     1
-## 34                     100.0                 267.0                     1
-## 35                    -999.0                  30.0                     2
-## 36                    -999.0                  45.0                     3
-## 37                       3.2                  19.0                     4
-## 38                       2.0                  30.0                     4
-## 39                       5.0                  12.0                     2
-## 40                       6.5                 120.0                     2
-## 41                      23.6                 440.0                     5
-## 42                      12.0                 140.0                     2
-## 43                      20.2                 170.0                     4
-## 44                      13.0                  17.0                     2
-## 45                      27.0                 115.0                     4
-## 46                      18.0                  31.0                     5
-## 47                      13.7                  63.0                     2
-## 48                       4.7                  21.0                     3
-## 49                       9.8                  52.0                     1
-## 50                      29.0                 164.0                     2
-## 51                       7.0                 225.0                     2
-## 52                       6.0                 225.0                     3
-## 53                      17.0                 150.0                     5
-## 54                      20.0                 151.0                     5
-## 55                      12.7                  90.0                     2
-## 56                       3.5                -999.0                     3
-## 57                       4.5                  60.0                     2
-## 58                       7.5                 200.0                     3
-## 59                       2.3                  46.0                     3
-## 60                      24.0                 210.0                     4
-## 61                       3.0                  14.0                     2
-## 62                      13.0                  38.0                     3
-##    sleep.exposure.index..1.5. overall.danger.index..1.5.
-## 1                           5                          3
-## 2                           1                          3
-## 3                           1                          1
-## 4                           2                          3
-## 5                           5                          4
-## 6                           4                          4
-## 7                           1                          1
-## 8                           5                          4
-## 9                           2                          1
-## 10                          1                          1
-## 11                          4                          4
-## 12                          5                          5
-## 13                          1                          2
-## 14                          5                          5
-## 15                          1                          1
-## 16                          2                          2
-## 17                          2                          2
-## 18                          2                          2
-## 19                          2                          1
-## 20                          1                          1
-## 21                          5                          5
-## 22                          5                          5
-## 23                          1                          2
-## 24                          4                          1
-## 25                          3                          1
-## 26                          1                          1
-## 27                          1                          3
-## 28                          3                          4
-## 29                          5                          5
-## 30                          1                          1
-## 31                          5                          4
-## 32                          2                          4
-## 33                          1                          1
-## 34                          1                          1
-## 35                          1                          1
-## 36                          1                          3
-## 37                          1                          3
-## 38                          1                          3
-## 39                          1                          1
-## 40                          1                          1
-## 41                          5                          5
-## 42                          2                          2
-## 43                          4                          4
-## 44                          1                          2
-## 45                          4                          4
-## 46                          5                          5
-## 47                          2                          2
-## 48                          1                          3
-## 49                          1                          1
-## 50                          3                          2
-## 51                          2                          2
-## 52                          2                          3
-## 53                          5                          5
-## 54                          5                          5
-## 55                          2                          2
-## 56                          1                          2
-## 57                          1                          2
-## 58                          1                          3
-## 59                          2                          2
-## 60                          3                          4
-## 61                          1                          1
-## 62                          1                          1</code></pre>
+<pre><code>##                              name         genus    vore           order
+## 1                         Cheetah      Acinonyx   carni       Carnivora
+## 2                      Owl monkey         Aotus    omni        Primates
+## 3                 Mountain beaver    Aplodontia   herbi        Rodentia
+## 4      Greater short-tailed shrew       Blarina    omni    Soricomorpha
+## 5                             Cow           Bos   herbi    Artiodactyla
+## 6                Three-toed sloth      Bradypus   herbi          Pilosa
+## 7               Northern fur seal   Callorhinus   carni       Carnivora
+## 8                    Vesper mouse       Calomys    &lt;NA&gt;        Rodentia
+## 9                             Dog         Canis   carni       Carnivora
+## 10                       Roe deer     Capreolus   herbi    Artiodactyla
+## 11                           Goat         Capri   herbi    Artiodactyla
+## 12                     Guinea pig         Cavis   herbi        Rodentia
+## 13                         Grivet Cercopithecus    omni        Primates
+## 14                     Chinchilla    Chinchilla   herbi        Rodentia
+## 15                Star-nosed mole     Condylura    omni    Soricomorpha
+## 16      African giant pouched rat    Cricetomys    omni        Rodentia
+## 17      Lesser short-tailed shrew     Cryptotis    omni    Soricomorpha
+## 18           Long-nosed armadillo       Dasypus   carni       Cingulata
+## 19                     Tree hyrax   Dendrohyrax   herbi      Hyracoidea
+## 20         North American Opossum     Didelphis    omni Didelphimorphia
+## 21                 Asian elephant       Elephas   herbi     Proboscidea
+## 22                  Big brown bat     Eptesicus insecti      Chiroptera
+## 23                          Horse         Equus   herbi  Perissodactyla
+## 24                         Donkey         Equus   herbi  Perissodactyla
+## 25              European hedgehog     Erinaceus    omni  Erinaceomorpha
+## 26                   Patas monkey  Erythrocebus    omni        Primates
+## 27      Western american chipmunk      Eutamias   herbi        Rodentia
+## 28                   Domestic cat         Felis   carni       Carnivora
+## 29                         Galago        Galago    omni        Primates
+## 30                        Giraffe       Giraffa   herbi    Artiodactyla
+## 31                    Pilot whale Globicephalus   carni         Cetacea
+## 32                      Gray seal  Haliochoerus   carni       Carnivora
+## 33                     Gray hyrax   Heterohyrax   herbi      Hyracoidea
+## 34                          Human          Homo    omni        Primates
+## 35                 Mongoose lemur         Lemur   herbi        Primates
+## 36               African elephant     Loxodonta   herbi     Proboscidea
+## 37           Thick-tailed opposum    Lutreolina   carni Didelphimorphia
+## 38                        Macaque        Macaca    omni        Primates
+## 39               Mongolian gerbil      Meriones   herbi        Rodentia
+## 40                 Golden hamster  Mesocricetus   herbi        Rodentia
+## 41                          Vole       Microtus   herbi        Rodentia
+## 42                    House mouse           Mus   herbi        Rodentia
+## 43               Little brown bat        Myotis insecti      Chiroptera
+## 44           Round-tailed muskrat      Neofiber   herbi        Rodentia
+## 45                     Slow loris     Nyctibeus   carni        Primates
+## 46                           Degu       Octodon   herbi        Rodentia
+## 47     Northern grasshopper mouse     Onychomys   carni        Rodentia
+## 48                         Rabbit   Oryctolagus   herbi      Lagomorpha
+## 49                          Sheep          Ovis   herbi    Artiodactyla
+## 50                     Chimpanzee           Pan    omni        Primates
+## 51                          Tiger      Panthera   carni       Carnivora
+## 52                         Jaguar      Panthera   carni       Carnivora
+## 53                           Lion      Panthera   carni       Carnivora
+## 54                         Baboon         Papio    omni        Primates
+## 55                Desert hedgehog   Paraechinus    &lt;NA&gt;  Erinaceomorpha
+## 56                          Potto  Perodicticus    omni        Primates
+## 57                     Deer mouse    Peromyscus    &lt;NA&gt;        Rodentia
+## 58                      Phalanger     Phalanger    &lt;NA&gt;   Diprotodontia
+## 59                   Caspian seal         Phoca   carni       Carnivora
+## 60                Common porpoise      Phocoena   carni         Cetacea
+## 61                        Potoroo      Potorous   herbi   Diprotodontia
+## 62                Giant armadillo    Priodontes insecti       Cingulata
+## 63                     Rock hyrax      Procavia    &lt;NA&gt;      Hyracoidea
+## 64                 Laboratory rat        Rattus   herbi        Rodentia
+## 65          African striped mouse     Rhabdomys    omni        Rodentia
+## 66                Squirrel monkey       Saimiri    omni        Primates
+## 67          Eastern american mole      Scalopus insecti    Soricomorpha
+## 68                     Cotton rat      Sigmodon   herbi        Rodentia
+## 69                       Mole rat        Spalax    &lt;NA&gt;        Rodentia
+## 70         Arctic ground squirrel  Spermophilus   herbi        Rodentia
+## 71 Thirteen-lined ground squirrel  Spermophilus   herbi        Rodentia
+## 72 Golden-mantled ground squirrel  Spermophilus   herbi        Rodentia
+## 73                     Musk shrew        Suncus    &lt;NA&gt;    Soricomorpha
+## 74                            Pig           Sus    omni    Artiodactyla
+## 75            Short-nosed echidna  Tachyglossus insecti     Monotremata
+## 76      Eastern american chipmunk        Tamias   herbi        Rodentia
+## 77                Brazilian tapir       Tapirus   herbi  Perissodactyla
+## 78                         Tenrec        Tenrec    omni    Afrosoricida
+## 79                     Tree shrew        Tupaia    omni      Scandentia
+## 80           Bottle-nosed dolphin      Tursiops   carni         Cetacea
+## 81                          Genet       Genetta   carni       Carnivora
+## 82                     Arctic fox        Vulpes   carni       Carnivora
+## 83                        Red fox        Vulpes   carni       Carnivora
+##    conservation sleep_total sleep_rem sleep_cycle awake brainwt   bodywt
+## 1            lc        12.1        NA          NA 11.90      NA   50.000
+## 2          &lt;NA&gt;        17.0       1.8          NA  7.00 0.01550    0.480
+## 3            nt        14.4       2.4          NA  9.60      NA    1.350
+## 4            lc        14.9       2.3   0.1333333  9.10 0.00029    0.019
+## 5  domesticated         4.0       0.7   0.6666667 20.00 0.42300  600.000
+## 6          &lt;NA&gt;        14.4       2.2   0.7666667  9.60      NA    3.850
+## 7            vu         8.7       1.4   0.3833333 15.30      NA   20.490
+## 8          &lt;NA&gt;         7.0        NA          NA 17.00      NA    0.045
+## 9  domesticated        10.1       2.9   0.3333333 13.90 0.07000   14.000
+## 10           lc         3.0        NA          NA 21.00 0.09820   14.800
+## 11           lc         5.3       0.6          NA 18.70 0.11500   33.500
+## 12 domesticated         9.4       0.8   0.2166667 14.60 0.00550    0.728
+## 13           lc        10.0       0.7          NA 14.00      NA    4.750
+## 14 domesticated        12.5       1.5   0.1166667 11.50 0.00640    0.420
+## 15           lc        10.3       2.2          NA 13.70 0.00100    0.060
+## 16         &lt;NA&gt;         8.3       2.0          NA 15.70 0.00660    1.000
+## 17           lc         9.1       1.4   0.1500000 14.90 0.00014    0.005
+## 18           lc        17.4       3.1   0.3833333  6.60 0.01080    3.500
+## 19           lc         5.3       0.5          NA 18.70 0.01230    2.950
+## 20           lc        18.0       4.9   0.3333333  6.00 0.00630    1.700
+## 21           en         3.9        NA          NA 20.10 4.60300 2547.000
+## 22           lc        19.7       3.9   0.1166667  4.30 0.00030    0.023
+## 23 domesticated         2.9       0.6   1.0000000 21.10 0.65500  521.000
+## 24 domesticated         3.1       0.4          NA 20.90 0.41900  187.000
+## 25           lc        10.1       3.5   0.2833333 13.90 0.00350    0.770
+## 26           lc        10.9       1.1          NA 13.10 0.11500   10.000
+## 27         &lt;NA&gt;        14.9        NA          NA  9.10      NA    0.071
+## 28 domesticated        12.5       3.2   0.4166667 11.50 0.02560    3.300
+## 29         &lt;NA&gt;         9.8       1.1   0.5500000 14.20 0.00500    0.200
+## 30           cd         1.9       0.4          NA 22.10      NA  899.995
+## 31           cd         2.7       0.1          NA 21.35      NA  800.000
+## 32           lc         6.2       1.5          NA 17.80 0.32500   85.000
+## 33           lc         6.3       0.6          NA 17.70 0.01227    2.625
+## 34         &lt;NA&gt;         8.0       1.9   1.5000000 16.00 1.32000   62.000
+## 35           vu         9.5       0.9          NA 14.50      NA    1.670
+## 36           vu         3.3        NA          NA 20.70 5.71200 6654.000
+## 37           lc        19.4       6.6          NA  4.60      NA    0.370
+## 38         &lt;NA&gt;        10.1       1.2   0.7500000 13.90 0.17900    6.800
+## 39           lc        14.2       1.9          NA  9.80      NA    0.053
+## 40           en        14.3       3.1   0.2000000  9.70 0.00100    0.120
+## 41         &lt;NA&gt;        12.8        NA          NA 11.20      NA    0.035
+## 42           nt        12.5       1.4   0.1833333 11.50 0.00040    0.022
+## 43         &lt;NA&gt;        19.9       2.0   0.2000000  4.10 0.00025    0.010
+## 44           nt        14.6        NA          NA  9.40      NA    0.266
+## 45         &lt;NA&gt;        11.0        NA          NA 13.00 0.01250    1.400
+## 46           lc         7.7       0.9          NA 16.30      NA    0.210
+## 47           lc        14.5        NA          NA  9.50      NA    0.028
+## 48 domesticated         8.4       0.9   0.4166667 15.60 0.01210    2.500
+## 49 domesticated         3.8       0.6          NA 20.20 0.17500   55.500
+## 50         &lt;NA&gt;         9.7       1.4   1.4166667 14.30 0.44000   52.200
+## 51           en        15.8        NA          NA  8.20      NA  162.564
+## 52           nt        10.4        NA          NA 13.60 0.15700  100.000
+## 53           vu        13.5        NA          NA 10.50      NA  161.499
+## 54         &lt;NA&gt;         9.4       1.0   0.6666667 14.60 0.18000   25.235
+## 55           lc        10.3       2.7          NA 13.70 0.00240    0.550
+## 56           lc        11.0        NA          NA 13.00      NA    1.100
+## 57         &lt;NA&gt;        11.5        NA          NA 12.50      NA    0.021
+## 58         &lt;NA&gt;        13.7       1.8          NA 10.30 0.01140    1.620
+## 59           vu         3.5       0.4          NA 20.50      NA   86.000
+## 60           vu         5.6        NA          NA 18.45      NA   53.180
+## 61         &lt;NA&gt;        11.1       1.5          NA 12.90      NA    1.100
+## 62           en        18.1       6.1          NA  5.90 0.08100   60.000
+## 63           lc         5.4       0.5          NA 18.60 0.02100    3.600
+## 64           lc        13.0       2.4   0.1833333 11.00 0.00190    0.320
+## 65         &lt;NA&gt;         8.7        NA          NA 15.30      NA    0.044
+## 66         &lt;NA&gt;         9.6       1.4          NA 14.40 0.02000    0.743
+## 67           lc         8.4       2.1   0.1666667 15.60 0.00120    0.075
+## 68         &lt;NA&gt;        11.3       1.1   0.1500000 12.70 0.00118    0.148
+## 69         &lt;NA&gt;        10.6       2.4          NA 13.40 0.00300    0.122
+## 70           lc        16.6        NA          NA  7.40 0.00570    0.920
+## 71           lc        13.8       3.4   0.2166667 10.20 0.00400    0.101
+## 72           lc        15.9       3.0          NA  8.10      NA    0.205
+## 73         &lt;NA&gt;        12.8       2.0   0.1833333 11.20 0.00033    0.048
+## 74 domesticated         9.1       2.4   0.5000000 14.90 0.18000   86.250
+## 75         &lt;NA&gt;         8.6        NA          NA 15.40 0.02500    4.500
+## 76         &lt;NA&gt;        15.8        NA          NA  8.20      NA    0.112
+## 77           vu         4.4       1.0   0.9000000 19.60 0.16900  207.501
+## 78         &lt;NA&gt;        15.6       2.3          NA  8.40 0.00260    0.900
+## 79         &lt;NA&gt;         8.9       2.6   0.2333333 15.10 0.00250    0.104
+## 80         &lt;NA&gt;         5.2        NA          NA 18.80      NA  173.330
+## 81         &lt;NA&gt;         6.3       1.3          NA 17.70 0.01750    2.000
+## 82         &lt;NA&gt;        12.5        NA          NA 11.50 0.04450    3.380
+## 83         &lt;NA&gt;         9.8       2.4   0.3500000 14.20 0.05040    4.230</code></pre>
 <ol start="3" style="list-style-type: decimal">
 <li>What are the dimensions of this data frame (variables and observations)? How do you know? Please show the <em>code</em> that you used to determine this below.</li>
 </ol>
 <pre class="r"><code>dim(sleep)</code></pre>
-<pre><code>## [1] 62 11</code></pre>
+<pre><code>## [1] 83 11</code></pre>
 <pre class="r"><code>nrow(sleep)</code></pre>
-<pre><code>## [1] 62</code></pre>
+<pre><code>## [1] 83</code></pre>
 <pre class="r"><code>ncol(sleep)</code></pre>
 <pre><code>## [1] 11</code></pre>
-<pre class="r"><code>#the dimensions are 62 rows and 11 columns</code></pre>
+<pre class="r"><code>#the dimensions are 83 rows and 11 columns</code></pre>
 <ol start="4" style="list-style-type: decimal">
 <li>Are there any NAs in the data? How did you determine this? Please show your code.</li>
 </ol>
 <pre class="r"><code>anyNA(sleep)</code></pre>
-<pre><code>## [1] FALSE</code></pre>
+<pre><code>## [1] TRUE</code></pre>
 <ol start="5" style="list-style-type: decimal">
 <li>Show a list of the column names is this data frame.</li>
 </ol>
 <pre class="r"><code>colnames(sleep)</code></pre>
-<pre><code>##  [1] &quot;species&quot;                                                        
-##  [2] &quot;body.weight.in.kg&quot;                                              
-##  [3] &quot;brain.weight.in.g&quot;                                              
-##  [4] &quot;slow.wave...nondreaming...sleep..hrs.day.&quot;                      
-##  [5] &quot;paradoxical...dreaming...sleep..hrs.day.&quot;                       
-##  [6] &quot;total.sleep..hrs.day....sum.of.slow.wave.and.paradoxical.sleep.&quot;
-##  [7] &quot;maximum.life.span..years.&quot;                                      
-##  [8] &quot;gestation.time..days.&quot;                                          
-##  [9] &quot;predation.index..1.5.&quot;                                          
-## [10] &quot;sleep.exposure.index..1.5.&quot;                                     
-## [11] &quot;overall.danger.index..1.5.&quot;</code></pre>
+<pre><code>##  [1] &quot;name&quot;         &quot;genus&quot;        &quot;vore&quot;         &quot;order&quot;        &quot;conservation&quot;
+##  [6] &quot;sleep_total&quot;  &quot;sleep_rem&quot;    &quot;sleep_cycle&quot;  &quot;awake&quot;        &quot;brainwt&quot;     
+## [11] &quot;bodywt&quot;</code></pre>
 <ol start="6" style="list-style-type: decimal">
 <li>How many herbivores are represented in the data?</li>
 </ol>
-<pre class="r"><code>#is this supposed to be for the mammal data set??</code></pre>
+<pre class="r"><code>vores_vec&lt;- c(sleep$vore)</code></pre>
 <ol start="7" style="list-style-type: decimal">
 <li>We are interested in two groups; small and large mammals. Let’s define small as less than or equal to 1kg body weight and large as greater than or equal to 200kg body weight. Make two new dataframes (large and small) based on these parameters.</li>
 </ol>
-<pre class="r"><code>class(sleep$`body weight in kg`)</code></pre>
-<pre><code>## [1] &quot;NULL&quot;</code></pre>
-<pre class="r"><code>small_vec &lt;-c(1&gt;=sleep$`body weight in kg`)
-small &lt;-data.frame(small_vec)
+<pre class="r"><code>class(sleep$bodywt)</code></pre>
+<pre><code>## [1] &quot;numeric&quot;</code></pre>
+<pre class="r"><code>small_vec &lt;- sleep$bodywt[sleep$bodywt &lt;=1]
+small&lt;- data.frame(small_vec)
 small</code></pre>
-<pre><code>## [1] small_vec
-## &lt;0 rows&gt; (or 0-length row.names)</code></pre>
-<pre class="r"><code>large &lt;-data.frame(200&lt;=sleep$`body weight in kg`)
+<pre><code>##    small_vec
+## 1      0.480
+## 2      0.019
+## 3      0.045
+## 4      0.728
+## 5      0.420
+## 6      0.060
+## 7      1.000
+## 8      0.005
+## 9      0.023
+## 10     0.770
+## 11     0.071
+## 12     0.200
+## 13     0.370
+## 14     0.053
+## 15     0.120
+## 16     0.035
+## 17     0.022
+## 18     0.010
+## 19     0.266
+## 20     0.210
+## 21     0.028
+## 22     0.550
+## 23     0.021
+## 24     0.320
+## 25     0.044
+## 26     0.743
+## 27     0.075
+## 28     0.148
+## 29     0.122
+## 30     0.920
+## 31     0.101
+## 32     0.205
+## 33     0.048
+## 34     0.112
+## 35     0.900
+## 36     0.104</code></pre>
+<pre class="r"><code>large_vec&lt;- sleep$bodywt[200&lt;=sleep$bodywt]
+large &lt;-data.frame(large_vec)
 large</code></pre>
-<pre><code>## [1] X200....sleep..body.weight.in.kg.
-## &lt;0 rows&gt; (or 0-length row.names)</code></pre>
+<pre><code>##   large_vec
+## 1   600.000
+## 2  2547.000
+## 3   521.000
+## 4   899.995
+## 5   800.000
+## 6  6654.000
+## 7   207.501</code></pre>
 <ol start="8" style="list-style-type: decimal">
-<li><p>What is the mean weight for both the small and large mammals?</p></li>
+<li>What is the mean weight for both the small and large mammals?</li>
+</ol>
+<pre class="r"><code>small_and_large&lt;- c(small_vec,large_vec)</code></pre>
+<pre class="r"><code>mean(small_and_large)</code></pre>
+<pre><code>## [1] 284.6243</code></pre>
+<pre class="r"><code>#I googled the mean using the data for both sets and came back with 719.59094117647, i am not sure how i am getting 284.6243, when I tried to use the data frames directly or even the vectors directly for the mean i kept getting &quot;argument is not numeric or logical: returning NA&quot; </code></pre>
+<ol start="9" style="list-style-type: decimal">
 <li><p>Using a similar approach as above, do large or small animals sleep longer on average?</p></li>
 <li><p>Which animal is the sleepiest among the entire dataframe?</p></li>
 </ol>
+<pre class="r"><code>#idk man i have no idea how to do questions 6 and 8-10 D:</code></pre>
 </div>
 <div id="push-your-final-code-to-github" class="section level2">
 <h2>Push your final code to GitHub!</h2>
