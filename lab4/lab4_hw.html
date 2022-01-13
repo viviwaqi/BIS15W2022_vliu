@@ -6871,20 +6871,7 @@ herbi</code></pre>
 <pre><code>## [1] 13039918</code></pre>
 <pre class="r"><code>mean(herbi$mean.hra.m2, trim = 0, na.rm = TRUE)</code></pre>
 <pre><code>## [1] 34137012</code></pre>
-<pre class="r"><code>#Herbivores have a larger &quot;mean.hra.m2&quot; on average than Carnivores
-names(homerange)</code></pre>
-<pre><code>##  [1] &quot;taxon&quot;                      &quot;common.name&quot;               
-##  [3] &quot;class&quot;                      &quot;order&quot;                     
-##  [5] &quot;family&quot;                     &quot;genus&quot;                     
-##  [7] &quot;species&quot;                    &quot;primarymethod&quot;             
-##  [9] &quot;N&quot;                          &quot;mean.mass.g&quot;               
-## [11] &quot;log10.mass&quot;                 &quot;alternative.mass.reference&quot;
-## [13] &quot;mean.hra.m2&quot;                &quot;log10.hra&quot;                 
-## [15] &quot;hra.reference&quot;              &quot;realm&quot;                     
-## [17] &quot;thermoregulation&quot;           &quot;locomotion&quot;                
-## [19] &quot;trophic.guild&quot;              &quot;dimension&quot;                 
-## [21] &quot;preymass&quot;                   &quot;log10.preymass&quot;            
-## [23] &quot;PPMR&quot;                       &quot;prey.size.reference&quot;</code></pre>
+<pre class="r"><code>#Herbivores have a larger &quot;mean.hra.m2&quot; on average than Carnivores</code></pre>
 <p><strong>9. Make a new dataframe <code>deer</code> that is limited to the mean mass, log10 mass, family, genus, and species of deer in the database. The family for deer is cervidae. Arrange the data in descending order by log10 mass. Which is the largest deer? What is its common name?</strong></p>
 <pre class="r"><code>hmlfgs_frame&lt;- data.frame(select(homerange, mean.mass.g, log10.mass, family, genus, species))
 hmlfgs_frame</code></pre>
@@ -8028,8 +8015,18 @@ hmlfgs_frame</code></pre>
 ## 567               horsfieldi
 ## 568               kleinmanni
 ## 569                spinifera</code></pre>
-<pre class="r"><code>#deer&lt;- select(contains(hmlfgs_frame$common.name, &quot;deer&quot;))</code></pre>
+<pre class="r"><code>#filter(homerange$common.name, contains(&quot;deer&quot;))</code></pre>
 <p><strong>10. As measured by the data, which snake species has the smallest homerange? Show all of your work, please. Look this species up online and tell me about it!</strong> <strong>Snake is found in taxon column</strong></p>
+<pre class="r"><code>snakes&lt;- filter(homerange, taxon == &quot;snake&quot;)
+snakes</code></pre>
+<pre><code>## # A tibble: 0 x 24
+## # ... with 24 variables: taxon &lt;chr&gt;, common.name &lt;chr&gt;, class &lt;chr&gt;,
+## #   order &lt;chr&gt;, family &lt;chr&gt;, genus &lt;chr&gt;, species &lt;chr&gt;, primarymethod &lt;chr&gt;,
+## #   N &lt;chr&gt;, mean.mass.g &lt;dbl&gt;, log10.mass &lt;dbl&gt;,
+## #   alternative.mass.reference &lt;chr&gt;, mean.hra.m2 &lt;dbl&gt;, log10.hra &lt;dbl&gt;,
+## #   hra.reference &lt;chr&gt;, realm &lt;chr&gt;, thermoregulation &lt;chr&gt;, locomotion &lt;chr&gt;,
+## #   trophic.guild &lt;chr&gt;, dimension &lt;dbl&gt;, preymass &lt;dbl&gt;, log10.preymass &lt;dbl&gt;,
+## #   PPMR &lt;dbl&gt;, prey.size.reference &lt;chr&gt;</code></pre>
 </div>
 <div id="push-your-final-code-to-github" class="section level2">
 <h2>Push your final code to GitHub!</h2>
