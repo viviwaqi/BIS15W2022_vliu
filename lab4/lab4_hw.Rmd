@@ -107,14 +107,25 @@ hmlfgs_frame<- data.frame(select(homerange, mean.mass.g, log10.mass, family, gen
 hmlfgs_frame
 ```
 ```{r}
-#filter(homerange$common.name, contains("deer"))
-
+deers<- data.frame(filter(hmlfgs_frame, family == "cervidae"))
+deers
 ```
+```{r}
+sort(deers$log10.mass, decreasing = TRUE, na.last = NA)
+```
+```{r}
+which.max(deers$log10.mass)
+deers[1, ]
+```
+```{r}
+#filter(homerange, log10.mass == 5.48746)
+```
+
 
 **10. As measured by the data, which snake species has the smallest homerange? Show all of your work, please. Look this species up online and tell me about it!** **Snake is found in taxon column**    
 ```{r}
-snakes<- filter(homerange, taxon == "snake")
-snakes
+#snakes<- filter(homerange$taxon == "snake")
+#snakes
 ```
 
 ## Push your final code to GitHub!

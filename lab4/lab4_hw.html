@@ -8015,18 +8015,33 @@ hmlfgs_frame</code></pre>
 ## 567               horsfieldi
 ## 568               kleinmanni
 ## 569                spinifera</code></pre>
-<pre class="r"><code>#filter(homerange$common.name, contains(&quot;deer&quot;))</code></pre>
+<pre class="r"><code>deers&lt;- data.frame(filter(hmlfgs_frame, family == &quot;cervidae&quot;))
+deers</code></pre>
+<pre><code>##    mean.mass.g log10.mass   family      genus     species
+## 1    307227.44    5.48746 cervidae      alces       alces
+## 2     62823.19    4.79812 cervidae       axis        axis
+## 3     24050.27    4.38112 cervidae  capreolus   capreolus
+## 4    234757.78    5.37062 cervidae     cervus     elaphus
+## 5     29450.32    4.46909 cervidae     cervus      nippon
+## 6     71449.63    4.85400 cervidae       dama        dama
+## 7     13499.88    4.13033 cervidae  muntiacus     reevesi
+## 8     53864.17    4.73130 cervidae odocoileus    hemionus
+## 9     87884.04    4.94391 cervidae odocoileus virginianus
+## 10    35000.16    4.54407 cervidae ozotoceros bezoarticus
+## 11     7499.98    3.87506 cervidae       pudu        puda
+## 12   102058.69    5.00885 cervidae   rangifer    tarandus</code></pre>
+<pre class="r"><code>sort(deers$log10.mass, decreasing = TRUE, na.last = NA)</code></pre>
+<pre><code>##  [1] 5.48746 5.37062 5.00885 4.94391 4.85400 4.79812 4.73130 4.54407 4.46909
+## [10] 4.38112 4.13033 3.87506</code></pre>
+<pre class="r"><code>which.max(deers$log10.mass)</code></pre>
+<pre><code>## [1] 1</code></pre>
+<pre class="r"><code>deers[1, ]</code></pre>
+<pre><code>##   mean.mass.g log10.mass   family genus species
+## 1    307227.4    5.48746 cervidae alces   alces</code></pre>
+<pre class="r"><code>#filter(homerange, log10.mass == 5.48746)</code></pre>
 <p><strong>10. As measured by the data, which snake species has the smallest homerange? Show all of your work, please. Look this species up online and tell me about it!</strong> <strong>Snake is found in taxon column</strong></p>
-<pre class="r"><code>snakes&lt;- filter(homerange, taxon == &quot;snake&quot;)
-snakes</code></pre>
-<pre><code>## # A tibble: 0 x 24
-## # ... with 24 variables: taxon &lt;chr&gt;, common.name &lt;chr&gt;, class &lt;chr&gt;,
-## #   order &lt;chr&gt;, family &lt;chr&gt;, genus &lt;chr&gt;, species &lt;chr&gt;, primarymethod &lt;chr&gt;,
-## #   N &lt;chr&gt;, mean.mass.g &lt;dbl&gt;, log10.mass &lt;dbl&gt;,
-## #   alternative.mass.reference &lt;chr&gt;, mean.hra.m2 &lt;dbl&gt;, log10.hra &lt;dbl&gt;,
-## #   hra.reference &lt;chr&gt;, realm &lt;chr&gt;, thermoregulation &lt;chr&gt;, locomotion &lt;chr&gt;,
-## #   trophic.guild &lt;chr&gt;, dimension &lt;dbl&gt;, preymass &lt;dbl&gt;, log10.preymass &lt;dbl&gt;,
-## #   PPMR &lt;dbl&gt;, prey.size.reference &lt;chr&gt;</code></pre>
+<pre class="r"><code>#snakes&lt;- filter(homerange$taxon == &quot;snake&quot;)
+#snakes</code></pre>
 </div>
 <div id="push-your-final-code-to-github" class="section level2">
 <h2>Push your final code to GitHub!</h2>
