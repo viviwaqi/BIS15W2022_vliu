@@ -43,22 +43,21 @@ dim(homerange)
 names(homerange)
 ```
 ```{r}
-
+summary(homerange)
 ```
 
 
 **3. Change the class of the variables `taxon` and `order` to factors and display their levels.**  
 ```{r}
-class("taxon")
-
+homerange$taxon<-as.factor(homerange$taxon)
+class(homerange$taxon)
+levels(homerange$taxon)
 ```
 
 ```{r}
-class("order")
-order_fac<- as.factor(homerange$order)
-class(order_fac)
-"order"<- order_fac
+homerange$order<-as.factor(homerange$order)
 class(homerange$order)
+levels(order)
 ```
 
 
@@ -118,14 +117,20 @@ which.max(deers$log10.mass)
 deers[1, ]
 ```
 ```{r}
-#filter(homerange, log10.mass == 5.48746)
+bigboy<- filter(homerange, homerange$species  == "alces")
+bigboy
+#common name is moose
 ```
 
 
 **10. As measured by the data, which snake species has the smallest homerange? Show all of your work, please. Look this species up online and tell me about it!** **Snake is found in taxon column**    
 ```{r}
-#snakes<- filter(homerange$taxon == "snake")
-#snakes
+snakeframe<- data.frame(filter(homerange, taxon == "snakes"))
+snakeframe
+which.min(snakeframe$mean.hra.m2)
+snakeframe[29, ]
+#hra means home range assessment
+#the species b.schneideri is lives in a small region that includes south africa and nambia, it is one of the smallest vipers in the world.
 ```
 
 ## Push your final code to GitHub!

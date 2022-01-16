@@ -11,7 +11,7 @@
 
 <meta name="author" content="Victoria Liu" />
 
-<meta name="date" content="2022-01-13" />
+<meta name="date" content="2022-01-15" />
 
 <title>Lab 4 Homework</title>
 
@@ -167,7 +167,7 @@ pre code {
 
 <h1 class="title toc-ignore">Lab 4 Homework</h1>
 <h4 class="author">Victoria Liu</h4>
-<h4 class="date">2022-01-13</h4>
+<h4 class="date">2022-01-15</h4>
 
 </div>
 
@@ -213,17 +213,76 @@ Data: <a href="http://datadryad.org/resource/doi:10.5061/dryad.q5j65/1" class="u
 ## [19] &quot;trophic.guild&quot;              &quot;dimension&quot;                 
 ## [21] &quot;preymass&quot;                   &quot;log10.preymass&quot;            
 ## [23] &quot;PPMR&quot;                       &quot;prey.size.reference&quot;</code></pre>
+<pre class="r"><code>summary(homerange)</code></pre>
+<pre><code>##     taxon           common.name           class              order          
+##  Length:569         Length:569         Length:569         Length:569        
+##  Class :character   Class :character   Class :character   Class :character  
+##  Mode  :character   Mode  :character   Mode  :character   Mode  :character  
+##                                                                             
+##                                                                             
+##                                                                             
+##                                                                             
+##     family             genus             species          primarymethod     
+##  Length:569         Length:569         Length:569         Length:569        
+##  Class :character   Class :character   Class :character   Class :character  
+##  Mode  :character   Mode  :character   Mode  :character   Mode  :character  
+##                                                                             
+##                                                                             
+##                                                                             
+##                                                                             
+##       N              mean.mass.g        log10.mass     
+##  Length:569         Min.   :      0   Min.   :-0.6576  
+##  Class :character   1st Qu.:     50   1st Qu.: 1.6990  
+##  Mode  :character   Median :    330   Median : 2.5185  
+##                     Mean   :  34602   Mean   : 2.5947  
+##                     3rd Qu.:   2150   3rd Qu.: 3.3324  
+##                     Max.   :4000000   Max.   : 6.6021  
+##                                                        
+##  alternative.mass.reference  mean.hra.m2          log10.hra     
+##  Length:569                 Min.   :0.000e+00   Min.   :-1.523  
+##  Class :character           1st Qu.:4.500e+03   1st Qu.: 3.653  
+##  Mode  :character           Median :3.934e+04   Median : 4.595  
+##                             Mean   :2.146e+07   Mean   : 4.709  
+##                             3rd Qu.:1.038e+06   3rd Qu.: 6.016  
+##                             Max.   :3.551e+09   Max.   : 9.550  
+##                                                                 
+##  hra.reference         realm           thermoregulation    locomotion       
+##  Length:569         Length:569         Length:569         Length:569        
+##  Class :character   Class :character   Class :character   Class :character  
+##  Mode  :character   Mode  :character   Mode  :character   Mode  :character  
+##                                                                             
+##                                                                             
+##                                                                             
+##                                                                             
+##  trophic.guild        dimension        preymass         log10.preymass   
+##  Length:569         Min.   :2.000   Min.   :     0.67   Min.   :-0.1739  
+##  Class :character   1st Qu.:2.000   1st Qu.:    20.02   1st Qu.: 1.3014  
+##  Mode  :character   Median :2.000   Median :    53.75   Median : 1.7304  
+##                     Mean   :2.218   Mean   :  3989.88   Mean   : 2.0188  
+##                     3rd Qu.:2.000   3rd Qu.:   363.35   3rd Qu.: 2.5603  
+##                     Max.   :3.000   Max.   :130233.20   Max.   : 5.1147  
+##                                     NA&#39;s   :502         NA&#39;s   :502      
+##       PPMR         prey.size.reference
+##  Min.   :  0.380   Length:569         
+##  1st Qu.:  3.315   Class :character   
+##  Median :  7.190   Mode  :character   
+##  Mean   : 31.752                      
+##  3rd Qu.: 15.966                      
+##  Max.   :530.000                      
+##  NA&#39;s   :502</code></pre>
 <p><strong>3. Change the class of the variables <code>taxon</code> and <code>order</code> to factors and display their levels.</strong></p>
-<pre class="r"><code>class(&quot;taxon&quot;)</code></pre>
-<pre><code>## [1] &quot;character&quot;</code></pre>
-<pre class="r"><code>class(&quot;order&quot;)</code></pre>
-<pre><code>## [1] &quot;character&quot;</code></pre>
-<pre class="r"><code>order_fac&lt;- as.factor(homerange$order)
-class(order_fac)</code></pre>
+<pre class="r"><code>homerange$taxon&lt;-as.factor(homerange$taxon)
+class(homerange$taxon)</code></pre>
 <pre><code>## [1] &quot;factor&quot;</code></pre>
-<pre class="r"><code>&quot;order&quot;&lt;- order_fac
+<pre class="r"><code>levels(homerange$taxon)</code></pre>
+<pre><code>## [1] &quot;birds&quot;         &quot;lake fishes&quot;   &quot;lizards&quot;       &quot;mammals&quot;      
+## [5] &quot;marine fishes&quot; &quot;river fishes&quot;  &quot;snakes&quot;        &quot;tortoises&quot;    
+## [9] &quot;turtles&quot;</code></pre>
+<pre class="r"><code>homerange$order&lt;-as.factor(homerange$order)
 class(homerange$order)</code></pre>
-<pre><code>## [1] &quot;character&quot;</code></pre>
+<pre><code>## [1] &quot;factor&quot;</code></pre>
+<pre class="r"><code>levels(order)</code></pre>
+<pre><code>## NULL</code></pre>
 <p><strong>4. What taxa are represented in the <code>homerange</code> data frame? Make a new data frame <code>taxa</code> that is restricted to taxon, common name, class, order, family, genus, species.</strong></p>
 <pre class="r"><code>taxa &lt;- data.frame(select(homerange, taxon, common.name,
  class, order, family, genus, species))
@@ -8038,10 +8097,332 @@ deers</code></pre>
 <pre class="r"><code>deers[1, ]</code></pre>
 <pre><code>##   mean.mass.g log10.mass   family genus species
 ## 1    307227.4    5.48746 cervidae alces   alces</code></pre>
-<pre class="r"><code>#filter(homerange, log10.mass == 5.48746)</code></pre>
+<pre class="r"><code>bigboy&lt;- filter(homerange, homerange$species  == &quot;alces&quot;)
+bigboy</code></pre>
+<pre><code>## # A tibble: 1 x 24
+##   taxon   common.name class    order    family genus species primarymethod N    
+##   &lt;fct&gt;   &lt;chr&gt;       &lt;chr&gt;    &lt;fct&gt;    &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt;         &lt;chr&gt;
+## 1 mammals moose       mammalia artioda~ cervi~ alces alces   telemetry*    &lt;NA&gt; 
+## # ... with 15 more variables: mean.mass.g &lt;dbl&gt;, log10.mass &lt;dbl&gt;,
+## #   alternative.mass.reference &lt;chr&gt;, mean.hra.m2 &lt;dbl&gt;, log10.hra &lt;dbl&gt;,
+## #   hra.reference &lt;chr&gt;, realm &lt;chr&gt;, thermoregulation &lt;chr&gt;, locomotion &lt;chr&gt;,
+## #   trophic.guild &lt;chr&gt;, dimension &lt;dbl&gt;, preymass &lt;dbl&gt;, log10.preymass &lt;dbl&gt;,
+## #   PPMR &lt;dbl&gt;, prey.size.reference &lt;chr&gt;</code></pre>
+<pre class="r"><code>#common name is moose</code></pre>
 <p><strong>10. As measured by the data, which snake species has the smallest homerange? Show all of your work, please. Look this species up online and tell me about it!</strong> <strong>Snake is found in taxon column</strong></p>
-<pre class="r"><code>#snakes&lt;- filter(homerange$taxon == &quot;snake&quot;)
-#snakes</code></pre>
+<pre class="r"><code>snakeframe&lt;- data.frame(filter(homerange, taxon == &quot;snakes&quot;))
+snakeframe</code></pre>
+<pre><code>##     taxon                common.name    class    order     family         genus
+## 1  snakes         western worm snake reptilia squamata colubridae     carphopis
+## 2  snakes         eastern worm snake reptilia squamata colubridae     carphopis
+## 3  snakes                      racer reptilia squamata colubridae       coluber
+## 4  snakes       yellow bellied racer reptilia squamata colubridae       coluber
+## 5  snakes             ringneck snake reptilia squamata colubridae     diadophis
+## 6  snakes       eastern indigo snake reptilia squamata colubridae    drymarchon
+## 7  snakes      great plains ratsnake reptilia squamata colubridae        elaphe
+## 8  snakes           western ratsnake reptilia squamata colubridae        elaphe
+## 9  snakes              hognose snake reptilia squamata colubridae     heterodon
+## 10 snakes         European whipsnake reptilia squamata colubridae     hierophis
+## 11 snakes          Eastern kingsnake reptilia squamata colubridae  lampropeltis
+## 12 snakes                  milksnake reptilia squamata colubridae  lampropeltis
+## 13 snakes                  coachwhip reptilia squamata colubridae   masticophis
+## 14 snakes                grass snake reptilia squamata colubridae        natrix
+## 15 snakes     copperbelly watersnake reptilia squamata colubridae       nerodia
+## 16 snakes        Northern watersnake reptilia squamata colubridae       nerodia
+## 17 snakes         redbacked ratsnake reptilia squamata colubridae    oocatochus
+## 18 snakes               gopher snake reptilia squamata colubridae     pituophis
+## 19 snakes                 pine snake reptilia squamata colubridae     pituophis
+## 20 snakes       butlers garter snake reptilia squamata colubridae    thamnophis
+## 21 snakes        giant garter snakes reptilia squamata colubridae    thamnophis
+## 22 snakes          Aesculapian snake reptilia squamata colubridae       zamenis
+## 23 snakes          broadheaded snake reptilia squamata   elapidae hoplocephalus
+## 24 snakes                tiger snake reptilia squamata   elapidae      notechis
+## 25 snakes                 blacksnake reptilia squamata   elapidae    pseudechis
+## 26 snakes southwestern carpet python reptilia squamata pythonidae       morelia
+## 27 snakes                 copperhead reptilia squamata  viperidae   agkistrodon
+## 28 snakes                cottonmouth reptilia squamata  viperidae   agkistrodon
+## 29 snakes        namaqua dwarf adder reptilia squamata  viperidae         bitis
+## 30 snakes               fer-de-lance reptilia squamata  viperidae      bothrops
+## 31 snakes        western diamondback reptilia squamata  viperidae      crotalus
+## 32 snakes                 sidewinder reptilia squamata  viperidae      crotalus
+## 33 snakes         timber rattlesnake reptilia squamata  viperidae      crotalus
+## 34 snakes    blacktailed rattlesnake reptilia squamata  viperidae      crotalus
+## 35 snakes   midget faded rattlesnake reptilia squamata  viperidae      crotalus
+## 36 snakes   twin-spotted rattlesnake reptilia squamata  viperidae      crotalus
+## 37 snakes         Mojave rattlesnake reptilia squamata  viperidae      crotalus
+## 38 snakes          tiger rattlesnake reptilia squamata  viperidae      crotalus
+## 39 snakes          chinese pit viper reptilia squamata  viperidae      gloydius
+## 40 snakes             Armenian viper reptilia squamata  viperidae   montivipera
+## 41 snakes            snubnosed viper reptilia squamata  viperidae        vipera
+##                     species  primarymethod    N mean.mass.g log10.mass
+## 1                    vermis       radiotag    1        3.46  0.5390761
+## 2                   viridis       radiotag   10        3.65  0.5622929
+## 3               constrictor      telemetry   15      556.15  2.7451919
+## 4  constrictor flaviventris      telemetry   12      144.50  2.1598678
+## 5                 punctatus mark-recapture &lt;NA&gt;        9.00  0.9542425
+## 6                   couperi      telemetry    1      450.00  2.6532125
+## 7            guttata emoryi      telemetry   12      256.70  2.4094259
+## 8                  obsoleta      telemetry   18      642.80  2.8080759
+## 9               platirhinos      telemetry    8      147.32  2.1682617
+## 10             viridiflavus      telemetry   32      234.10  2.3694014
+## 11            getula getula      telemetry   12      315.72  2.4993021
+## 12               triangulum      telemetry   10      165.00  2.2174839
+## 13                flagellum      telemetry    4      534.50  2.7279477
+## 14                   natrix      telemetry    4       78.50  1.8948697
+## 15            erythrogaster      telemetry   15      313.24  2.4958772
+## 16                 sipeodon      telemetry   13      190.55  2.2800090
+## 17             rufodorsatus      telemetry   21       62.50  1.7958800
+## 18                catenifer      telemetry    4      375.00  2.5740313
+## 19             melanoleucus      telemetry   12     1004.00  3.0017337
+## 20                  butleri mark-recapture    1       21.51  1.3326404
+## 21                    gigal      telemetry   11      306.00  2.4857214
+## 22              longissimus      telemetry   32      249.30  2.3967223
+## 23              bungaroides      telemetry   24       48.79  1.6883308
+## 24                 scutatus      telemetry    5      330.00  2.5185139
+## 25             porphyriacus      telemetry   44      479.00  2.6803355
+## 26        spilota imbricata      telemetry   33     1226.85  3.0887915
+## 27               contortrix      telemetry   18      231.12  2.3638375
+## 28              piscivorous      telemetry   15      188.00  2.2741578
+## 29               schneideri      telemetry   11       16.95  1.2291697
+## 30                    asper      telemetry    6      826.23  2.9171010
+## 31                    atrox      telemetry   14      319.90  2.5050142
+## 32                 cerastes      telemetry   25      106.70  2.0281644
+## 33                 horridus      telemetry    6     1020.00  3.0086002
+## 34                 molossus      telemetry    3      414.00  2.6170003
+## 35        oreganus concolor      telemetry   21      138.70  2.1420765
+## 36                   pricei      telemetry    5       67.20  1.8273693
+## 37               scutulatus      telemetry   19      280.30  2.4476231
+## 38                   tigris      telemetry    3      234.70  2.3705131
+## 39              shedaoensis      telemetry   16      196.81  2.2940472
+## 40                   raddei      telemetry   14      162.14  2.2098902
+## 41                 latastei      telemetry    7       97.40  1.9885590
+##    alternative.mass.reference mean.hra.m2 log10.hra
+## 1                        &lt;NA&gt;      700.00  2.845098
+## 2                        &lt;NA&gt;      253.00  2.403121
+## 3                        &lt;NA&gt;   151000.00  5.178977
+## 4                        &lt;NA&gt;   114500.00  5.058805
+## 5                        &lt;NA&gt;     6476.00  3.811307
+## 6                        &lt;NA&gt;  1853000.00  6.267875
+## 7                        &lt;NA&gt;   150600.00  5.177825
+## 8                        &lt;NA&gt;    46000.00  4.662758
+## 9                        &lt;NA&gt;   516375.00  5.712965
+## 10                       &lt;NA&gt;   110900.00  5.044932
+## 11                       &lt;NA&gt;   495000.00  5.694605
+## 12                       &lt;NA&gt;   240400.00  5.380934
+## 13                       &lt;NA&gt;   429300.00  5.632761
+## 14                       &lt;NA&gt;    99000.00  4.995635
+## 15                       &lt;NA&gt;   131000.00  5.117271
+## 16                       &lt;NA&gt;    40000.00  4.602060
+## 17                       &lt;NA&gt;    15400.00  4.187521
+## 18                       &lt;NA&gt;    17400.00  4.240549
+## 19                       &lt;NA&gt;   701000.00  5.845718
+## 20                       &lt;NA&gt;      600.00  2.778151
+## 21                       &lt;NA&gt;   374800.00  5.573800
+## 22                       &lt;NA&gt;    77400.00  4.888741
+## 23                       &lt;NA&gt;    27379.00  4.437418
+## 24                       &lt;NA&gt;    38800.00  4.588832
+## 25                       &lt;NA&gt;    96000.00  4.982271
+## 26                       &lt;NA&gt;   171600.00  5.234517
+## 27                       &lt;NA&gt;   119288.89  5.076600
+## 28                       &lt;NA&gt;    10655.00  4.027553
+## 29                       &lt;NA&gt;      200.00  2.301030
+## 30                       &lt;NA&gt;    60700.00  4.783189
+## 31                       &lt;NA&gt;    54200.00  4.733999
+## 32                       &lt;NA&gt;    28000.00  4.447158
+## 33                       &lt;NA&gt;  2579600.00  6.411552
+## 34                       &lt;NA&gt;    34900.00  4.542825
+## 35                       &lt;NA&gt;  1178000.00  6.071145
+## 36                       &lt;NA&gt;    22900.00  4.359835
+## 37                       &lt;NA&gt;   316000.00  5.499687
+## 38                       &lt;NA&gt;    34800.00  4.541579
+## 39                       &lt;NA&gt;     2613.69  3.417254
+## 40                       &lt;NA&gt;   245928.57  5.390809
+## 41                       &lt;NA&gt;     2400.00  3.380211
+##                                                                                                                                                                                                                                             hra.reference
+## 1                                                                                         Clark DR. 1970. Age-Specific &quot;Reproductive Effort&quot; in the Worm Snake Carphophis vermis (Kennicott). Transactions of the Kansas Academy of Science 73(1), 20-24.
+## 2                                                                                          Barbour RW, Harvey MJ, and Hardin JW. 1969. Home Range, Movements, and Activity of the Eastern Worm Snake, Carphophis Amoenus Amoenus. Ecology 50(3), 470-476.
+## 3                                                   Carfagno GLF, Weatherhead PJ. 2008. Energetics and space use: intraspecific and interspecific comparisons of movements and home ranges of two Colubrid snakes. Journal of Animal Ecology 77, 416-424.
+## 4          Klug PE, Fill J, With KA. 2011. Spatial ecology of Eastern yellow-bellies racer (Coluber constrictor flaviventris) and great plains rat snake (Pantherophis emoryi) in a contiguous tallgrass-prairie landscape. Herpetologica 67(4), 428-439.
+## 5                                                                             Fitch HS. 1975. A Demographic Study of the Ringneck Snake (Diadophis punctatus) in Kansas. University of Kansas Museum of Natural History Miscellaneous Publication No. 62.
+## 6                                                                                                            Dodd CK, Barichivich WJ. 2007. Movements of large snakes (Drymarchon, Masticophis_ in North-central Florida. Florida Scientist 70(1), 83-94.
+## 7          Klug PE, Fill J, With KA. 2011. Spatial ecology of Eastern yellow-bellies racer (Coluber constrictor flaviventris) and great plains rat snake (Pantherophis emoryi) in a contiguous tallgrass-prairie landscape. Herpetologica 67(4), 428-439.
+## 8                                                   Carfagno GLF, Weatherhead PJ. 2008. Energetics and space use: intraspecific and interspecific comparisons of movements and home ranges of two Colubrid snakes. Journal of Animal Ecology 77, 416-424.
+## 9                                                                                 Plummer MV, Mills NE. 2000. Spatial Ecology and Survivorship of Resident and Translocated Hognose Snakes (Heterodonplatirhinos). Journal of Herpetology 34(4), 565-575.
+## 10                                                           Herbe L, Moreau C, Blouin-Demers G, Bonnet X, Lourdais O. 2012. Two Syntopic Colubrid Snakes Differ In Their Energetic Requirements and In Their Use of Space. Herpetologica 68(3), 358-364.
+## 11                             Linehan JM, Smith LL, Steen DA. 2010. Ecology of the Eastern kingsnake (Lampropeltis getula getula) in a longleaf pine (Pinus palustris) forest in Southwestern Georgia. Herpetological Conservation Biology 5(1), 94-101.
+## 12                                                                                                                             Row JR, Blouin-Demers G. 2006. Kernels are not Accurate Estimators of Home-Range Size For Herpetofauna. Copeia 4, 797-802.
+## 13                                                                                                           Dodd CK, Barichivich WJ. 2007. Movements of large snakes (Drymarchon, Masticophis_ in North-central Florida. Florida Scientist 70(1), 83-94.
+## 14                                                                                                        Madsen T. 1984. Movements, Home Range Size and Habitat Use of Radio-Tracked Grass Snakes (Natrix natrix) in Southern Sweden. Copeia 3, 707-713.
+## 15                                                                     Roe JH, Kingsbury BA, Herbert NR. 2004. Comparative water snake ecology: conservation of mobile animals that use temporally dynamic resources. Biological Conservation 118, 79-89.
+## 16                                                                     Roe JH, Kingsbury BA, Herbert NR. 2004. Comparative water snake ecology: conservation of mobile animals that use temporally dynamic resources. Biological Conservation 118, 79-89.
+## 17                                                                       Lee H-J, Lee J-H, Park D. 2011. Habitat Use and Movement Patterns of the Viviparous Aquatic Snake, Oocatochus rufodorsatus, from Northeast Asia. Zoological Science 28, 593-599.
+## 18                                                                                                                    Rodriguez-Robles JA. 2003. Home Ranges of Gopher Snakes (Pituophis catenifer, Colubridae) in Central California. Copeia 2, 391-396.
+## 19                                                                                   Miller GJ, Smith LL, Johnson SA, Franz R. 2012. Home Range Size and Habitat Selection in the Florida Pine Snake (Pituophis melanoleucus mugitus). Copeia 4, 706-713.
+## 20                                                                                                              Freedman B, Catling PM. 1979. Movements of sympatric species of snakes at Amherstburg, Ontatio. Canadian Field-Naturalist 93(4): 399-404.
+## 21    Wylie G, Amarello M. 2006.  For the Bank Protection Project on the Left Bank of the Colusa Basin Drainage Canal in Reclamation District. Progress report for the U.S. Army Corps of Engineers.\nSacramento River Bank Protection Project, Phase II.
+## 22                                                           Herbe L, Moreau C, Blouin-Demers G, Bonnet X, Lourdais O. 2012. Two Syntopic Colubrid Snakes Differ In Their Energetic Requirements and In Their Use of Space. Herpetologica 68(3), 358-364.
+## 23                                                                                  Webb JK, Shine R. 1997. A Field Study of Spatial Ecology and Movements of a Threatened Snake Species, Hoplocephalus bungaroides. Biological Conservation 82, 203-217.
+## 24                                                                   Butler H, Malone B, Clemann N. 2005. The effects of translocation on the spatial ecology of tiger snakes (Notechis scutatus) in a suburban landscape. Wildlife Research 32, 165-171.
+## 25                                                            Shine R. 1987. Intraspecific Variation in Thermoregulation, Movements and Habitat Use by Australian Blacksnakes, Pseudechis porphyriacus (Elapidae). Journal of Herpetology 21(3), 165-177.
+## 26                                                                 Pearson D, Shine R, Williams A. 2005. Spatial ecology of a threatened python (Morelia spilota imbricata) and the effects of anthropogenic habitat change. Austral Ecology 30, 261-274.
+## 27                                        Smith CF, Schuett GW, Early RL, Schwenk K. 2009. The Spatial and Resproductive Ecology of the Copperhead (Agkistrodon contortrix) at the Northeastern Extrme of its Range. Herpetological Monographs 23, 45-73.
+## 28                                                                                                             Roth ED. 2005. Spatial Ecology of a Cottonmouth (Agkistrodon piscivorus) Population in East Texas. Journal of Herpetology  39(2), 308-312.
+## 29                                                                                                                  Maritz B, Alexander GJ. 2012. Dwarfs on the Move: Spatial Ecology of the World&#39;s Smallest Viper, Bitis schneideri. Copeia 1, 115-120.
+## 30                                        Wasko DK, Sasa M. 2012. Food resources influence spatial ecology, habitat selection, and foraging behavior in an ambush-hunting snake (Viperidae: Bothrops asper): an experimental study. Zoology 115, 179-187.
+## 31                                                                                                             Beck DD. 1995. Ecology and Energetics of Three Sympatric Rattlesnake Species in the Sonoran Desert. Journal of Herpetology 29(2), 211-223.
+## 32                                                                                                                      Secor SM. 1994. Ecological Significance of Movements and Activity Range for the Sidewinder, Crotalus cerastes. Copeia 3, 631-645.
+## 33 Bauder JM, Blodgett D, Briggs KV, Jenkins CL. 2011. The Ecology of Timber Rattlesnakes (Crotalus horridus) in Vermont: A First Year Progress Report Submitted to the Vermont Department of Fish and Wildlife. Vermont Department of Fish and Wildlife.
+## 34                                                                                                             Beck DD. 1995. Ecology and Energetics of Three Sympatric Rattlesnake Species in the Sonoran Desert. Journal of Herpetology 29(2), 211-223.
+## 35                                                                                           Parker JM, Anderson SH. 2007. Ecology and Behavior of the Midget Faded Rattlesnake (Crotalus Oreganus Concolor) in Wyoming. Journal of Herpetology 1, 41-51.
+## 36                                                           Prival DB, Goode MJ, Swann DE, Schwalbe CR, Schroff MJ. 2002. Natural History of a Northern Population of Twin-Spotted Rattlesnakes, Crotalus pricei. Journal of Herpetology 36(4), 598-607.
+## 37                                                                                                                                                     Cardwell MD. 2008. The reproductive ecology of Mohave rattlesnakes. Journal of Zoology 274, 65-76.
+## 38                                                                                                             Beck DD. 1995. Ecology and Energetics of Three Sympatric Rattlesnake Species in the Sonoran Desert. Journal of Herpetology 29(2), 211-223.
+## 39                                                                                       Shine R, Sun L-X. 2003. Attack strategy of an ambush predator: which attributes of the prey trigger a pit-viper&lt;U+0092&gt;s strike? Functional Ecology 17, 340-348.
+## 40                                                                                         Ettling JA, Aghasyan LA, Aghasyan AL, Parker PG. 2013. Spatial Ecology of Armenian Vipers, Montivipera raddei, in a Human-Modified Landscape. Copeia 1, 64-71.
+## 41                                                                                      Brito JC. 2003. Seasonal Variation in Movements, Home Range, and Habitat Use by Male Vipera latastei in Northern Portugal. Journal of Herpetology 37(1), 155-160.
+##          realm thermoregulation locomotion trophic.guild dimension preymass
+## 1  terrestrial        ectotherm   crawling     carnivore         2       NA
+## 2  terrestrial        ectotherm   crawling     carnivore         2       NA
+## 3  terrestrial        ectotherm   crawling     carnivore         2   617.94
+## 4  terrestrial        ectotherm   crawling     carnivore         2   160.56
+## 5  terrestrial        ectotherm   crawling     carnivore         2       NA
+## 6  terrestrial        ectotherm   crawling     carnivore         2       NA
+## 7  terrestrial        ectotherm   crawling     carnivore         2       NA
+## 8  terrestrial        ectotherm   crawling     carnivore         2    71.50
+## 9  terrestrial        ectotherm   crawling     carnivore         2       NA
+## 10 terrestrial        ectotherm   crawling     carnivore         2    40.78
+## 11 terrestrial        ectotherm   crawling     carnivore         2       NA
+## 12 terrestrial        ectotherm   crawling     carnivore         2       NA
+## 13 terrestrial        ectotherm   crawling     carnivore         2       NA
+## 14 terrestrial        ectotherm   crawling     carnivore         2    13.99
+## 15 terrestrial        ectotherm   crawling     carnivore         2       NA
+## 16 terrestrial        ectotherm   crawling     carnivore         2    97.72
+## 17 terrestrial        ectotherm   crawling     carnivore         2       NA
+## 18 terrestrial        ectotherm   crawling     carnivore         2       NA
+## 19 terrestrial        ectotherm   crawling     carnivore         2    53.75
+## 20 terrestrial        ectotherm   crawling     carnivore         2       NA
+## 21 terrestrial        ectotherm   crawling     carnivore         2       NA
+## 22 terrestrial        ectotherm    walking     carnivore         2       NA
+## 23 terrestrial        ectotherm   crawling     carnivore         2       NA
+## 24 terrestrial        ectotherm   crawling     carnivore         2    45.90
+## 25 terrestrial        ectotherm   crawling     carnivore         2       NA
+## 26 terrestrial        ectotherm   crawling     carnivore         2       NA
+## 27 terrestrial        ectotherm   crawling     carnivore         2       NA
+## 28 terrestrial        ectotherm   crawling     carnivore         2    51.93
+## 29 terrestrial        ectotherm   crawling     carnivore         2       NA
+## 30 terrestrial        ectotherm   crawling     carnivore         2   165.25
+## 31 terrestrial        ectotherm   crawling     carnivore         2    12.80
+## 32 terrestrial        ectotherm   crawling     carnivore         2       NA
+## 33 terrestrial        ectotherm   crawling     carnivore         2  2684.21
+## 34 terrestrial        ectotherm   crawling     carnivore         2       NA
+## 35 terrestrial        ectotherm   crawling     carnivore         2    51.56
+## 36 terrestrial        ectotherm   crawling     carnivore         2       NA
+## 37 terrestrial        ectotherm   crawling     carnivore         2       NA
+## 38 terrestrial        ectotherm   crawling     carnivore         2       NA
+## 39 terrestrial        ectotherm   crawling     carnivore         2    14.00
+## 40 terrestrial        ectotherm   crawling     carnivore         2       NA
+## 41 terrestrial        ectotherm   crawling     carnivore         2     8.97
+##    log10.preymass  PPMR
+## 1              NA    NA
+## 2              NA    NA
+## 3       2.7909463  0.90
+## 4       2.2056374  0.90
+## 5              NA    NA
+## 6              NA    NA
+## 7              NA    NA
+## 8       1.8543060  8.99
+## 9              NA    NA
+## 10      1.6104472  5.74
+## 11             NA    NA
+## 12             NA    NA
+## 13             NA    NA
+## 14      1.1458177  5.61
+## 15             NA    NA
+## 16      1.9899835 14.63
+## 17             NA    NA
+## 18             NA    NA
+## 19      1.7303785 18.68
+## 20             NA    NA
+## 21             NA    NA
+## 22             NA    NA
+## 23             NA    NA
+## 24      1.6618127  7.19
+## 25             NA    NA
+## 26             NA    NA
+## 27             NA    NA
+## 28      1.7154183  3.62
+## 29             NA    NA
+## 30      2.2181415  5.00
+## 31      1.1072100 25.00
+## 32             NA    NA
+## 33      3.4288165  0.38
+## 34             NA    NA
+## 35      1.7123129  2.69
+## 36             NA    NA
+## 37             NA    NA
+## 38             NA    NA
+## 39      1.1461280 14.06
+## 40             NA    NA
+## 41      0.9527924 10.86
+##                                                                                                                                                                                                                                                                               prey.size.reference
+## 1                                                                                                                                                                                                                                                                                            &lt;NA&gt;
+## 2                                                                                                                                                                                                                                                                                            &lt;NA&gt;
+## 3                                                                                         Carbone C, Daryl C, Conrad S, Marcus C, Belby J. 2014. Geometric factors influencing the diet of vertebrate predators in marine and terrestrial environments. Ecology Letters 17(12): 1553&lt;U+0096&gt;1559.
+## 4                                                                                         Carbone C, Daryl C, Conrad S, Marcus C, Belby J. 2014. Geometric factors influencing the diet of vertebrate predators in marine and terrestrial environments. Ecology Letters 17(12): 1553&lt;U+0096&gt;1559.
+## 5                                                                                                                                                                                                                                                                                            &lt;NA&gt;
+## 6                                                                                                                                                                                                                                                                                            &lt;NA&gt;
+## 7                                                                                                                                                                                                                                                                                            &lt;NA&gt;
+## 8                                                                                                               Weatherhead PJ, Blouin-Demers G, Cavey KM. 2003. Seasonal and Prey-size Dietary Patterns of Black Ratsnakes (Elaphe obsoleta obsoleta). American Midland Naturalist 150, 275-281.
+## 9                                                                                                                                                                                                                                                                                            &lt;NA&gt;
+## 10                                                                                        Carbone C, Daryl C, Conrad S, Marcus C, Belby J. 2014. Geometric factors influencing the diet of vertebrate predators in marine and terrestrial environments. Ecology Letters 17(12): 1553&lt;U+0096&gt;1559.
+## 11                                                                                                                                                                                                                                                                                           &lt;NA&gt;
+## 12                                                                                                                                                                                                                                                                                           &lt;NA&gt;
+## 13                                                                                                                                                                                                                                                                                           &lt;NA&gt;
+## 14                                                                                                                               Gregory PT, Isaac LA. 2004. Food Habits of the Grass Snake in Southeastern England: Is Natrix natrix a Generalist Predator? Journal of Herpetology 38(1): 88-95.
+## 15                                                                                                                                                                                                                                                                                           &lt;NA&gt;
+## 16                                                                                                                                                                             King RB. 2002. Predicted and Observed Maximum Prey Size - Snake Size Allometry. Functional Ecology 16(6), 766-772.
+## 17                                                                                                                                                                                                                                                                                           &lt;NA&gt;
+## 18                                                                                                                                                                                                                                                                                           &lt;NA&gt;
+## 19                                                                                        Carbone C, Daryl C, Conrad S, Marcus C, Belby J. 2014. Geometric factors influencing the diet of vertebrate predators in marine and terrestrial environments. Ecology Letters 17(12): 1553&lt;U+0096&gt;1559.
+## 20                                                                                                                                                                                                                                                                                           &lt;NA&gt;
+## 21                                                                                                                                                                                                                                                                                           &lt;NA&gt;
+## 22                                                                                                                                                                                                                                                                                           &lt;NA&gt;
+## 23                                                                                                                                                                                                                                                                                           &lt;NA&gt;
+## 24                                                                                        Carbone C, Daryl C, Conrad S, Marcus C, Belby J. 2014. Geometric factors influencing the diet of vertebrate predators in marine and terrestrial environments. Ecology Letters 17(12): 1553&lt;U+0096&gt;1559.
+## 25                                                                                                                                                                                                                                                                                           &lt;NA&gt;
+## 26                                                                                                                                                                                                                                                                                           &lt;NA&gt;
+## 27                                                                                                                                                                                                                                                                                           &lt;NA&gt;
+## 28                                                                                                                   Vincent SW, Herrel A, Irschick DJ. 2004. Sexual dimorphism in head shape and diet in the cottonmouth. Journal of Zoology, London 264, 53-59.\nsnake (Agkistrodon piscivorus)
+## 29                                                                                                                                                                                                                                                                                           &lt;NA&gt;
+## 30 Martins M, Marques OAV, Sazima I. 2002. Ecological and phylogenetic correlates of feeding habits in Neotropical pitvipers of the genus Bothrops. In G. W. Schuett, M. E. Douglas, M. H&lt;f6&gt;ggren, and H. W. Greene (eds.), Biology of the Vipers. Eagle Mountain Publishing, Eagle Mountain, UT
+## 31                                                                                        Carbone C, Daryl C, Conrad S, Marcus C, Belby J. 2014. Geometric factors influencing the diet of vertebrate predators in marine and terrestrial environments. Ecology Letters 17(12): 1553&lt;U+0096&gt;1559.
+## 32                                                                                                                                                                                                                                                                                           &lt;NA&gt;
+## 33                                                                                                                                                                                      Clark RW. 2002. Diet of the timber rattlesnake, Crotalus horridus. Journal of Herpetology 36(3), 494-499.
+## 34                                                                                                                                                                                                                                                                                           &lt;NA&gt;
+## 35                                                                                        Carbone C, Daryl C, Conrad S, Marcus C, Belby J. 2014. Geometric factors influencing the diet of vertebrate predators in marine and terrestrial environments. Ecology Letters 17(12): 1553&lt;U+0096&gt;1559.
+## 36                                                                                                                                                                                                                                                                                           &lt;NA&gt;
+## 37                                                                                                                                                                                                                                                                                           &lt;NA&gt;
+## 38                                                                                                                                                                                                                                                                                           &lt;NA&gt;
+## 39                                                                                                                               Shine R, Sun L-X. 2003. Attack strategy of an ambush predator: which attributes of the prey trigger a pit-viper&lt;U+0092&gt;s strike? Functional Ecology 17, 340-348.
+## 40                                                                                                                                                                                                                                                                                           &lt;NA&gt;
+## 41                                           Jaksic FM, Delibes M.1987. A Comparative Analysis of Food-Niche Relationships and Trophic Guild Structure in TwoAssemblages of Vertebrate Predators Differing in Species Richness: Causes, Correlations, and Consequences. Oecologia 71(3), 461-472.</code></pre>
+<pre class="r"><code>which.min(snakeframe$mean.hra.m2)</code></pre>
+<pre><code>## [1] 29</code></pre>
+<pre class="r"><code>snakeframe[29, ]</code></pre>
+<pre><code>##     taxon         common.name    class    order    family genus    species
+## 29 snakes namaqua dwarf adder reptilia squamata viperidae bitis schneideri
+##    primarymethod  N mean.mass.g log10.mass alternative.mass.reference
+## 29     telemetry 11       16.95    1.22917                       &lt;NA&gt;
+##    mean.hra.m2 log10.hra
+## 29         200   2.30103
+##                                                                                                                            hra.reference
+## 29 Maritz B, Alexander GJ. 2012. Dwarfs on the Move: Spatial Ecology of the World&#39;s Smallest Viper, Bitis schneideri. Copeia 1, 115-120.
+##          realm thermoregulation locomotion trophic.guild dimension preymass
+## 29 terrestrial        ectotherm   crawling     carnivore         2       NA
+##    log10.preymass PPMR prey.size.reference
+## 29             NA   NA                &lt;NA&gt;</code></pre>
+<pre class="r"><code>#hra means home range assessment
+#the species b.schneideri is lives in a small region that includes south africa and nambia, it is one of the smallest vipers in the world.</code></pre>
 </div>
 <div id="push-your-final-code-to-github" class="section level2">
 <h2>Push your final code to GitHub!</h2>
