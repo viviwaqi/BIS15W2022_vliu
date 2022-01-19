@@ -106,7 +106,15 @@ penguins %>%
 ## Practice
 1. Produce a summary of the mean for bill_length_mm, bill_depth_mm, flipper_length_mm, and body_mass_g within Adelie penguins only. Be sure to provide the number of samples.
 ```{r}
-
+#peng_noNA<- remove_missing(penguins, na.rm = FALSE)
+#peng %>%
+  select(bill_length_mm, bill_depth_mm, flipper_length_mm, body_mass_g, species) %>%
+  filter(species == "Adelie") %>%
+  summarise(mean_bill_length=mean(bill_length_mm),
+            mean_bill_depth=mean(bill_depth_mm),
+            mean_flipper_length=mean(flipper_length_mm),
+            mean_body_mass=mean(body_mass_g),
+            n=n())
 ```
 
 2. How does the mean of `bill_length_mm` compare between penguin species?
