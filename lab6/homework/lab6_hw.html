@@ -11,7 +11,7 @@
 
 <meta name="author" content="Joel Ledford" />
 
-<meta name="date" content="2022-01-20" />
+<meta name="date" content="2022-01-24" />
 
 <title>Lab 6 Homework</title>
 
@@ -167,7 +167,7 @@ pre code {
 
 <h1 class="title toc-ignore">Lab 6 Homework</h1>
 <h4 class="author">Joel Ledford</h4>
-<h4 class="date">2022-01-20</h4>
+<h4 class="date">2022-01-24</h4>
 
 </div>
 
@@ -380,43 +380,48 @@ fisheries_focus</code></pre>
 </ol>
 <pre class="r"><code>fisheries_tidy %&gt;%
   select(country, year, catch) %&gt;% 
-  filter(year == &quot;2000&quot;) </code></pre>
-<pre><code>## # A tibble: 8,793 x 3
-##    country  year catch
-##    &lt;fct&gt;   &lt;dbl&gt; &lt;dbl&gt;
-##  1 Albania  2000    30
-##  2 Albania  2000    25
-##  3 Albania  2000     2
-##  4 Albania  2000    NA
-##  5 Albania  2000    20
-##  6 Albania  2000    50
-##  7 Albania  2000    85
-##  8 Albania  2000    41
-##  9 Albania  2000    90
-## 10 Albania  2000    45
-## # ... with 8,783 more rows</code></pre>
-<pre class="r"><code>#which.max(catch)</code></pre>
+  filter(year == &quot;2000&quot;) %&gt;%
+  group_by(country) %&gt;%
+  summarise(catch_by_country=sum(catch, na.rm = TRUE)) %&gt;%
+  arrange(desc(catch_by_country))</code></pre>
+<pre><code>## # A tibble: 193 x 2
+##    country                  catch_by_country
+##    &lt;fct&gt;                               &lt;dbl&gt;
+##  1 China                               25899
+##  2 Russian Federation                  12181
+##  3 United States of America            11762
+##  4 Japan                                8510
+##  5 Indonesia                            8341
+##  6 Peru                                 7443
+##  7 Chile                                6906
+##  8 India                                6351
+##  9 Thailand                             6243
+## 10 Korea, Republic of                   6124
+## # ... with 183 more rows</code></pre>
 <ol start="7" style="list-style-type: decimal">
 <li>Which country caught the most sardines (<em>Sardina pilchardus</em>) between the years 1990-2000?</li>
 </ol>
 <pre class="r"><code>fisheries_tidy %&gt;%
   select(country, asfis_species_name, catch, year) %&gt;%
-  filter(asfis_species_name == &quot;Sardina pilchardus&quot;, between(year, 1990, 2000))</code></pre>
-<pre><code>## # A tibble: 336 x 4
-##    country asfis_species_name catch  year
-##    &lt;fct&gt;   &lt;chr&gt;              &lt;dbl&gt; &lt;dbl&gt;
-##  1 Albania Sardina pilchardus     8  1990
-##  2 Albania Sardina pilchardus    NA  1991
-##  3 Albania Sardina pilchardus    34  1992
-##  4 Albania Sardina pilchardus    50  1993
-##  5 Albania Sardina pilchardus    NA  1994
-##  6 Albania Sardina pilchardus    NA  1995
-##  7 Albania Sardina pilchardus    NA  1996
-##  8 Albania Sardina pilchardus    28  1997
-##  9 Albania Sardina pilchardus    28  1998
-## 10 Albania Sardina pilchardus    40  1999
-## # ... with 326 more rows</code></pre>
-<pre class="r"><code>  #arrange(desc(catch))</code></pre>
+  filter(between(year, 1990, 2000)) %&gt;%
+  group_by(country) %&gt;%
+  mutate(sardine_count=(asfis_species_name == &quot;Sardina pilchardus&quot;)) %&gt;%
+  summarise(sardine_count_sum=sum(sardine_count, na.rm = TRUE)) %&gt;%
+  arrange(desc(sardine_count_sum))</code></pre>
+<pre><code>## # A tibble: 196 x 2
+##    country        sardine_count_sum
+##    &lt;fct&gt;                      &lt;int&gt;
+##  1 Spain                         33
+##  2 France                        25
+##  3 Morocco                       22
+##  4 Portugal                      22
+##  5 Netherlands                   15
+##  6 Germany                       14
+##  7 United Kingdom                12
+##  8 Albania                       11
+##  9 Algeria                       11
+## 10 Denmark                       11
+## # ... with 186 more rows</code></pre>
 <ol start="8" style="list-style-type: decimal">
 <li>Which five countries caught the most cephalopods between 2008-2012?</li>
 </ol>
@@ -444,23 +449,25 @@ fisheries_focus</code></pre>
 </ol>
 <pre class="r"><code>fisheries_tidy %&gt;%
   select(asfis_species_name, year, catch) %&gt;%
-  filter(between(year, 2008, 2012)) </code></pre>
-<pre><code>## # A tibble: 51,014 x 3
-##    asfis_species_name  year catch
-##    &lt;chr&gt;              &lt;dbl&gt; &lt;dbl&gt;
-##  1 Squatinidae         2008    23
-##  2 Squatinidae         2009    14
-##  3 Squatinidae         2010    78
-##  4 Squatinidae         2011    12
-##  5 Squatinidae         2012     5
-##  6 Sarda sarda         2008    27
-##  7 Sarda sarda         2009    21
-##  8 Sarda sarda         2010    23
-##  9 Sarda sarda         2011    12
-## 10 Sarda sarda         2012     5
-## # ... with 51,004 more rows</code></pre>
-<pre class="r"><code>  #n_distinct(asfis_species_name) %&gt;%
-  #arrange(group_by(asfis_species_name))</code></pre>
+  filter(between(year, 2008, 2012)) %&gt;%
+  group_by(asfis_species_name) %&gt;%
+  summarise(catch_sums=sum(catch, na.rm = TRUE)) %&gt;%
+  arrange(desc(catch_sums))</code></pre>
+<pre><code>## # A tibble: 1,472 x 2
+##    asfis_species_name    catch_sums
+##    &lt;chr&gt;                      &lt;dbl&gt;
+##  1 Osteichthyes              107808
+##  2 Theragra chalcogramma      41075
+##  3 Engraulis ringens          35523
+##  4 Katsuwonus pelamis         32153
+##  5 Trichiurus lepturus        30400
+##  6 Clupea harengus            28527
+##  7 Thunnus albacares          20119
+##  8 Scomber japonicus          14723
+##  9 Gadus morhua               13253
+## 10 Thunnus alalunga           12019
+## # ... with 1,462 more rows</code></pre>
+<pre class="r"><code>#Theragra chalcogramma was the most caught species from 2008-2012</code></pre>
 <ol start="10" style="list-style-type: decimal">
 <li>Use the data to do at least one analysis of your choice.</li>
 </ol>

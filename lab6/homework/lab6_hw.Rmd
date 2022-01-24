@@ -90,17 +90,21 @@ n_distinct(fisheries_focus$asfis_species_number)
 ```{r}
 fisheries_tidy %>%
   select(country, year, catch) %>% 
-  filter(year == "2000") 
-#which.max(catch)
-  
+  filter(year == "2000") %>%
+  group_by(country) %>%
+  summarise(catch_by_country=sum(catch, na.rm = TRUE)) %>%
+  arrange(desc(catch_by_country))
 ```
 
 7. Which country caught the most sardines (_Sardina pilchardus_) between the years 1990-2000?
 ```{r}
 fisheries_tidy %>%
   select(country, asfis_species_name, catch, year) %>%
-  filter(asfis_species_name == "Sardina pilchardus", between(year, 1990, 2000))
-  #arrange(desc(catch))
+  filter(between(year, 1990, 2000)) %>%
+  group_by(country) %>%
+  mutate(sardine_count=(asfis_species_name == "Sardina pilchardus")) %>%
+  summarise(sardine_count_sum=sum(sardine_count, na.rm = TRUE)) %>%
+  arrange(desc(sardine_count_sum))
 ```
 
 8. Which five countries caught the most cephalopods between 2008-2012?
@@ -116,9 +120,11 @@ fisheries_tidy %>%
 ```{r}
 fisheries_tidy %>%
   select(asfis_species_name, year, catch) %>%
-  filter(between(year, 2008, 2012)) 
-  #n_distinct(asfis_species_name) %>%
-  #arrange(group_by(asfis_species_name))
+  filter(between(year, 2008, 2012)) %>%
+  group_by(asfis_species_name) %>%
+  summarise(catch_sums=sum(catch, na.rm = TRUE)) %>%
+  arrange(desc(catch_sums))
+#Theragra chalcogramma was the most caught species from 2008-2012
 ```
 
 10. Use the data to do at least one analysis of your choice.
