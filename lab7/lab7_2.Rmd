@@ -2,10 +2,11 @@
 title: "Midterm review and `naniar()`"
 date: "`r Sys.Date()`"
 output:
-  html_document:
+  html_document: 
     theme: spacelab
     toc: yes
     toc_float: yes
+    keep_md: yes
   pdf_document:
     toc: yes
 ---
@@ -42,17 +43,17 @@ life_history <- read_csv("data/mammal_lifehistories_v3.csv") %>% clean_names()
 
 2. Use one or more of the functions from the last lab to determine if there are NA's in the data, how they are represented, and where they are located.
 ```{r}
-
+life_history
 ```
 
 ```{r}
-
+anyNA(life_history)
 ```
 
 
 3. Can we use a single approach to deal with NA's in this data set? Given what you learned in the previous lab, how would you manage the NA values?
 ```{r}
-
+#No, at least not just one function, there are NA values, -999, 0 and not measured values. I'm not sure I could put all those values into one "na_if" line of code, but I would use "na_if"
 ```
 
 ## `naniar`
@@ -66,6 +67,7 @@ naniar::miss_var_summary(life_history)
 Notice that `max_life` has no NA's. Does that make sense in the context of this data?
 ```{r}
 hist(life_history$max_life)
+#yes it makes sense that there is no NA values because an animal has to live for at least a bit of time
 ```
 
 ```{r}
@@ -101,17 +103,25 @@ Some key information:
 
 1. Import the data and do a little exploration. Be sure to clean the names if necessary.
 ```{r}
-
+cites<- readr::read_csv("data/cites.csv")
+cites
+```
+```{r}
+cites<- clean_names(cites)
+names(cites)
 ```
 
 2. Use `naniar` to summarize the NA's in each variable.
 ```{r}
-
+naniar::miss_var_summary(cites)
 ```
 
 3. Try using `group_by()` with `naniar`. Look specifically at class and `exporter_reported_quantity`. For which taxonomic classes do we have a high proportion of missing export data?
 ```{r}
-
+cites %>%
+  group_by(exporter_reported_quantity, class) %>%
+  naniar::miss_var_summary() 
+  
 ```
 
 ## Visualizing NAs
