@@ -47,12 +47,8 @@ library("tidyverse")
 ```
 ## v ggplot2 3.3.5     v purrr   0.3.4
 ## v tibble  3.1.6     v dplyr   1.0.7
-## v tidyr   1.2.0     v stringr 1.4.0
-## v readr   2.1.2     v forcats 0.5.1
-```
-
-```
-## Warning: package 'readr' was built under R version 4.1.2
+## v tidyr   1.1.4     v stringr 1.4.0
+## v readr   2.1.1     v forcats 0.5.1
 ```
 
 ```
@@ -86,7 +82,7 @@ heartrate %>%
 ```
 
 ```r
-heartrate_long%>%
+heartrate_long %>%
   filter(drug=="a")
 ```
 
@@ -137,6 +133,10 @@ datasets::USPersonalExpenditure
 
 ```r
 ?USPersonalExpenditure
+```
+
+```
+## starting httpd help server ... done
 ```
 
 Here we add a new column of expenditure types, which are stored as rownames above, with `mutate()`. The `USPersonalExpenditures` data also needs to be converted to a data frame before we can use the tidyverse functions, because it comes as a matrix.
@@ -274,10 +274,11 @@ heartrate3
 ```
 
 ```r
-heartrate3 %>%
+heartrate3<- heartrate3 %>%
   separate(patient, into= c("patient", "sex"), sep = "_") %>%
   group_by(patient, drug) %>%
   arrange()
+heartrate3
 ```
 
 ```
@@ -301,8 +302,26 @@ heartrate3 %>%
 2. `unite()` is the opposite of separate(). Its syntax is straightforward. You only need to give a new column name and then list the columns to combine with a separation character.  Give it a try below by recombining patient and sex from `heartrate3`.  
 
 ```r
-#heartrate3 %>%
-  #unite(patient_sex, "patient", "sex", sep = "_")
+heartrate3 %>%
+  unite("patient_sex", patient, sex, sep = "_")
+```
+
+```
+## # A tibble: 24 x 3
+## # Groups:   drug [4]
+##    patient_sex drug  heartrate
+##    <chr>       <chr>     <dbl>
+##  1 Margaret_f  a            72
+##  2 Margaret_f  b            74
+##  3 Margaret_f  c            80
+##  4 Margaret_f  d            68
+##  5 Frank_m     a            84
+##  6 Frank_m     b            84
+##  7 Frank_m     c            88
+##  8 Frank_m     d            76
+##  9 Hawkeye_m   a            64
+## 10 Hawkeye_m   b            66
+## # ... with 14 more rows
 ```
 
 ## `pivot_wider()`
@@ -510,61 +529,6 @@ library(janitor)
 
 ```r
 beachbugs<- clean_names(beachbugs)
-```
-
-```
-## Warning in FUN(X[[i]], ...): unable to translate '<U+00C4>' to native encoding
-```
-
-```
-## Warning in FUN(X[[i]], ...): unable to translate '<U+00D6>' to native encoding
-```
-
-```
-## Warning in FUN(X[[i]], ...): unable to translate '<U+00DC>' to native encoding
-```
-
-```
-## Warning in FUN(X[[i]], ...): unable to translate '<U+00E4>' to native encoding
-```
-
-```
-## Warning in FUN(X[[i]], ...): unable to translate '<U+00F6>' to native encoding
-```
-
-```
-## Warning in FUN(X[[i]], ...): unable to translate '<U+00FC>' to native encoding
-```
-
-```
-## Warning in FUN(X[[i]], ...): unable to translate '<U+00DF>' to native encoding
-```
-
-```
-## Warning in FUN(X[[i]], ...): unable to translate '<U+00C6>' to native encoding
-```
-
-```
-## Warning in FUN(X[[i]], ...): unable to translate '<U+00E6>' to native encoding
-```
-
-```
-## Warning in FUN(X[[i]], ...): unable to translate '<U+00D8>' to native encoding
-```
-
-```
-## Warning in FUN(X[[i]], ...): unable to translate '<U+00F8>' to native encoding
-```
-
-```
-## Warning in FUN(X[[i]], ...): unable to translate '<U+00C5>' to native encoding
-```
-
-```
-## Warning in FUN(X[[i]], ...): unable to translate '<U+00E5>' to native encoding
-```
-
-```r
 beachbugs
 ```
 
@@ -588,10 +552,11 @@ beachbugs
 2. Use `pivot_wider` to transform the data into wide format.
 
 ```r
-beachbugs %>%
+beachbugs_wide<- beachbugs %>%
   pivot_wider(names_from = (site),
               values_from = (buglevels)
               )
+beachbugs_wide
 ```
 
 ```
@@ -613,12 +578,16 @@ beachbugs %>%
 3. Now, use `pivot_longer` to transform them back to long!
 
 ```r
-beachbugs
+beachbugs_wide %>%
+  pivot_longer(-year,
+               names_to = "beaches",
+               values_to = "buglevels"
+               )
 ```
 
 ```
 ## # A tibble: 66 x 3
-##     year site                    buglevels
+##     year beaches                 buglevels
 ##    <dbl> <chr>                       <dbl>
 ##  1  2013 Bondi Beach                 32.2 
 ##  2  2013 Bronte Beach                26.8 

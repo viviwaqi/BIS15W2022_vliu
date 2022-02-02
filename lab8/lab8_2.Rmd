@@ -48,7 +48,7 @@ heartrate %>%
                )
 ```
 ```{r}
-heartrate_long%>%
+heartrate_long %>%
   filter(drug=="a")
 ```
 ```{r}
@@ -116,16 +116,17 @@ heartrate3<- heartrate2 %>%
 heartrate3
 ```
 ```{r}
-heartrate3 %>%
+heartrate3<- heartrate3 %>%
   separate(patient, into= c("patient", "sex"), sep = "_") %>%
   group_by(patient, drug) %>%
   arrange()
+heartrate3
 ```
 
 2. `unite()` is the opposite of separate(). Its syntax is straightforward. You only need to give a new column name and then list the columns to combine with a separation character.  Give it a try below by recombining patient and sex from `heartrate3`.  
 ```{r}
-#heartrate3 %>%
-  #unite(patient_sex, "patient", "sex", sep = "_")
+heartrate3 %>%
+  unite("patient_sex", patient, sex, sep = "_")
 ```
 
 ## `pivot_wider()`
@@ -188,15 +189,20 @@ beachbugs
 
 2. Use `pivot_wider` to transform the data into wide format.
 ```{r}
-beachbugs %>%
+beachbugs_wide<- beachbugs %>%
   pivot_wider(names_from = (site),
               values_from = (buglevels)
               )
+beachbugs_wide
 ```
 
 3. Now, use `pivot_longer` to transform them back to long!
 ```{r}
-beachbugs
+beachbugs_wide %>%
+  pivot_longer(-year,
+               names_to = "beaches",
+               values_to = "buglevels"
+               )
   
 ```
 

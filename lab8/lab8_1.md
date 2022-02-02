@@ -42,12 +42,8 @@ library(tidyverse)
 ```
 ## v ggplot2 3.3.5     v purrr   0.3.4
 ## v tibble  3.1.6     v dplyr   1.0.7
-## v tidyr   1.2.0     v stringr 1.4.0
-## v readr   2.1.2     v forcats 0.5.1
-```
-
-```
-## Warning: package 'readr' was built under R version 4.1.2
+## v tidyr   1.1.4     v stringr 1.4.0
+## v readr   2.1.1     v forcats 0.5.1
 ```
 
 ```
@@ -62,7 +58,7 @@ library(here)
 ```
 
 ```
-## here() starts at /Users/vcliu/Documents/GitHub/BIS15W2022_vliu
+## here() starts at C:/Users/V/Documents/GitHub/BIS15W2022_vliu
 ```
 
 ## Tidy data
@@ -209,24 +205,24 @@ relig_income
 ## # A tibble: 18 x 11
 ##    religion `<$10k` `$10-20k` `$20-30k` `$30-40k` `$40-50k` `$50-75k` `$75-100k`
 ##    <chr>      <dbl>     <dbl>     <dbl>     <dbl>     <dbl>     <dbl>      <dbl>
-##  1 "Agnost~      27        34        60        81        76       137        122
-##  2 "Atheis~      12        27        37        52        35        70         73
-##  3 "Buddhi~      27        21        30        34        33        58         62
-##  4 "Cathol~     418       617       732       670       638      1116        949
-##  5 "Don\u2~      15        14        15        11        10        35         21
-##  6 "Evange~     575       869      1064       982       881      1486        949
-##  7 "Hindu"        1         9         7         9        11        34         47
-##  8 "Histor~     228       244       236       238       197       223        131
-##  9 "Jehova~      20        27        24        24        21        30         15
-## 10 "Jewish"      19        19        25        25        30        95         69
-## 11 "Mainli~     289       495       619       655       651      1107        939
-## 12 "Mormon"      29        40        48        51        56       112         85
-## 13 "Muslim"       6         7         9        10         9        23         16
-## 14 "Orthod~      13        17        23        32        32        47         38
-## 15 "Other ~       9         7        11        13        13        14         18
-## 16 "Other ~      20        33        40        46        49        63         46
-## 17 "Other ~       5         2         3         4         2         7          3
-## 18 "Unaffi~     217       299       374       365       341       528        407
+##  1 Agnostic      27        34        60        81        76       137        122
+##  2 Atheist       12        27        37        52        35        70         73
+##  3 Buddhist      27        21        30        34        33        58         62
+##  4 Catholic     418       617       732       670       638      1116        949
+##  5 Don’t k~      15        14        15        11        10        35         21
+##  6 Evangel~     575       869      1064       982       881      1486        949
+##  7 Hindu          1         9         7         9        11        34         47
+##  8 Histori~     228       244       236       238       197       223        131
+##  9 Jehovah~      20        27        24        24        21        30         15
+## 10 Jewish        19        19        25        25        30        95         69
+## 11 Mainlin~     289       495       619       655       651      1107        939
+## 12 Mormon        29        40        48        51        56       112         85
+## 13 Muslim         6         7         9        10         9        23         16
+## 14 Orthodox      13        17        23        32        32        47         38
+## 15 Other C~       9         7        11        13        13        14         18
+## 16 Other F~      20        33        40        46        49        63         46
+## 17 Other W~       5         2         3         4         2         7          3
+## 18 Unaffil~     217       299       374       365       341       528        407
 ## # ... with 3 more variables: `$100-150k` <dbl>, `>150k` <dbl>,
 ## #   `Don't know/refused` <dbl>
 ```
@@ -234,7 +230,7 @@ relig_income
 2. Why are these data untidy?  
 
 ```r
-#columns are variables, 
+#columns are variables
 ```
 
 

@@ -96,7 +96,7 @@ relig_income
 
 2. Why are these data untidy?  
 ```{r}
-#columns are variables, 
+#columns are variables
 ```
 
 
