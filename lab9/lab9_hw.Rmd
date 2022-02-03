@@ -1,11 +1,11 @@
 ---
 title: "Lab 9 Homework"
-author: "Please Add Your Name Here"
+author: "Victoria Liu"
 date: "`r Sys.Date()`"
 output:
-  html_document:
+  html_document: 
     theme: spacelab
-    toc: no
+    keep_md: yes
 ---
 
 ```{r setup, include=FALSE}
@@ -27,7 +27,8 @@ library(naniar)
 
 For this homework, we will take a departure from biological data and use data about California colleges. These data are a subset of the national college scorecard (https://collegescorecard.ed.gov/data/). Load the `ca_college_data.csv` as a new object called `colleges`.
 ```{r}
-
+colleges<- readr::read_csv("data/ca_college_data.csv")
+colleges
 ```
 
 The variables are a bit hard to decipher, here is a key:  
@@ -45,25 +46,41 @@ PFTFTUG1_EF: Percentage of undergraduate students who are first-time, full-time 
 
 1. Use your preferred function(s) to have a look at the data and get an idea of its structure. Make sure you summarize NA's and determine whether or not the data are tidy. You may also consider dealing with any naming issues.
 ```{r}
-
+colleges<- clean_names(colleges)
+names(colleges)
 ```
 
 ```{r}
-
+glimpse(colleges)
 ```
 
 ```{r}
-
+miss_var_summary(colleges)
+#The data is tidy
 ```
 
 2. Which cities in California have the highest number of colleges?
 ```{r}
-
+colleges_counts<- colleges %>%
+  select(city, instnm) %>%
+  add_count(city) %>%
+  arrange(desc(n)) %>%
+  summarise(city, instnm, n)
+colleges_counts
+```
+```{r}
+colleges_counts%>%
+  select(city, n) %>%
+  group_by(city)
 ```
 
 3. Based on your answer to #2, make a plot that shows the number of colleges in the top 10 cities.
 ```{r}
-
+#colleges_top10 %>%
+  #select(city, n) %>%
+  #top_n(-10, city) %>%
+  #ggplot(aes(x=n, y=city))+
+  #geom_col()
 ```
 
 4. The column `COSTT4_A` is the annual cost of each institution. Which city has the highest average cost? Where is it located?

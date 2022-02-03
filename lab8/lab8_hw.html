@@ -11,7 +11,7 @@
 
 <meta name="author" content="Victoria Liu" />
 
-<meta name="date" content="2022-02-01" />
+<meta name="date" content="2022-02-03" />
 
 <title>Lab 8 Homework</title>
 
@@ -167,7 +167,7 @@ pre code {
 
 <h1 class="title toc-ignore">Lab 8 Homework</h1>
 <h4 class="author">Victoria Liu</h4>
-<h4 class="date">2022-02-01</h4>
+<h4 class="date">2022-02-03</h4>
 
 </div>
 
@@ -198,7 +198,7 @@ library(janitor)</code></pre>
 #sydneybeaches</code></pre>
 <p>If you want to try <code>here</code>, first notice the output when you load the <code>here</code> library. It gives you information on the current working directory. You can then use it to easily and intuitively load files.</p>
 <pre class="r"><code>library(here)</code></pre>
-<pre><code>## here() starts at C:/Users/V/Documents/GitHub/BIS15W2022_vliu</code></pre>
+<pre><code>## here() starts at /Users/vcliu/Documents/GitHub/BIS15W2022_vliu</code></pre>
 <p>The quotes show the folder structure from the root directory.</p>
 <pre class="r"><code>sydneybeaches &lt;-read_csv(here(&quot;lab8&quot;, &quot;data&quot;, &quot;sydneybeaches.csv&quot;)) %&gt;% janitor::clean_names()</code></pre>
 <pre><code>## Rows: 3690 Columns: 8
@@ -209,6 +209,19 @@ library(janitor)</code></pre>
 ## 
 ## i Use `spec()` to retrieve the full column specification for this data.
 ## i Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre><code>## Warning in FUN(X[[i]], ...): unable to translate &#39;&lt;U+00C4&gt;&#39; to native encoding</code></pre>
+<pre><code>## Warning in FUN(X[[i]], ...): unable to translate &#39;&lt;U+00D6&gt;&#39; to native encoding</code></pre>
+<pre><code>## Warning in FUN(X[[i]], ...): unable to translate &#39;&lt;U+00DC&gt;&#39; to native encoding</code></pre>
+<pre><code>## Warning in FUN(X[[i]], ...): unable to translate &#39;&lt;U+00E4&gt;&#39; to native encoding</code></pre>
+<pre><code>## Warning in FUN(X[[i]], ...): unable to translate &#39;&lt;U+00F6&gt;&#39; to native encoding</code></pre>
+<pre><code>## Warning in FUN(X[[i]], ...): unable to translate &#39;&lt;U+00FC&gt;&#39; to native encoding</code></pre>
+<pre><code>## Warning in FUN(X[[i]], ...): unable to translate &#39;&lt;U+00DF&gt;&#39; to native encoding</code></pre>
+<pre><code>## Warning in FUN(X[[i]], ...): unable to translate &#39;&lt;U+00C6&gt;&#39; to native encoding</code></pre>
+<pre><code>## Warning in FUN(X[[i]], ...): unable to translate &#39;&lt;U+00E6&gt;&#39; to native encoding</code></pre>
+<pre><code>## Warning in FUN(X[[i]], ...): unable to translate &#39;&lt;U+00D8&gt;&#39; to native encoding</code></pre>
+<pre><code>## Warning in FUN(X[[i]], ...): unable to translate &#39;&lt;U+00F8&gt;&#39; to native encoding</code></pre>
+<pre><code>## Warning in FUN(X[[i]], ...): unable to translate &#39;&lt;U+00C5&gt;&#39; to native encoding</code></pre>
+<pre><code>## Warning in FUN(X[[i]], ...): unable to translate &#39;&lt;U+00E5&gt;&#39; to native encoding</code></pre>
 <ol start="2" style="list-style-type: decimal">
 <li>Are these data “tidy” per the definitions of the tidyverse? How do you know? Are they in wide or long format?</li>
 </ol>
@@ -377,40 +390,40 @@ sydney_wide_2018&lt;- sydneybeaches_wide %&gt;%
                values_drop_na = TRUE) %&gt;%
   separate(date, into = c(&quot;day&quot;, &quot;month&quot;, &quot;year&quot;), sep = &quot;/&quot;) %&gt;%
   group_by(site) %&gt;%
-  mutate(ent_yearly_mean=mean(enterococci)) %&gt;%
+  mutate(ent_yearly_sum=sum(enterococci)) %&gt;%
   filter(year == &quot;2018&quot;)
 sydney_wide_2018</code></pre>
 <pre><code>## # A tibble: 523 x 6
 ## # Groups:   site [11]
-##    site           day   month year  enterococci ent_yearly_mean
-##    &lt;chr&gt;          &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;       &lt;dbl&gt;           &lt;dbl&gt;
-##  1 Clovelly Beach 19    09    2018            1            10.2
-##  2 Clovelly Beach 28    09    2018            2            10.2
-##  3 Clovelly Beach 05    10    2018           34            10.2
-##  4 Clovelly Beach 03    01    2018            1            10.2
-##  5 Clovelly Beach 09    01    2018           71            10.2
-##  6 Clovelly Beach 15    01    2018           30            10.2
-##  7 Clovelly Beach 25    01    2018            6            10.2
-##  8 Clovelly Beach 13    02    2018            2            10.2
-##  9 Clovelly Beach 20    03    2018            5            10.2
-## 10 Clovelly Beach 26    03    2018           23            10.2
+##    site           day   month year  enterococci ent_yearly_sum
+##    &lt;chr&gt;          &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;       &lt;dbl&gt;          &lt;dbl&gt;
+##  1 Clovelly Beach 19    09    2018            1           3413
+##  2 Clovelly Beach 28    09    2018            2           3413
+##  3 Clovelly Beach 05    10    2018           34           3413
+##  4 Clovelly Beach 03    01    2018            1           3413
+##  5 Clovelly Beach 09    01    2018           71           3413
+##  6 Clovelly Beach 15    01    2018           30           3413
+##  7 Clovelly Beach 25    01    2018            6           3413
+##  8 Clovelly Beach 13    02    2018            2           3413
+##  9 Clovelly Beach 20    03    2018            5           3413
+## 10 Clovelly Beach 26    03    2018           23           3413
 ## # ... with 513 more rows</code></pre>
 <pre class="r"><code>sydney_wide_2018 %&gt;%
-  arrange(desc(ent_yearly_mean))</code></pre>
+  arrange(desc(ent_yearly_sum))</code></pre>
 <pre><code>## # A tibble: 523 x 6
 ## # Groups:   site [11]
-##    site          day   month year  enterococci ent_yearly_mean
-##    &lt;chr&gt;         &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;       &lt;dbl&gt;           &lt;dbl&gt;
-##  1 Malabar Beach 19    09    2018            3            68.1
-##  2 Malabar Beach 28    09    2018           52            68.1
-##  3 Malabar Beach 05    10    2018           54            68.1
-##  4 Malabar Beach 03    01    2018           65            68.1
-##  5 Malabar Beach 09    01    2018          110            68.1
-##  6 Malabar Beach 15    01    2018            9            68.1
-##  7 Malabar Beach 25    01    2018            1            68.1
-##  8 Malabar Beach 13    02    2018          320            68.1
-##  9 Malabar Beach 20    03    2018           17            68.1
-## 10 Malabar Beach 26    03    2018           32            68.1
+##    site          day   month year  enterococci ent_yearly_sum
+##    &lt;chr&gt;         &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;       &lt;dbl&gt;          &lt;dbl&gt;
+##  1 Malabar Beach 19    09    2018            3          23227
+##  2 Malabar Beach 28    09    2018           52          23227
+##  3 Malabar Beach 05    10    2018           54          23227
+##  4 Malabar Beach 03    01    2018           65          23227
+##  5 Malabar Beach 09    01    2018          110          23227
+##  6 Malabar Beach 15    01    2018            9          23227
+##  7 Malabar Beach 25    01    2018            1          23227
+##  8 Malabar Beach 13    02    2018          320          23227
+##  9 Malabar Beach 20    03    2018           17          23227
+## 10 Malabar Beach 26    03    2018           32          23227
 ## # ... with 513 more rows</code></pre>
 <pre class="r"><code>#malabar beach was the most polluted</code></pre>
 <ol start="10" style="list-style-type: decimal">

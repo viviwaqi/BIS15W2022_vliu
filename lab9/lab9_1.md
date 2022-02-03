@@ -1,6 +1,6 @@
 ---
 title: "Data Visualization: `ggplot` part 1"
-date: "2022-02-02"
+date: "2022-02-03"
 output:
   html_document: 
     theme: spacelab
@@ -58,13 +58,6 @@ To make things easy, let's start with some built in data.
 
 ```r
 ?iris
-```
-
-```
-## starting httpd help server ... done
-```
-
-```r
 names(iris)
 ```
 
@@ -437,12 +430,8 @@ homerange_mam
 
 ```r
 homerange_mam %>%
-  ggplot(aes(x=trophic.guild, y=trophic.guild))+
-  geom_col(after_stat="count")
-```
-
-```
-## Warning: Ignoring unknown parameters: after_stat
+  ggplot(aes(x=trophic.guild))+
+  geom_bar()
 ```
 
 ![](lab9_1_files/figure-html/unnamed-chunk-24-1.png)<!-- -->
@@ -450,12 +439,39 @@ homerange_mam %>%
 
 3. Make a bar plot that shows the masses of the top 10 smallest mammals.
 
+```r
+small_mam<- homerange_mam %>%
+  select(common.name, log10.mass) %>%
+  arrange(log10.mass)
+small_mam
+```
+
+```
+## # A tibble: 238 x 2
+##    common.name                    log10.mass
+##    <chr>                               <dbl>
+##  1 cinereus shrew                      0.620
+##  2 slender shrew                       0.640
+##  3 arctic shrew                        0.910
+##  4 crowned shrew                       0.970
+##  5 greater white-footed shrew          1    
+##  6 salt marsh harvest mouse            1.04 
+##  7 long-clawed shrew                   1.15 
+##  8 Northern three-striped opossum      1.29 
+##  9 wood mouse                          1.33 
+## 10 southern grasshopper mouse          1.34 
+## # ... with 228 more rows
+```
 
 
+```r
+small_mam %>%
+  top_n(-10, log10.mass) %>%
+  ggplot(aes(x=log10.mass, y=common.name))+
+  geom_col()
+```
 
-
-
-
+![](lab9_1_files/figure-html/unnamed-chunk-26-1.png)<!-- -->
 
 ## That's it, let's take a break!   
 

@@ -202,26 +202,24 @@ homerange_mam
 
 ```{r}
 homerange_mam %>%
-  ggplot(aes(x=trophic.guild, y=trophic.guild))+
-  geom_col(after_stat="count")
+  ggplot(aes(x=trophic.guild))+
+  geom_bar()
 ```
 
 
 3. Make a bar plot that shows the masses of the top 10 smallest mammals.
 ```{r}
-
+small_mam<- homerange_mam %>%
+  select(common.name, log10.mass) %>%
+  arrange(log10.mass)
+small_mam
 ```
 
 ```{r}
-
-```
-
-```{r}
-
-```
-
-```{r}
-
+small_mam %>%
+  top_n(-10, log10.mass) %>%
+  ggplot(aes(x=log10.mass, y=common.name))+
+  geom_col()
 ```
 
 ## That's it, let's take a break!   

@@ -1,7 +1,7 @@
 ---
 title: "Lab 8 Homework"
 author: "Victoria Liu"
-date: "2022-02-01"
+date: "2022-02-03"
 output:
   html_document: 
     theme: spacelab
@@ -48,7 +48,7 @@ library(here)
 ```
 
 ```
-## here() starts at C:/Users/V/Documents/GitHub/BIS15W2022_vliu
+## here() starts at /Users/vcliu/Documents/GitHub/BIS15W2022_vliu
 ```
 
 The quotes show the folder structure from the root directory.
@@ -66,6 +66,58 @@ sydneybeaches <-read_csv(here("lab8", "data", "sydneybeaches.csv")) %>% janitor:
 ## 
 ## i Use `spec()` to retrieve the full column specification for this data.
 ## i Specify the column types or set `show_col_types = FALSE` to quiet this message.
+```
+
+```
+## Warning in FUN(X[[i]], ...): unable to translate '<U+00C4>' to native encoding
+```
+
+```
+## Warning in FUN(X[[i]], ...): unable to translate '<U+00D6>' to native encoding
+```
+
+```
+## Warning in FUN(X[[i]], ...): unable to translate '<U+00DC>' to native encoding
+```
+
+```
+## Warning in FUN(X[[i]], ...): unable to translate '<U+00E4>' to native encoding
+```
+
+```
+## Warning in FUN(X[[i]], ...): unable to translate '<U+00F6>' to native encoding
+```
+
+```
+## Warning in FUN(X[[i]], ...): unable to translate '<U+00FC>' to native encoding
+```
+
+```
+## Warning in FUN(X[[i]], ...): unable to translate '<U+00DF>' to native encoding
+```
+
+```
+## Warning in FUN(X[[i]], ...): unable to translate '<U+00C6>' to native encoding
+```
+
+```
+## Warning in FUN(X[[i]], ...): unable to translate '<U+00E6>' to native encoding
+```
+
+```
+## Warning in FUN(X[[i]], ...): unable to translate '<U+00D8>' to native encoding
+```
+
+```
+## Warning in FUN(X[[i]], ...): unable to translate '<U+00F8>' to native encoding
+```
+
+```
+## Warning in FUN(X[[i]], ...): unable to translate '<U+00C5>' to native encoding
+```
+
+```
+## Warning in FUN(X[[i]], ...): unable to translate '<U+00E5>' to native encoding
 ```
 
 2. Are these data "tidy" per the definitions of the tidyverse? How do you know? Are they in wide or long format?
@@ -280,7 +332,7 @@ sydney_wide_2018<- sydneybeaches_wide %>%
                values_drop_na = TRUE) %>%
   separate(date, into = c("day", "month", "year"), sep = "/") %>%
   group_by(site) %>%
-  mutate(ent_yearly_mean=mean(enterococci)) %>%
+  mutate(ent_yearly_sum=sum(enterococci)) %>%
   filter(year == "2018")
 sydney_wide_2018
 ```
@@ -288,41 +340,41 @@ sydney_wide_2018
 ```
 ## # A tibble: 523 x 6
 ## # Groups:   site [11]
-##    site           day   month year  enterococci ent_yearly_mean
-##    <chr>          <chr> <chr> <chr>       <dbl>           <dbl>
-##  1 Clovelly Beach 19    09    2018            1            10.2
-##  2 Clovelly Beach 28    09    2018            2            10.2
-##  3 Clovelly Beach 05    10    2018           34            10.2
-##  4 Clovelly Beach 03    01    2018            1            10.2
-##  5 Clovelly Beach 09    01    2018           71            10.2
-##  6 Clovelly Beach 15    01    2018           30            10.2
-##  7 Clovelly Beach 25    01    2018            6            10.2
-##  8 Clovelly Beach 13    02    2018            2            10.2
-##  9 Clovelly Beach 20    03    2018            5            10.2
-## 10 Clovelly Beach 26    03    2018           23            10.2
+##    site           day   month year  enterococci ent_yearly_sum
+##    <chr>          <chr> <chr> <chr>       <dbl>          <dbl>
+##  1 Clovelly Beach 19    09    2018            1           3413
+##  2 Clovelly Beach 28    09    2018            2           3413
+##  3 Clovelly Beach 05    10    2018           34           3413
+##  4 Clovelly Beach 03    01    2018            1           3413
+##  5 Clovelly Beach 09    01    2018           71           3413
+##  6 Clovelly Beach 15    01    2018           30           3413
+##  7 Clovelly Beach 25    01    2018            6           3413
+##  8 Clovelly Beach 13    02    2018            2           3413
+##  9 Clovelly Beach 20    03    2018            5           3413
+## 10 Clovelly Beach 26    03    2018           23           3413
 ## # ... with 513 more rows
 ```
 
 ```r
 sydney_wide_2018 %>%
-  arrange(desc(ent_yearly_mean))
+  arrange(desc(ent_yearly_sum))
 ```
 
 ```
 ## # A tibble: 523 x 6
 ## # Groups:   site [11]
-##    site          day   month year  enterococci ent_yearly_mean
-##    <chr>         <chr> <chr> <chr>       <dbl>           <dbl>
-##  1 Malabar Beach 19    09    2018            3            68.1
-##  2 Malabar Beach 28    09    2018           52            68.1
-##  3 Malabar Beach 05    10    2018           54            68.1
-##  4 Malabar Beach 03    01    2018           65            68.1
-##  5 Malabar Beach 09    01    2018          110            68.1
-##  6 Malabar Beach 15    01    2018            9            68.1
-##  7 Malabar Beach 25    01    2018            1            68.1
-##  8 Malabar Beach 13    02    2018          320            68.1
-##  9 Malabar Beach 20    03    2018           17            68.1
-## 10 Malabar Beach 26    03    2018           32            68.1
+##    site          day   month year  enterococci ent_yearly_sum
+##    <chr>         <chr> <chr> <chr>       <dbl>          <dbl>
+##  1 Malabar Beach 19    09    2018            3          23227
+##  2 Malabar Beach 28    09    2018           52          23227
+##  3 Malabar Beach 05    10    2018           54          23227
+##  4 Malabar Beach 03    01    2018           65          23227
+##  5 Malabar Beach 09    01    2018          110          23227
+##  6 Malabar Beach 15    01    2018            9          23227
+##  7 Malabar Beach 25    01    2018            1          23227
+##  8 Malabar Beach 13    02    2018          320          23227
+##  9 Malabar Beach 20    03    2018           17          23227
+## 10 Malabar Beach 26    03    2018           32          23227
 ## # ... with 513 more rows
 ```
 

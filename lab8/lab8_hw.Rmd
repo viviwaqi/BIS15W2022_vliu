@@ -121,13 +121,13 @@ sydney_wide_2018<- sydneybeaches_wide %>%
                values_drop_na = TRUE) %>%
   separate(date, into = c("day", "month", "year"), sep = "/") %>%
   group_by(site) %>%
-  mutate(ent_yearly_mean=mean(enterococci)) %>%
+  mutate(ent_yearly_sum=sum(enterococci)) %>%
   filter(year == "2018")
 sydney_wide_2018
 ```
 ```{r}
 sydney_wide_2018 %>%
-  arrange(desc(ent_yearly_mean))
+  arrange(desc(ent_yearly_sum))
 #malabar beach was the most polluted
 ```
 
