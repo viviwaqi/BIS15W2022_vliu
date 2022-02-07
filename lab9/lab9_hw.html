@@ -11,7 +11,7 @@
 
 <meta name="author" content="Victoria Liu" />
 
-<meta name="date" content="2022-02-03" />
+<meta name="date" content="2022-02-07" />
 
 <title>Lab 9 Homework</title>
 
@@ -167,7 +167,7 @@ pre code {
 
 <h1 class="title toc-ignore">Lab 9 Homework</h1>
 <h4 class="author">Victoria Liu</h4>
-<h4 class="date">2022-02-03</h4>
+<h4 class="date">2022-02-07</h4>
 
 </div>
 
@@ -222,21 +222,8 @@ PFTFTUG1_EF: Percentage of undergraduate students who are first-time, full-time 
 <ol style="list-style-type: decimal">
 <li>Use your preferred function(s) to have a look at the data and get an idea of its structure. Make sure you summarize NA’s and determine whether or not the data are tidy. You may also consider dealing with any naming issues.</li>
 </ol>
-<pre class="r"><code>colleges&lt;- clean_names(colleges)</code></pre>
-<pre><code>## Warning in FUN(X[[i]], ...): unable to translate &#39;&lt;U+00C4&gt;&#39; to native encoding</code></pre>
-<pre><code>## Warning in FUN(X[[i]], ...): unable to translate &#39;&lt;U+00D6&gt;&#39; to native encoding</code></pre>
-<pre><code>## Warning in FUN(X[[i]], ...): unable to translate &#39;&lt;U+00DC&gt;&#39; to native encoding</code></pre>
-<pre><code>## Warning in FUN(X[[i]], ...): unable to translate &#39;&lt;U+00E4&gt;&#39; to native encoding</code></pre>
-<pre><code>## Warning in FUN(X[[i]], ...): unable to translate &#39;&lt;U+00F6&gt;&#39; to native encoding</code></pre>
-<pre><code>## Warning in FUN(X[[i]], ...): unable to translate &#39;&lt;U+00FC&gt;&#39; to native encoding</code></pre>
-<pre><code>## Warning in FUN(X[[i]], ...): unable to translate &#39;&lt;U+00DF&gt;&#39; to native encoding</code></pre>
-<pre><code>## Warning in FUN(X[[i]], ...): unable to translate &#39;&lt;U+00C6&gt;&#39; to native encoding</code></pre>
-<pre><code>## Warning in FUN(X[[i]], ...): unable to translate &#39;&lt;U+00E6&gt;&#39; to native encoding</code></pre>
-<pre><code>## Warning in FUN(X[[i]], ...): unable to translate &#39;&lt;U+00D8&gt;&#39; to native encoding</code></pre>
-<pre><code>## Warning in FUN(X[[i]], ...): unable to translate &#39;&lt;U+00F8&gt;&#39; to native encoding</code></pre>
-<pre><code>## Warning in FUN(X[[i]], ...): unable to translate &#39;&lt;U+00C5&gt;&#39; to native encoding</code></pre>
-<pre><code>## Warning in FUN(X[[i]], ...): unable to translate &#39;&lt;U+00E5&gt;&#39; to native encoding</code></pre>
-<pre class="r"><code>names(colleges)</code></pre>
+<pre class="r"><code>colleges&lt;- clean_names(colleges)
+names(colleges)</code></pre>
 <pre><code>##  [1] &quot;instnm&quot;        &quot;city&quot;          &quot;stabbr&quot;        &quot;zip&quot;          
 ##  [5] &quot;adm_rate&quot;      &quot;sat_avg&quot;       &quot;pcip26&quot;        &quot;costt4_a&quot;     
 ##  [9] &quot;c150_4_pooled&quot; &quot;pftftug1_ef&quot;</code></pre>
@@ -274,9 +261,8 @@ PFTFTUG1_EF: Percentage of undergraduate students who are first-time, full-time 
 <pre class="r"><code>colleges_counts&lt;- colleges %&gt;%
   select(city, instnm) %&gt;%
   add_count(city) %&gt;%
-  arrange(desc(n)) %&gt;%
-  summarise(city, instnm, n)
-colleges_counts</code></pre>
+  arrange(desc(n))
+summarize(colleges_counts, city, instnm, n)</code></pre>
 <pre><code>## # A tibble: 341 x 3
 ##    city        instnm                                                          n
 ##    &lt;chr&gt;       &lt;chr&gt;                                                       &lt;int&gt;
@@ -291,34 +277,40 @@ colleges_counts</code></pre>
 ##  9 Los Angeles Mount Saint Mary&#39;s University                                  24
 ## 10 Los Angeles American Academy of Dramatic Arts-Los Angeles                  24
 ## # ... with 331 more rows</code></pre>
-<pre class="r"><code>colleges_counts%&gt;%
-  select(city, n) %&gt;%
-  group_by(city)</code></pre>
-<pre><code>## # A tibble: 341 x 2
-## # Groups:   city [161]
-##    city            n
-##    &lt;chr&gt;       &lt;int&gt;
-##  1 Los Angeles    24
-##  2 Los Angeles    24
-##  3 Los Angeles    24
-##  4 Los Angeles    24
-##  5 Los Angeles    24
-##  6 Los Angeles    24
-##  7 Los Angeles    24
-##  8 Los Angeles    24
-##  9 Los Angeles    24
-## 10 Los Angeles    24
-## # ... with 331 more rows</code></pre>
+<pre class="r"><code>colleges_counts&lt;- colleges_counts %&gt;%
+  distinct(n, .keep_all = TRUE)
+colleges_counts</code></pre>
+<pre><code>## # A tibble: 12 x 3
+##    city          instnm                            n
+##    &lt;chr&gt;         &lt;chr&gt;                         &lt;int&gt;
+##  1 Los Angeles   Los Angeles Southwest College    24
+##  2 San Diego     San Diego Miramar College        18
+##  3 San Francisco City College of San Francisco    15
+##  4 Sacramento    American River College           10
+##  5 Berkeley      Berkeley City College             9
+##  6 Claremont     Pomona College                    7
+##  7 Pasadena      Pasadena City College             6
+##  8 Fresno        Fresno City College               5
+##  9 El Cajon      Grossmont College                 4
+## 10 Visalia       College of the Sequoias           3
+## 11 Oxnard        Oxnard College                    2
+## 12 San Mateo     College of San Mateo              1</code></pre>
 <ol start="3" style="list-style-type: decimal">
 <li>Based on your answer to #2, make a plot that shows the number of colleges in the top 10 cities.</li>
 </ol>
-<pre class="r"><code>#colleges_top10 %&gt;%
-  #select(city, n) %&gt;%
-  #top_n(-10, city) %&gt;%
-  #ggplot(aes(x=n, y=city))+
-  #geom_col()</code></pre>
+<pre class="r"><code>colleges_counts %&gt;%
+  slice_max(order_by = n, n = 10) %&gt;%
+  ggplot(aes(x=n, y=city))+
+  geom_col()</code></pre>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
 <ol start="4" style="list-style-type: decimal">
-<li><p>The column <code>COSTT4_A</code> is the annual cost of each institution. Which city has the highest average cost? Where is it located?</p></li>
+<li>The column <code>COSTT4_A</code> is the annual cost of each institution. Which city has the highest average cost? Where is it located?</li>
+</ol>
+<pre class="r"><code>#colleges %&gt;%
+  #select(city, instnm, costt4_a) %&gt;%
+  #group_by(city) %&gt;%
+  #cost_means&lt;- mean(costt4_a, na.rm = TRUE)</code></pre>
+<ol start="5" style="list-style-type: decimal">
 <li><p>Based on your answer to #4, make a plot that compares the cost of the individual colleges in the most expensive city. Bonus! Add UC Davis here to see how it compares :&gt;).</p></li>
 <li><p>The column <code>ADM_RATE</code> is the admissions rate by college and <code>C150_4_POOLED</code> is the four-year completion rate. Use a scatterplot to show the relationship between these two variables. What do you think this means?</p></li>
 <li><p>Is there a relationship between cost and four-year completion rate? (You don’t need to do the stats, just produce a plot). What do you think this means?</p></li>

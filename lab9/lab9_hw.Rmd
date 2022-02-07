@@ -64,27 +64,30 @@ miss_var_summary(colleges)
 colleges_counts<- colleges %>%
   select(city, instnm) %>%
   add_count(city) %>%
-  arrange(desc(n)) %>%
-  summarise(city, instnm, n)
-colleges_counts
+  arrange(desc(n))
+summarize(colleges_counts, city, instnm, n)
 ```
 ```{r}
-colleges_counts%>%
-  select(city, n) %>%
-  group_by(city)
+colleges_counts<- colleges_counts %>%
+  distinct(n, .keep_all = TRUE)
+colleges_counts
 ```
 
 3. Based on your answer to #2, make a plot that shows the number of colleges in the top 10 cities.
 ```{r}
-#colleges_top10 %>%
-  #select(city, n) %>%
-  #top_n(-10, city) %>%
-  #ggplot(aes(x=n, y=city))+
-  #geom_col()
+colleges_counts %>%
+  slice_max(order_by = n, n = 10) %>%
+  ggplot(aes(x=n, y=city))+
+  geom_col()
 ```
 
 4. The column `COSTT4_A` is the annual cost of each institution. Which city has the highest average cost? Where is it located?
 ```{r}
+#colleges %>%
+  #select(city, instnm, costt4_a) %>%
+  #group_by(city) %>%
+  #cost_means<- mean(costt4_a, na.rm = TRUE)
+
 
 ```
 

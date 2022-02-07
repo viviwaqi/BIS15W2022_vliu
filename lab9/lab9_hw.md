@@ -1,7 +1,7 @@
 ---
 title: "Lab 9 Homework"
 author: "Victoria Liu"
-date: "2022-02-03"
+date: "2022-02-07"
 output:
   html_document: 
     theme: spacelab
@@ -79,61 +79,6 @@ PFTFTUG1_EF: Percentage of undergraduate students who are first-time, full-time 
 
 ```r
 colleges<- clean_names(colleges)
-```
-
-```
-## Warning in FUN(X[[i]], ...): unable to translate '<U+00C4>' to native encoding
-```
-
-```
-## Warning in FUN(X[[i]], ...): unable to translate '<U+00D6>' to native encoding
-```
-
-```
-## Warning in FUN(X[[i]], ...): unable to translate '<U+00DC>' to native encoding
-```
-
-```
-## Warning in FUN(X[[i]], ...): unable to translate '<U+00E4>' to native encoding
-```
-
-```
-## Warning in FUN(X[[i]], ...): unable to translate '<U+00F6>' to native encoding
-```
-
-```
-## Warning in FUN(X[[i]], ...): unable to translate '<U+00FC>' to native encoding
-```
-
-```
-## Warning in FUN(X[[i]], ...): unable to translate '<U+00DF>' to native encoding
-```
-
-```
-## Warning in FUN(X[[i]], ...): unable to translate '<U+00C6>' to native encoding
-```
-
-```
-## Warning in FUN(X[[i]], ...): unable to translate '<U+00E6>' to native encoding
-```
-
-```
-## Warning in FUN(X[[i]], ...): unable to translate '<U+00D8>' to native encoding
-```
-
-```
-## Warning in FUN(X[[i]], ...): unable to translate '<U+00F8>' to native encoding
-```
-
-```
-## Warning in FUN(X[[i]], ...): unable to translate '<U+00C5>' to native encoding
-```
-
-```
-## Warning in FUN(X[[i]], ...): unable to translate '<U+00E5>' to native encoding
-```
-
-```r
 names(colleges)
 ```
 
@@ -194,9 +139,8 @@ miss_var_summary(colleges)
 colleges_counts<- colleges %>%
   select(city, instnm) %>%
   add_count(city) %>%
-  arrange(desc(n)) %>%
-  summarise(city, instnm, n)
-colleges_counts
+  arrange(desc(n))
+summarize(colleges_counts, city, instnm, n)
 ```
 
 ```
@@ -217,41 +161,48 @@ colleges_counts
 ```
 
 ```r
-colleges_counts%>%
-  select(city, n) %>%
-  group_by(city)
+colleges_counts<- colleges_counts %>%
+  distinct(n, .keep_all = TRUE)
+colleges_counts
 ```
 
 ```
-## # A tibble: 341 x 2
-## # Groups:   city [161]
-##    city            n
-##    <chr>       <int>
-##  1 Los Angeles    24
-##  2 Los Angeles    24
-##  3 Los Angeles    24
-##  4 Los Angeles    24
-##  5 Los Angeles    24
-##  6 Los Angeles    24
-##  7 Los Angeles    24
-##  8 Los Angeles    24
-##  9 Los Angeles    24
-## 10 Los Angeles    24
-## # ... with 331 more rows
+## # A tibble: 12 x 3
+##    city          instnm                            n
+##    <chr>         <chr>                         <int>
+##  1 Los Angeles   Los Angeles Southwest College    24
+##  2 San Diego     San Diego Miramar College        18
+##  3 San Francisco City College of San Francisco    15
+##  4 Sacramento    American River College           10
+##  5 Berkeley      Berkeley City College             9
+##  6 Claremont     Pomona College                    7
+##  7 Pasadena      Pasadena City College             6
+##  8 Fresno        Fresno City College               5
+##  9 El Cajon      Grossmont College                 4
+## 10 Visalia       College of the Sequoias           3
+## 11 Oxnard        Oxnard College                    2
+## 12 San Mateo     College of San Mateo              1
 ```
 
 3. Based on your answer to #2, make a plot that shows the number of colleges in the top 10 cities.
 
 ```r
-#colleges_top10 %>%
-  #select(city, n) %>%
-  #top_n(-10, city) %>%
-  #ggplot(aes(x=n, y=city))+
-  #geom_col()
+colleges_counts %>%
+  slice_max(order_by = n, n = 10) %>%
+  ggplot(aes(x=n, y=city))+
+  geom_col()
 ```
+
+![](lab9_hw_files/figure-html/unnamed-chunk-8-1.png)<!-- -->
 
 4. The column `COSTT4_A` is the annual cost of each institution. Which city has the highest average cost? Where is it located?
 
+```r
+#colleges %>%
+  #select(city, instnm, costt4_a) %>%
+  #group_by(city) %>%
+  #cost_means<- mean(costt4_a, na.rm = TRUE)
+```
 
 5. Based on your answer to #4, make a plot that compares the cost of the individual colleges in the most expensive city. Bonus! Add UC Davis here to see how it compares :>).
 
