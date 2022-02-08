@@ -123,8 +123,10 @@ colleges %>%
 
 8. The column titled `INSTNM` is the institution name. We are only interested in the University of California colleges. Make a new data frame that is restricted to UC institutions. You can remove `Hastings College of Law` and `UC San Francisco` as we are only interested in undergraduate institutions.
 ```{r}
-colleges %>%
-  filter(instnm == "University of California")
+#colleges %>%
+  #pivot_longer(
+      #cols = instnm,
+      #names_to = starts_with("University of California"))
 ```
 
 Remove `Hastings College of Law` and `UC San Francisco` and store the final data frame as a new object `univ_calif_final`.
