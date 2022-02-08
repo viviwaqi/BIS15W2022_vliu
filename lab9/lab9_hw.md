@@ -1,7 +1,7 @@
 ---
 title: "Lab 9 Homework"
 author: "Victoria Liu"
-date: "2022-02-07"
+date: "2022-02-08"
 output:
   html_document: 
     theme: spacelab
@@ -79,6 +79,61 @@ PFTFTUG1_EF: Percentage of undergraduate students who are first-time, full-time 
 
 ```r
 colleges<- clean_names(colleges)
+```
+
+```
+## Warning in FUN(X[[i]], ...): unable to translate '<U+00C4>' to native encoding
+```
+
+```
+## Warning in FUN(X[[i]], ...): unable to translate '<U+00D6>' to native encoding
+```
+
+```
+## Warning in FUN(X[[i]], ...): unable to translate '<U+00DC>' to native encoding
+```
+
+```
+## Warning in FUN(X[[i]], ...): unable to translate '<U+00E4>' to native encoding
+```
+
+```
+## Warning in FUN(X[[i]], ...): unable to translate '<U+00F6>' to native encoding
+```
+
+```
+## Warning in FUN(X[[i]], ...): unable to translate '<U+00FC>' to native encoding
+```
+
+```
+## Warning in FUN(X[[i]], ...): unable to translate '<U+00DF>' to native encoding
+```
+
+```
+## Warning in FUN(X[[i]], ...): unable to translate '<U+00C6>' to native encoding
+```
+
+```
+## Warning in FUN(X[[i]], ...): unable to translate '<U+00E6>' to native encoding
+```
+
+```
+## Warning in FUN(X[[i]], ...): unable to translate '<U+00D8>' to native encoding
+```
+
+```
+## Warning in FUN(X[[i]], ...): unable to translate '<U+00F8>' to native encoding
+```
+
+```
+## Warning in FUN(X[[i]], ...): unable to translate '<U+00C5>' to native encoding
+```
+
+```
+## Warning in FUN(X[[i]], ...): unable to translate '<U+00E5>' to native encoding
+```
+
+```r
 names(colleges)
 ```
 
@@ -161,6 +216,40 @@ summarize(colleges_counts, city, instnm, n)
 ```
 
 ```r
+#i wasn't able to figure out the ggplot using pivot wider so i used distinct
+colleges_counts %>%
+  pivot_wider(-instnm,
+              names_from = city,
+              values_from = n)
+```
+
+```
+## Warning: Values from `n` are not uniquely identified; output will contain list-cols.
+## * Use `values_fn = list` to suppress this warning.
+## * Use `values_fn = {summary_fun}` to summarise duplicates.
+## * Use the following dplyr code to identify duplicates.
+##   {data} %>%
+##     dplyr::group_by(city) %>%
+##     dplyr::summarise(n = dplyr::n(), .groups = "drop") %>%
+##     dplyr::filter(n > 1L)
+```
+
+```
+## # A tibble: 1 x 161
+##   `Los Angeles` `San Diego` `San Francisco` Sacramento Berkeley  Oakland  
+##   <list>        <list>      <list>          <list>     <list>    <list>   
+## 1 <int [24]>    <int [18]>  <int [15]>      <int [10]> <int [9]> <int [9]>
+## # ... with 155 more variables: Claremont <list>, Pasadena <list>,
+## #   Fresno <list>, Irvine <list>, Riverside <list>, `San Jose` <list>,
+## #   `El Cajon` <list>, `Santa Monica` <list>, Fullerton <list>, Redding <list>,
+## #   `Santa Barbara` <list>, Stockton <list>, Anaheim <list>, Visalia <list>,
+## #   Ventura <list>, Bakersfield <list>, Oceanside <list>, Hayward <list>,
+## #   Whittier <list>, Alameda <list>, `Santa Rosa` <list>,
+## #   `San Bernardino` <list>, Modesto <list>, `Santa Clara` <list>, ...
+```
+
+
+```r
 colleges_counts<- colleges_counts %>%
   distinct(n, .keep_all = TRUE)
 colleges_counts
@@ -193,31 +282,111 @@ colleges_counts %>%
   geom_col()
 ```
 
-![](lab9_hw_files/figure-html/unnamed-chunk-8-1.png)<!-- -->
+![](lab9_hw_files/figure-html/unnamed-chunk-9-1.png)<!-- -->
 
 4. The column `COSTT4_A` is the annual cost of each institution. Which city has the highest average cost? Where is it located?
 
 ```r
-#colleges %>%
-  #select(city, instnm, costt4_a) %>%
-  #group_by(city) %>%
-  #cost_means<- mean(costt4_a, na.rm = TRUE)
+colleges %>%
+  select(city, costt4_a) %>%
+  na.omit() %>%
+  group_by(city) %>%
+  mutate(mean_cost=mean(costt4_a)) %>%
+  arrange(desc(mean_cost)) 
+```
+
+```
+## # A tibble: 217 x 3
+## # Groups:   city [132]
+##    city      costt4_a mean_cost
+##    <chr>        <dbl>     <dbl>
+##  1 Claremont    64870     66498
+##  2 Claremont    65880     66498
+##  3 Claremont    66060     66498
+##  4 Claremont    66325     66498
+##  5 Claremont    69355     66498
+##  6 Malibu       66152     66152
+##  7 Valencia     64686     64686
+##  8 Orange       64501     64501
+##  9 Redlands     61542     61542
+## 10 Moraga       61095     61095
+## # ... with 207 more rows
 ```
 
 5. Based on your answer to #4, make a plot that compares the cost of the individual colleges in the most expensive city. Bonus! Add UC Davis here to see how it compares :>).
 
+```r
+colleges %>%
+  filter(city == "Claremont") %>%
+  ggplot(aes(x=costt4_a, y=instnm))+
+  geom_col()
+```
+
+```
+## Warning: Removed 2 rows containing missing values (position_stack).
+```
+
+![](lab9_hw_files/figure-html/unnamed-chunk-11-1.png)<!-- -->
 
 6. The column `ADM_RATE` is the admissions rate by college and `C150_4_POOLED` is the four-year completion rate. Use a scatterplot to show the relationship between these two variables. What do you think this means?
 
+```r
+colleges %>%
+  ggplot(aes(x=adm_rate, y=c150_4_pooled))+
+  geom_point()
+```
+
+```
+## Warning: Removed 251 rows containing missing values (geom_point).
+```
+
+![](lab9_hw_files/figure-html/unnamed-chunk-12-1.png)<!-- -->
 
 7. Is there a relationship between cost and four-year completion rate? (You don't need to do the stats, just produce a plot). What do you think this means?
 
+```r
+colleges %>%
+  ggplot(aes(x=c150_4_pooled, y=costt4_a))+
+  geom_point()
+```
+
+```
+## Warning: Removed 225 rows containing missing values (geom_point).
+```
+
+![](lab9_hw_files/figure-html/unnamed-chunk-13-1.png)<!-- -->
 
 8. The column titled `INSTNM` is the institution name. We are only interested in the University of California colleges. Make a new data frame that is restricted to UC institutions. You can remove `Hastings College of Law` and `UC San Francisco` as we are only interested in undergraduate institutions.
 
+```r
+univ_calif_final<- colleges %>%
+  filter_all(any_vars(str_detect(.,pattern = "University of California")))
+univ_calif_final
+```
 
+```
+## # A tibble: 10 x 10
+##    instnm      city  stabbr zip   adm_rate sat_avg pcip26 costt4_a c150_4_pooled
+##    <chr>       <chr> <chr>  <chr>    <dbl>   <dbl>  <dbl>    <dbl>         <dbl>
+##  1 University~ La J~ CA     92093    0.357    1324  0.216    31043         0.872
+##  2 University~ Irvi~ CA     92697    0.406    1206  0.107    31198         0.876
+##  3 University~ Rive~ CA     92521    0.663    1078  0.149    31494         0.73 
+##  4 University~ Los ~ CA     9009~    0.180    1334  0.155    33078         0.911
+##  5 University~ Davis CA     9561~    0.423    1218  0.198    33904         0.850
+##  6 University~ Sant~ CA     9506~    0.578    1201  0.193    34608         0.776
+##  7 University~ Berk~ CA     94720    0.169    1422  0.105    34924         0.916
+##  8 University~ Sant~ CA     93106    0.358    1281  0.108    34998         0.816
+##  9 University~ San ~ CA     9410~   NA          NA NA           NA        NA    
+## 10 University~ San ~ CA     9414~   NA          NA NA           NA        NA    
+## # ... with 1 more variable: pftftug1_ef <dbl>
+```
+"str_detect" is finding something in a string, goes through all the variables and finds a phrase/number. Very useful!!! . means check every cell
 Remove `Hastings College of Law` and `UC San Francisco` and store the final data frame as a new object `univ_calif_final`.
 
+```r
+#univ_calif_final %>%
+  #filter(str_detect(instnm!="San Francisco"))
+```
 
 Use `separate()` to separate institution name into two new columns "UNIV" and "CAMPUS".
 

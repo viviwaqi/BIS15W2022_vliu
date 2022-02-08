@@ -1,10 +1,11 @@
 ---
 title: "Data Visualization: `ggplot` part 2"
 output:
-  html_document:
+  html_document: 
     theme: spacelab
     toc: yes
     toc_float: yes
+    keep_md: yes
   pdf_document:
     toc: yes
 ---
@@ -51,6 +52,7 @@ life_history %>%
 life_history %>% 
   ggplot(aes(x=order)) + geom_bar()+coord_flip()
 ```
+Using "geom_bar" assumes that y axis is count, so dont have to specify?
 
 ```{r}
 life_history %>% 
@@ -59,7 +61,7 @@ life_history %>%
 ```
 
 ```{r}
-options(scipen=999) #cancels scientific notation for the session
+options(scipen=999) #cancels scientific notation for the session, numbers calculated default to being in scientific notation
 ```
 
 ```{r}
@@ -73,9 +75,9 @@ life_history %>%
 life_history %>% 
   group_by(order) %>% 
   summarize(mean_mass=mean(mass, na.rm=T)) %>% 
-  ggplot(aes(x=order, y=mean_mass))+geom_col()+coord_flip()+scale_y_log10()
+  ggplot(aes(x=reorder(order,mean_mass), y=mean_mass))+geom_col()+coord_flip()+scale_y_log10()
 ```
-
+"reorder" arranges the bars from largest to smallest neatly
 ## Scatterplots
 Scatter plots allow for comparisons of two continuous variables.
 ```{r}
@@ -106,20 +108,26 @@ For this practice, let's go back to the elephants data from midterm 1. Maybe we 
 ```{r}
 elephants <- read_csv(here("lab10", "data", "ElephantsMF.csv")) %>% clean_names()
 ```
+```{r}
+glimpse(elephants)
+```
 
 1. On midterm 1, I asked how many male and female elephants were represented in the data. How would you make a plot of this?
 ```{r}
-
+elephants %>%
+  ggplot(aes(x=sex))+geom_bar()
 ```
 
 2. How does the age of elephants compare by sex?
 ```{r}
-
+elephants %>%
+  ggplot(aes(x=age, y=sex))+geom_boxplot()
 ```
 
 3. What is the relationship between age and height?
 ```{r}
-
+elephants %>%
+  ggplot(aes(x=age, y=height))+geom_point()
 ```
 
 ## Aesthetics: Labels
@@ -172,7 +180,7 @@ elephants %>%
        y = NULL) +
   theme(plot.title = element_text(size = rel(1.5), hjust = 0.5))
 ```
-
+Pink and blue are the default colors
 `size` adjusts the size of points relative to a continuous variable.
 ```{r}
 life_history %>% 
@@ -197,14 +205,25 @@ names(homerange)
 
 1. Make a barplot that shows counts of ectotherms and endotherms. Label the axes, provide a title, and fill by `thermoregulation`.
 ```{r}
-
+homerange %>%
+  ggplot(aes(x=thermoregulation, fill=thermoregulation))+geom_bar()+
+  labs(title = "Counts of Endo/Ectotherms",
+       x = "Thermoregulation Method",
+       y = "Counts") +
+  theme(plot.title = element_text(size = rel(1.5), hjust = 0.5))
 ```
 
 2. Make a scatterplot that compares log10.mass and homerange. Adjust the size of points by mass. Label the axes and provide a title.
 ```{r}
-
+homerange %>%
+  ggplot(aes(x=log10.hra, y=log10.mass, size=log10.mass))+
+  geom_point()+
+  labs(title = "Homerange vs. Body Mass",
+       x = "Homerange (in log10)",
+       y = "Body Mass (in log10)")+
+  theme(plot.title = element_text(size = rel(1.5), hjust = 0.5))
 ```
-
+can use "color=" the color of the dots, can use "alpha=" to adjust the transparency of the dots
 ## That's it! Take a break and I will see you on Zoom!  
 
 -->[Home](https://jmledford3115.github.io/datascibiol/)

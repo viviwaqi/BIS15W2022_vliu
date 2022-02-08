@@ -123,15 +123,15 @@ colleges %>%
 
 8. The column titled `INSTNM` is the institution name. We are only interested in the University of California colleges. Make a new data frame that is restricted to UC institutions. You can remove `Hastings College of Law` and `UC San Francisco` as we are only interested in undergraduate institutions.
 ```{r}
-#colleges %>%
-  #pivot_longer(
-      #cols = instnm,
-      #names_to = starts_with("University of California"))
+univ_calif_final<- colleges %>%
+  filter_all(any_vars(str_detect(.,pattern = "University of California")))
+univ_calif_final
 ```
-
+"str_detect" is finding something in a string, goes through all the variables and finds a phrase/number. Very useful!!! . means check every cell
 Remove `Hastings College of Law` and `UC San Francisco` and store the final data frame as a new object `univ_calif_final`.
 ```{r}
-
+#univ_calif_final %>%
+  #filter(str_detect(instnm!="San Francisco"))
 ```
 
 Use `separate()` to separate institution name into two new columns "UNIV" and "CAMPUS".
