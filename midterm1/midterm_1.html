@@ -11,7 +11,7 @@
 
 <meta name="author" content="Victoria Liu" />
 
-<meta name="date" content="2022-01-25" />
+<meta name="date" content="2022-02-08" />
 
 <title>Midterm 1</title>
 
@@ -167,7 +167,7 @@ pre code {
 
 <h1 class="title toc-ignore">Midterm 1</h1>
 <h4 class="author">Victoria Liu</h4>
-<h4 class="date">2022-01-25</h4>
+<h4 class="date">2022-02-08</h4>
 
 </div>
 
@@ -185,8 +185,8 @@ pre code {
 <pre><code>## -- Attaching packages --------------------------------------- tidyverse 1.3.1 --</code></pre>
 <pre><code>## v ggplot2 3.3.5     v purrr   0.3.4
 ## v tibble  3.1.6     v dplyr   1.0.7
-## v tidyr   1.1.4     v stringr 1.4.0
-## v readr   2.1.1     v forcats 0.5.1</code></pre>
+## v tidyr   1.2.0     v stringr 1.4.0
+## v readr   2.1.2     v forcats 0.5.1</code></pre>
 <pre><code>## -- Conflicts ------------------------------------------ tidyverse_conflicts() --
 ## x dplyr::filter() masks stats::filter()
 ## x dplyr::lag()    masks stats::lag()</code></pre>
@@ -204,22 +204,22 @@ pre code {
 <ol style="list-style-type: decimal">
 <li>(2 points) Consider the definition of data science above. Although we are only part-way through the quarter, what specific elements of data science do you feel we have practiced? Provide at least one specific example.</li>
 </ol>
-<pre class="r"><code>#I think we have mainly covered the &quot;extract knowledge and insights from noisy, structured and unstructured data&quot; part. Many of the janitor functions help simplify and clarify a data set. The clean_names function is one of my personal favorites, it makes all the variable names lowercase and changes spaces to underscores. </code></pre>
+<p>I think we have mainly covered the “extract knowledge and insights from noisy, structured and unstructured data” part. Many of the janitor functions help simplify and clarify a data set. The clean_names function is one of my personal favorites, it makes all the variable names lowercase and changes spaces to underscores.</p>
 <ol start="2" style="list-style-type: decimal">
 <li>(2 points) What is the most helpful or interesting thing you have learned so far in BIS 15L? What is something that you think needs more work or practice?</li>
 </ol>
-<pre class="r"><code>#I think the most useful thing is learning how to import data from excel files and process it in a more transparent program. I don&#39;t know much about excel but excel files are quite common. I would definitely be more comfortable analyzing a data set outside of class in RStudio rather than excel. One thing I need to work on is remembering functions that we&#39;ve covered in past labs, so I can use them in future homework. </code></pre>
+<p>I think the most useful thing is learning how to import data from excel files and process it in a more transparent program. I don’t know much about excel but excel files are quite common. I would definitely be more comfortable analyzing a data set outside of class in RStudio rather than excel. One thing I need to work on is remembering functions that we’ve covered in past labs, so I can use them in future homework.</p>
 <p>In the midterm 1 folder there is a second folder called <code>data</code>. Inside the <code>data</code> folder, there is a .csv file called <code>ElephantsMF</code>. These data are from Phyllis Lee, Stirling University, and are related to Lee, P., et al. (2013), “Enduring consequences of early experiences: 40-year effects on survival and success among African elephants (Loxodonta africana),” Biology Letters, 9: 20130011. <a href="https://www.kaggle.com/mostafaelseidy/elephantsmf">kaggle</a>.</p>
 <ol start="3" style="list-style-type: decimal">
 <li>(2 points) Please load these data as a new object called <code>elephants</code>. Use the function(s) of your choice to get an idea of the structure of the data. Be sure to show the class of each variable.</li>
 </ol>
 <pre class="r"><code>elephants&lt;- readr::read_csv(&quot;data/ElephantsMF.csv&quot;)</code></pre>
-<pre><code>## Rows: 288 Columns: 3</code></pre>
-<pre><code>## -- Column specification --------------------------------------------------------
+<pre><code>## Rows: 288 Columns: 3
+## -- Column specification --------------------------------------------------------
 ## Delimiter: &quot;,&quot;
 ## chr (1): Sex
-## dbl (2): Age, Height</code></pre>
-<pre><code>## 
+## dbl (2): Age, Height
+## 
 ## i Use `spec()` to retrieve the full column specification for this data.
 ## i Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
 <pre class="r"><code>glimpse(elephants)</code></pre>
@@ -277,18 +277,23 @@ elephants$sex&lt;- as.factor(elephants$sex)</code></pre>
 ##   &lt;fct&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;int&gt;
 ## 1 F      193.  278.   232.    37
 ## 2 M      229.  304.   270.    13</code></pre>
+<p>Boxplot for fun:</p>
+<pre class="r"><code>elephants %&gt;%
+  filter(age &gt; 20) %&gt;%
+  ggplot(aes(x=height, y=sex, fill=sex))+ geom_boxplot()</code></pre>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
 <p>For the next series of questions, we will use data from a study on vertebrate community composition and impacts from defaunation in <a href="https://en.wikipedia.org/wiki/Gabon">Gabon, Africa</a>. One thing to notice is that the data include 24 separate transects. Each transect represents a path through different forest management areas.</p>
 <p>Reference: Koerner SE, Poulsen JR, Blanchard EJ, Okouyi J, Clark CJ. Vertebrate community composition and diversity declines along a defaunation gradient radiating from rural villages in Gabon. <em>Journal of Applied Ecology</em>. 2016. This paper, along with a description of the variables is included inside the midterm 1 folder.</p>
 <ol start="9" style="list-style-type: decimal">
 <li>(2 points) Load <code>IvindoData_DryadVersion.csv</code> and use the function(s) of your choice to get an idea of the overall structure. Change the variables <code>HuntCat</code> and <code>LandUse</code> to factors.</li>
 </ol>
 <pre class="r"><code>gabon&lt;- readr::read_csv(&quot;data/IvindoData_DryadVersion.csv&quot;)</code></pre>
-<pre><code>## Rows: 24 Columns: 26</code></pre>
-<pre><code>## -- Column specification --------------------------------------------------------
+<pre><code>## Rows: 24 Columns: 26
+## -- Column specification --------------------------------------------------------
 ## Delimiter: &quot;,&quot;
 ## chr  (2): HuntCat, LandUse
-## dbl (24): TransectID, Distance, NumHouseholds, Veg_Rich, Veg_Stems, Veg_lian...</code></pre>
-<pre><code>## 
+## dbl (24): TransectID, Distance, NumHouseholds, Veg_Rich, Veg_Stems, Veg_lian...
+## 
 ## i Use `spec()` to retrieve the full column specification for this data.
 ## i Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
 <pre class="r"><code>gabon&lt;- clean_names(gabon)
@@ -330,54 +335,52 @@ class(gabon$hunt_cat)</code></pre>
 <ol start="10" style="list-style-type: decimal">
 <li>(4 points) For the transects with high and moderate hunting intensity, how does the average diversity of birds and mammals compare?</li>
 </ol>
-<pre class="r"><code>avg_div_birds&lt;- mean(gabon$diversity_bird_species) 
-avg_div_mammals&lt;- mean(gabon$diversity_mammal_species) </code></pre>
 <pre class="r"><code>gabon %&gt;%
   filter(hunt_cat == &quot;Moderate&quot; | hunt_cat == &quot;High&quot;) %&gt;%
-  summarise(avg_div_birds, avg_div_mammals)</code></pre>
-<pre><code>## # A tibble: 1 x 2
-##   avg_div_birds avg_div_mammals
-##           &lt;dbl&gt;           &lt;dbl&gt;
-## 1          1.66            1.70</code></pre>
+  group_by(hunt_cat) %&gt;%
+  summarise(mean_bird_div=mean(diversity_bird_species), mean_mam_div=mean(diversity_mammal_species))</code></pre>
+<pre><code>## # A tibble: 2 x 3
+##   hunt_cat mean_bird_div mean_mam_div
+##   &lt;fct&gt;            &lt;dbl&gt;        &lt;dbl&gt;
+## 1 High              1.66         1.74
+## 2 Moderate          1.62         1.68</code></pre>
 <ol start="11" style="list-style-type: decimal">
 <li>(4 points) One of the conclusions in the study is that the relative abundance of animals drops off the closer you get to a village. Let’s try to reconstruct this (without the statistics). How does the relative abundance (RA) of apes, birds, elephants, monkeys, rodents, and ungulates compare between sites that are less than 3km from a village to sites that are greater than 25km from a village? The variable <code>Distance</code> measures the distance of the transect from the nearest village. Hint: try using the <code>across</code> operator.</li>
 </ol>
 <pre class="r"><code>gabon %&gt;%
-  select(distance, ra_apes, ra_birds, ra_elephant, ra_monkeys, ra_rodent, ra_ungulate) %&gt;%
-  filter(distance &lt;3 | distance &gt;25) %&gt;%
-  arrange((.))</code></pre>
-<pre><code>## # A tibble: 3 x 7
-##   distance ra_apes ra_birds ra_elephant ra_monkeys ra_rodent ra_ungulate
-##      &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;       &lt;dbl&gt;      &lt;dbl&gt;     &lt;dbl&gt;       &lt;dbl&gt;
-## 1     2.7     0        85.0        0.29       9.09      3.74        1.86
-## 2     2.92    0.24     68.2        0         25.6       4.05        1.88
-## 3    26.8     4.91     31.6        0         54.1       1.29        8.12</code></pre>
+  filter(distance &lt;=3) %&gt;%
+  select(ra_apes, ra_birds, ra_elephant, ra_monkeys, ra_rodent, ra_ungulate) %&gt;%
+  summarise(across(everything(), mean)) </code></pre>
+<pre><code>## # A tibble: 1 x 6
+##   ra_apes ra_birds ra_elephant ra_monkeys ra_rodent ra_ungulate
+##     &lt;dbl&gt;    &lt;dbl&gt;       &lt;dbl&gt;      &lt;dbl&gt;     &lt;dbl&gt;       &lt;dbl&gt;
+## 1    0.12     76.6       0.145       17.3      3.90        1.87</code></pre>
+<pre class="r"><code>gabon %&gt;%
+  filter(distance &gt;=25) %&gt;%
+  select(ra_apes, ra_birds, ra_elephant, ra_monkeys, ra_rodent, ra_ungulate) %&gt;%
+  summarise(across(everything(), mean)) </code></pre>
+<pre><code>## # A tibble: 1 x 6
+##   ra_apes ra_birds ra_elephant ra_monkeys ra_rodent ra_ungulate
+##     &lt;dbl&gt;    &lt;dbl&gt;       &lt;dbl&gt;      &lt;dbl&gt;     &lt;dbl&gt;       &lt;dbl&gt;
+## 1    4.91     31.6           0       54.1      1.29        8.12</code></pre>
 <ol start="12" style="list-style-type: decimal">
 <li>(4 points) Based on your interest, do one exploratory analysis on the <code>gabon</code> data of your choice. This analysis needs to include a minimum of two functions in <code>dplyr.</code></li>
 </ol>
 <pre class="r"><code>gabon %&gt;%
-  arrange(desc(diversity_all_species)) %&gt;%
-  summarise(across())</code></pre>
-<pre><code>## # A tibble: 24 x 26
-##    transect_id distance hunt_cat num_households land_use veg_rich veg_stems
-##          &lt;dbl&gt;    &lt;dbl&gt; &lt;fct&gt;             &lt;dbl&gt; &lt;fct&gt;       &lt;dbl&gt;     &lt;dbl&gt;
-##  1           6    24.1  None                 29 Park         14.8      31.2
-##  2          24    26.8  None                 29 Park         16.8      37.3
-##  3           1     7.14 Moderate             54 Park         16.7      31.2
-##  4          21     5.14 High                 24 Neither      16.2      34.9
-##  5          17     3.83 High                 19 Neither      14.2      32.6
-##  6           4    16.0  None                 29 Park         17.1      36  
-##  7           5    17.5  None                 29 Park         16.5      29.2
-##  8          27     2.92 High                 13 Logging      12.4      47.6
-##  9          22     5.33 High                 13 Logging      17.1      41.6
-## 10          26    11.2  Moderate             73 Logging      18.8      39.1
-## # ... with 14 more rows, and 19 more variables: veg_liana &lt;dbl&gt;, veg_dbh &lt;dbl&gt;,
-## #   veg_canopy &lt;dbl&gt;, veg_understory &lt;dbl&gt;, ra_apes &lt;dbl&gt;, ra_birds &lt;dbl&gt;,
-## #   ra_elephant &lt;dbl&gt;, ra_monkeys &lt;dbl&gt;, ra_rodent &lt;dbl&gt;, ra_ungulate &lt;dbl&gt;,
-## #   rich_all_species &lt;dbl&gt;, evenness_all_species &lt;dbl&gt;,
-## #   diversity_all_species &lt;dbl&gt;, rich_bird_species &lt;dbl&gt;,
-## #   evenness_bird_species &lt;dbl&gt;, diversity_bird_species &lt;dbl&gt;,
-## #   rich_mammal_species &lt;dbl&gt;, evenness_mammal_species &lt;dbl&gt;, ...</code></pre>
+  group_by(land_use) %&gt;%
+  summarise(mean(rich_all_species), mean(evenness_all_species),
+            mean(diversity_all_species))</code></pre>
+<pre><code>## # A tibble: 3 x 4
+##   land_use `mean(rich_all_species)` `mean(evenness_all_specie~` `mean(diversit~`
+##   &lt;fct&gt;                       &lt;dbl&gt;                       &lt;dbl&gt;            &lt;dbl&gt;
+## 1 Logging                      19.6                       0.753             2.23
+## 2 Neither                      19.2                       0.797             2.36
+## 3 Park                         21.9                       0.787             2.43</code></pre>
+<p>Plot for fun:</p>
+<pre class="r"><code>gabon %&gt;%
+  ggplot(aes(x=rich_all_species, y=evenness_all_species, color=land_use))+
+  geom_point()</code></pre>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
 </div>
 
 

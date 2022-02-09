@@ -1,7 +1,7 @@
 ---
 title: "Midterm 1"
 author: "Victoria Liu"
-date: "2022-01-25"
+date: "2022-02-08"
 output:
   html_document: 
     theme: spacelab
@@ -31,8 +31,8 @@ library(tidyverse)
 ```
 ## v ggplot2 3.3.5     v purrr   0.3.4
 ## v tibble  3.1.6     v dplyr   1.0.7
-## v tidyr   1.1.4     v stringr 1.4.0
-## v readr   2.1.1     v forcats 0.5.1
+## v tidyr   1.2.0     v stringr 1.4.0
+## v readr   2.1.2     v forcats 0.5.1
 ```
 
 ```
@@ -65,15 +65,13 @@ Wikipedia's definition of [data science](https://en.wikipedia.org/wiki/Data_scie
 
 1. (2 points) Consider the definition of data science above. Although we are only part-way through the quarter, what specific elements of data science do you feel we have practiced? Provide at least one specific example.  
 
-```r
-#I think we have mainly covered the "extract knowledge and insights from noisy, structured and unstructured data" part. Many of the janitor functions help simplify and clarify a data set. The clean_names function is one of my personal favorites, it makes all the variable names lowercase and changes spaces to underscores. 
-```
+  I think we have mainly covered the "extract knowledge and insights from noisy, structured and unstructured data" part. Many of the janitor functions help simplify and clarify a data set. The clean_names function is one of my personal favorites, it makes all the variable names lowercase and changes spaces to underscores. 
+
 
 2. (2 points) What is the most helpful or interesting thing you have learned so far in BIS 15L? What is something that you think needs more work or practice?  
 
-```r
-#I think the most useful thing is learning how to import data from excel files and process it in a more transparent program. I don't know much about excel but excel files are quite common. I would definitely be more comfortable analyzing a data set outside of class in RStudio rather than excel. One thing I need to work on is remembering functions that we've covered in past labs, so I can use them in future homework. 
-```
+  I think the most useful thing is learning how to import data from excel files and process it in a more transparent program. I don't know much about excel but excel files are quite common. I would definitely be more comfortable analyzing a data set outside of class in RStudio rather than excel. One thing I need to work on is remembering functions that we've covered in past labs, so I can use them in future homework. 
+
 
 In the midterm 1 folder there is a second folder called `data`. Inside the `data` folder, there is a .csv file called `ElephantsMF`. These data are from Phyllis Lee, Stirling University, and are related to Lee, P., et al. (2013), "Enduring consequences of early experiences: 40-year effects on survival and success among African elephants (Loxodonta africana)," Biology Letters, 9: 20130011. [kaggle](https://www.kaggle.com/mostafaelseidy/elephantsmf).  
 
@@ -85,16 +83,10 @@ elephants<- readr::read_csv("data/ElephantsMF.csv")
 
 ```
 ## Rows: 288 Columns: 3
-```
-
-```
 ## -- Column specification --------------------------------------------------------
 ## Delimiter: ","
 ## chr (1): Sex
 ## dbl (2): Age, Height
-```
-
-```
 ## 
 ## i Use `spec()` to retrieve the full column specification for this data.
 ## i Specify the column types or set `show_col_types = FALSE` to quiet this message.
@@ -194,6 +186,15 @@ elephants %>%
 ## 1 F      193.  278.   232.    37
 ## 2 M      229.  304.   270.    13
 ```
+Boxplot for fun:
+
+```r
+elephants %>%
+  filter(age > 20) %>%
+  ggplot(aes(x=height, y=sex, fill=sex))+ geom_boxplot()
+```
+
+![](midterm_1_files/figure-html/unnamed-chunk-9-1.png)<!-- -->
 
 For the next series of questions, we will use data from a study on vertebrate community composition and impacts from defaunation in [Gabon, Africa](https://en.wikipedia.org/wiki/Gabon). One thing to notice is that the data include 24 separate transects. Each transect represents a path through different forest management areas.  
 
@@ -207,16 +208,10 @@ gabon<- readr::read_csv("data/IvindoData_DryadVersion.csv")
 
 ```
 ## Rows: 24 Columns: 26
-```
-
-```
 ## -- Column specification --------------------------------------------------------
 ## Delimiter: ","
 ## chr  (2): HuntCat, LandUse
 ## dbl (24): TransectID, Distance, NumHouseholds, Veg_Rich, Veg_Stems, Veg_lian...
-```
-
-```
 ## 
 ## i Use `spec()` to retrieve the full column specification for this data.
 ## i Specify the column types or set `show_col_types = FALSE` to quiet this message.
@@ -279,21 +274,18 @@ class(gabon$land_use)
 10. (4 points) For the transects with high and moderate hunting intensity, how does the average diversity of birds and mammals compare?
 
 ```r
-avg_div_birds<- mean(gabon$diversity_bird_species) 
-avg_div_mammals<- mean(gabon$diversity_mammal_species) 
-```
-
-```r
 gabon %>%
   filter(hunt_cat == "Moderate" | hunt_cat == "High") %>%
-  summarise(avg_div_birds, avg_div_mammals)
+  group_by(hunt_cat) %>%
+  summarise(mean_bird_div=mean(diversity_bird_species), mean_mam_div=mean(diversity_mammal_species))
 ```
 
 ```
-## # A tibble: 1 x 2
-##   avg_div_birds avg_div_mammals
-##           <dbl>           <dbl>
-## 1          1.66            1.70
+## # A tibble: 2 x 3
+##   hunt_cat mean_bird_div mean_mam_div
+##   <fct>            <dbl>        <dbl>
+## 1 High              1.66         1.74
+## 2 Moderate          1.62         1.68
 ```
 
 
@@ -301,48 +293,56 @@ gabon %>%
 
 ```r
 gabon %>%
-  select(distance, ra_apes, ra_birds, ra_elephant, ra_monkeys, ra_rodent, ra_ungulate) %>%
-  filter(distance <3 | distance >25) %>%
-  arrange((.))
+  filter(distance <=3) %>%
+  select(ra_apes, ra_birds, ra_elephant, ra_monkeys, ra_rodent, ra_ungulate) %>%
+  summarise(across(everything(), mean)) 
 ```
 
 ```
-## # A tibble: 3 x 7
-##   distance ra_apes ra_birds ra_elephant ra_monkeys ra_rodent ra_ungulate
-##      <dbl>   <dbl>    <dbl>       <dbl>      <dbl>     <dbl>       <dbl>
-## 1     2.7     0        85.0        0.29       9.09      3.74        1.86
-## 2     2.92    0.24     68.2        0         25.6       4.05        1.88
-## 3    26.8     4.91     31.6        0         54.1       1.29        8.12
+## # A tibble: 1 x 6
+##   ra_apes ra_birds ra_elephant ra_monkeys ra_rodent ra_ungulate
+##     <dbl>    <dbl>       <dbl>      <dbl>     <dbl>       <dbl>
+## 1    0.12     76.6       0.145       17.3      3.90        1.87
+```
+
+```r
+gabon %>%
+  filter(distance >=25) %>%
+  select(ra_apes, ra_birds, ra_elephant, ra_monkeys, ra_rodent, ra_ungulate) %>%
+  summarise(across(everything(), mean)) 
+```
+
+```
+## # A tibble: 1 x 6
+##   ra_apes ra_birds ra_elephant ra_monkeys ra_rodent ra_ungulate
+##     <dbl>    <dbl>       <dbl>      <dbl>     <dbl>       <dbl>
+## 1    4.91     31.6           0       54.1      1.29        8.12
 ```
 
 12. (4 points) Based on your interest, do one exploratory analysis on the `gabon` data of your choice. This analysis needs to include a minimum of two functions in `dplyr.`
 
 ```r
 gabon %>%
-  arrange(desc(diversity_all_species)) %>%
-  summarise(across())
+  group_by(land_use) %>%
+  summarise(mean(rich_all_species), mean(evenness_all_species),
+            mean(diversity_all_species))
 ```
 
 ```
-## # A tibble: 24 x 26
-##    transect_id distance hunt_cat num_households land_use veg_rich veg_stems
-##          <dbl>    <dbl> <fct>             <dbl> <fct>       <dbl>     <dbl>
-##  1           6    24.1  None                 29 Park         14.8      31.2
-##  2          24    26.8  None                 29 Park         16.8      37.3
-##  3           1     7.14 Moderate             54 Park         16.7      31.2
-##  4          21     5.14 High                 24 Neither      16.2      34.9
-##  5          17     3.83 High                 19 Neither      14.2      32.6
-##  6           4    16.0  None                 29 Park         17.1      36  
-##  7           5    17.5  None                 29 Park         16.5      29.2
-##  8          27     2.92 High                 13 Logging      12.4      47.6
-##  9          22     5.33 High                 13 Logging      17.1      41.6
-## 10          26    11.2  Moderate             73 Logging      18.8      39.1
-## # ... with 14 more rows, and 19 more variables: veg_liana <dbl>, veg_dbh <dbl>,
-## #   veg_canopy <dbl>, veg_understory <dbl>, ra_apes <dbl>, ra_birds <dbl>,
-## #   ra_elephant <dbl>, ra_monkeys <dbl>, ra_rodent <dbl>, ra_ungulate <dbl>,
-## #   rich_all_species <dbl>, evenness_all_species <dbl>,
-## #   diversity_all_species <dbl>, rich_bird_species <dbl>,
-## #   evenness_bird_species <dbl>, diversity_bird_species <dbl>,
-## #   rich_mammal_species <dbl>, evenness_mammal_species <dbl>, ...
+## # A tibble: 3 x 4
+##   land_use `mean(rich_all_species)` `mean(evenness_all_specie~` `mean(diversit~`
+##   <fct>                       <dbl>                       <dbl>            <dbl>
+## 1 Logging                      19.6                       0.753             2.23
+## 2 Neither                      19.2                       0.797             2.36
+## 3 Park                         21.9                       0.787             2.43
 ```
+Plot for fun:
+
+```r
+gabon %>%
+  ggplot(aes(x=rich_all_species, y=evenness_all_species, color=land_use))+
+  geom_point()
+```
+
+![](midterm_1_files/figure-html/unnamed-chunk-16-1.png)<!-- -->
 

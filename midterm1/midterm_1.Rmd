@@ -31,14 +31,14 @@ library(naniar)
 Wikipedia's definition of [data science](https://en.wikipedia.org/wiki/Data_science): "Data science is an interdisciplinary field that uses scientific methods, processes, algorithms and systems to extract knowledge and insights from noisy, structured and unstructured data, and apply knowledge and actionable insights from data across a broad range of application domains."  
 
 1. (2 points) Consider the definition of data science above. Although we are only part-way through the quarter, what specific elements of data science do you feel we have practiced? Provide at least one specific example.  
-```{r}
-#I think we have mainly covered the "extract knowledge and insights from noisy, structured and unstructured data" part. Many of the janitor functions help simplify and clarify a data set. The clean_names function is one of my personal favorites, it makes all the variable names lowercase and changes spaces to underscores. 
-```
+
+  I think we have mainly covered the "extract knowledge and insights from noisy, structured and unstructured data" part. Many of the janitor functions help simplify and clarify a data set. The clean_names function is one of my personal favorites, it makes all the variable names lowercase and changes spaces to underscores. 
+
 
 2. (2 points) What is the most helpful or interesting thing you have learned so far in BIS 15L? What is something that you think needs more work or practice?  
-```{r}
-#I think the most useful thing is learning how to import data from excel files and process it in a more transparent program. I don't know much about excel but excel files are quite common. I would definitely be more comfortable analyzing a data set outside of class in RStudio rather than excel. One thing I need to work on is remembering functions that we've covered in past labs, so I can use them in future homework. 
-```
+
+  I think the most useful thing is learning how to import data from excel files and process it in a more transparent program. I don't know much about excel but excel files are quite common. I would definitely be more comfortable analyzing a data set outside of class in RStudio rather than excel. One thing I need to work on is remembering functions that we've covered in past labs, so I can use them in future homework. 
+
 
 In the midterm 1 folder there is a second folder called `data`. Inside the `data` folder, there is a .csv file called `ElephantsMF`. These data are from Phyllis Lee, Stirling University, and are related to Lee, P., et al. (2013), "Enduring consequences of early experiences: 40-year effects on survival and success among African elephants (Loxodonta africana)," Biology Letters, 9: 20130011. [kaggle](https://www.kaggle.com/mostafaelseidy/elephantsmf).  
 
@@ -85,6 +85,12 @@ elephants %>%
             mean_h=mean(height),
             n=n())
 ```
+Boxplot for fun:
+```{r}
+elephants %>%
+  filter(age > 20) %>%
+  ggplot(aes(x=height, y=sex, fill=sex))+ geom_boxplot()
+```
 
 For the next series of questions, we will use data from a study on vertebrate community composition and impacts from defaunation in [Gabon, Africa](https://en.wikipedia.org/wiki/Gabon). One thing to notice is that the data include 24 separate transects. Each transect represents a path through different forest management areas.  
 
@@ -105,28 +111,38 @@ class(gabon$land_use)
 
 10. (4 points) For the transects with high and moderate hunting intensity, how does the average diversity of birds and mammals compare?
 ```{r}
-avg_div_birds<- mean(gabon$diversity_bird_species) 
-avg_div_mammals<- mean(gabon$diversity_mammal_species) 
-```
-```{r}
 gabon %>%
   filter(hunt_cat == "Moderate" | hunt_cat == "High") %>%
-  summarise(avg_div_birds, avg_div_mammals)
+  group_by(hunt_cat) %>%
+  summarise(mean_bird_div=mean(diversity_bird_species), mean_mam_div=mean(diversity_mammal_species))
 ```
 
 
 11. (4 points) One of the conclusions in the study is that the relative abundance of animals drops off the closer you get to a village. Let's try to reconstruct this (without the statistics). How does the relative abundance (RA) of apes, birds, elephants, monkeys, rodents, and ungulates compare between sites that are less than 3km from a village to sites that are greater than 25km from a village? The variable `Distance` measures the distance of the transect from the nearest village. Hint: try using the `across` operator.  
 ```{r}
 gabon %>%
-  select(distance, ra_apes, ra_birds, ra_elephant, ra_monkeys, ra_rodent, ra_ungulate) %>%
-  filter(distance <3 | distance >25) %>%
-  arrange((.))
+  filter(distance <=3) %>%
+  select(ra_apes, ra_birds, ra_elephant, ra_monkeys, ra_rodent, ra_ungulate) %>%
+  summarise(across(everything(), mean)) 
+```
+```{r}
+gabon %>%
+  filter(distance >=25) %>%
+  select(ra_apes, ra_birds, ra_elephant, ra_monkeys, ra_rodent, ra_ungulate) %>%
+  summarise(across(everything(), mean)) 
 ```
 
 12. (4 points) Based on your interest, do one exploratory analysis on the `gabon` data of your choice. This analysis needs to include a minimum of two functions in `dplyr.`
 ```{r}
 gabon %>%
-  arrange(desc(diversity_all_species)) %>%
-  summarise(across())
+  group_by(land_use) %>%
+  summarise(mean(rich_all_species), mean(evenness_all_species),
+            mean(diversity_all_species))
+```
+Plot for fun:
+```{r}
+gabon %>%
+  ggplot(aes(x=rich_all_species, y=evenness_all_species, color=land_use))+
+  geom_point()
 ```
 
