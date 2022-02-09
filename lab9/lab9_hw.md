@@ -79,61 +79,6 @@ PFTFTUG1_EF: Percentage of undergraduate students who are first-time, full-time 
 
 ```r
 colleges<- clean_names(colleges)
-```
-
-```
-## Warning in FUN(X[[i]], ...): unable to translate '<U+00C4>' to native encoding
-```
-
-```
-## Warning in FUN(X[[i]], ...): unable to translate '<U+00D6>' to native encoding
-```
-
-```
-## Warning in FUN(X[[i]], ...): unable to translate '<U+00DC>' to native encoding
-```
-
-```
-## Warning in FUN(X[[i]], ...): unable to translate '<U+00E4>' to native encoding
-```
-
-```
-## Warning in FUN(X[[i]], ...): unable to translate '<U+00F6>' to native encoding
-```
-
-```
-## Warning in FUN(X[[i]], ...): unable to translate '<U+00FC>' to native encoding
-```
-
-```
-## Warning in FUN(X[[i]], ...): unable to translate '<U+00DF>' to native encoding
-```
-
-```
-## Warning in FUN(X[[i]], ...): unable to translate '<U+00C6>' to native encoding
-```
-
-```
-## Warning in FUN(X[[i]], ...): unable to translate '<U+00E6>' to native encoding
-```
-
-```
-## Warning in FUN(X[[i]], ...): unable to translate '<U+00D8>' to native encoding
-```
-
-```
-## Warning in FUN(X[[i]], ...): unable to translate '<U+00F8>' to native encoding
-```
-
-```
-## Warning in FUN(X[[i]], ...): unable to translate '<U+00C5>' to native encoding
-```
-
-```
-## Warning in FUN(X[[i]], ...): unable to translate '<U+00E5>' to native encoding
-```
-
-```r
 names(colleges)
 ```
 
@@ -192,141 +137,76 @@ miss_var_summary(colleges)
 
 ```r
 colleges_counts<- colleges %>%
-  select(city, instnm) %>%
-  add_count(city) %>%
+  count(city) %>%
   arrange(desc(n))
-summarize(colleges_counts, city, instnm, n)
-```
-
-```
-## # A tibble: 341 x 3
-##    city        instnm                                                          n
-##    <chr>       <chr>                                                       <int>
-##  1 Los Angeles Los Angeles Southwest College                                  24
-##  2 Los Angeles Los Angeles City College                                       24
-##  3 Los Angeles Los Angeles Trade Technical College                            24
-##  4 Los Angeles California State University-Los Angeles                        24
-##  5 Los Angeles Yeshiva Ohr Elchonon Chabad West Coast Talmudical Seminary     24
-##  6 Los Angeles University of California-Los Angeles                           24
-##  7 Los Angeles American Jewish University                                     24
-##  8 Los Angeles FIDM-Fashion Institute of Design & Merchandising-Los Angel~    24
-##  9 Los Angeles Mount Saint Mary's University                                  24
-## 10 Los Angeles American Academy of Dramatic Arts-Los Angeles                  24
-## # ... with 331 more rows
-```
-
-```r
-#i wasn't able to figure out the ggplot using pivot wider so i used distinct
-colleges_counts %>%
-  pivot_wider(-instnm,
-              names_from = city,
-              values_from = n)
-```
-
-```
-## Warning: Values from `n` are not uniquely identified; output will contain list-cols.
-## * Use `values_fn = list` to suppress this warning.
-## * Use `values_fn = {summary_fun}` to summarise duplicates.
-## * Use the following dplyr code to identify duplicates.
-##   {data} %>%
-##     dplyr::group_by(city) %>%
-##     dplyr::summarise(n = dplyr::n(), .groups = "drop") %>%
-##     dplyr::filter(n > 1L)
-```
-
-```
-## # A tibble: 1 x 161
-##   `Los Angeles` `San Diego` `San Francisco` Sacramento Berkeley  Oakland  
-##   <list>        <list>      <list>          <list>     <list>    <list>   
-## 1 <int [24]>    <int [18]>  <int [15]>      <int [10]> <int [9]> <int [9]>
-## # ... with 155 more variables: Claremont <list>, Pasadena <list>,
-## #   Fresno <list>, Irvine <list>, Riverside <list>, `San Jose` <list>,
-## #   `El Cajon` <list>, `Santa Monica` <list>, Fullerton <list>, Redding <list>,
-## #   `Santa Barbara` <list>, Stockton <list>, Anaheim <list>, Visalia <list>,
-## #   Ventura <list>, Bakersfield <list>, Oceanside <list>, Hayward <list>,
-## #   Whittier <list>, Alameda <list>, `Santa Rosa` <list>,
-## #   `San Bernardino` <list>, Modesto <list>, `Santa Clara` <list>, ...
-```
-
-
-```r
-colleges_counts<- colleges_counts %>%
-  distinct(n, .keep_all = TRUE)
 colleges_counts
 ```
 
 ```
-## # A tibble: 12 x 3
-##    city          instnm                            n
-##    <chr>         <chr>                         <int>
-##  1 Los Angeles   Los Angeles Southwest College    24
-##  2 San Diego     San Diego Miramar College        18
-##  3 San Francisco City College of San Francisco    15
-##  4 Sacramento    American River College           10
-##  5 Berkeley      Berkeley City College             9
-##  6 Claremont     Pomona College                    7
-##  7 Pasadena      Pasadena City College             6
-##  8 Fresno        Fresno City College               5
-##  9 El Cajon      Grossmont College                 4
-## 10 Visalia       College of the Sequoias           3
-## 11 Oxnard        Oxnard College                    2
-## 12 San Mateo     College of San Mateo              1
+## # A tibble: 161 x 2
+##    city              n
+##    <chr>         <int>
+##  1 Los Angeles      24
+##  2 San Diego        18
+##  3 San Francisco    15
+##  4 Sacramento       10
+##  5 Berkeley          9
+##  6 Oakland           9
+##  7 Claremont         7
+##  8 Pasadena          6
+##  9 Fresno            5
+## 10 Irvine            5
+## # ... with 151 more rows
 ```
 
 3. Based on your answer to #2, make a plot that shows the number of colleges in the top 10 cities.
 
 ```r
 colleges_counts %>%
-  slice_max(order_by = n, n = 10) %>%
-  ggplot(aes(x=n, y=city))+
-  geom_col()
+  top_n(10, n) %>%
+  ggplot(aes(x=reorder(city,n), y=n))+
+  geom_col()+
+  theme(axis.text.x = element_text(angle = 60, hjust = 1))
 ```
 
-![](lab9_hw_files/figure-html/unnamed-chunk-9-1.png)<!-- -->
+![](lab9_hw_files/figure-html/unnamed-chunk-7-1.png)<!-- -->
 
 4. The column `COSTT4_A` is the annual cost of each institution. Which city has the highest average cost? Where is it located?
 
 ```r
 colleges %>%
-  select(city, costt4_a) %>%
-  na.omit() %>%
   group_by(city) %>%
-  mutate(mean_cost=mean(costt4_a)) %>%
+  summarize(mean_cost=mean(costt4_a, na.rm = TRUE)) %>%
   arrange(desc(mean_cost)) 
 ```
 
 ```
-## # A tibble: 217 x 3
-## # Groups:   city [132]
-##    city      costt4_a mean_cost
-##    <chr>        <dbl>     <dbl>
-##  1 Claremont    64870     66498
-##  2 Claremont    65880     66498
-##  3 Claremont    66060     66498
-##  4 Claremont    66325     66498
-##  5 Claremont    69355     66498
-##  6 Malibu       66152     66152
-##  7 Valencia     64686     64686
-##  8 Orange       64501     64501
-##  9 Redlands     61542     61542
-## 10 Moraga       61095     61095
-## # ... with 207 more rows
+## # A tibble: 161 x 2
+##    city                mean_cost
+##    <chr>                   <dbl>
+##  1 Claremont               66498
+##  2 Malibu                  66152
+##  3 Valencia                64686
+##  4 Orange                  64501
+##  5 Redlands                61542
+##  6 Moraga                  61095
+##  7 Atherton                56035
+##  8 Thousand Oaks           54373
+##  9 Rancho Palos Verdes     50758
+## 10 La Verne                50603
+## # ... with 151 more rows
 ```
 
 5. Based on your answer to #4, make a plot that compares the cost of the individual colleges in the most expensive city. Bonus! Add UC Davis here to see how it compares :>).
 
 ```r
 colleges %>%
-  filter(city == "Claremont") %>%
+  filter(city == "Claremont" & costt4_a!= "NA") %>%
   ggplot(aes(x=costt4_a, y=instnm))+
   geom_col()
 ```
 
-```
-## Warning: Removed 2 rows containing missing values (position_stack).
-```
-
-![](lab9_hw_files/figure-html/unnamed-chunk-11-1.png)<!-- -->
+![](lab9_hw_files/figure-html/unnamed-chunk-9-1.png)<!-- -->
 
 6. The column `ADM_RATE` is the admissions rate by college and `C150_4_POOLED` is the four-year completion rate. Use a scatterplot to show the relationship between these two variables. What do you think this means?
 
@@ -340,21 +220,30 @@ colleges %>%
 ## Warning: Removed 251 rows containing missing values (geom_point).
 ```
 
-![](lab9_hw_files/figure-html/unnamed-chunk-12-1.png)<!-- -->
+![](lab9_hw_files/figure-html/unnamed-chunk-10-1.png)<!-- -->
 
 7. Is there a relationship between cost and four-year completion rate? (You don't need to do the stats, just produce a plot). What do you think this means?
 
 ```r
 colleges %>%
   ggplot(aes(x=c150_4_pooled, y=costt4_a))+
-  geom_point()
+  geom_point()+
+  geom_smooth(method = lm)
+```
+
+```
+## `geom_smooth()` using formula 'y ~ x'
+```
+
+```
+## Warning: Removed 225 rows containing non-finite values (stat_smooth).
 ```
 
 ```
 ## Warning: Removed 225 rows containing missing values (geom_point).
 ```
 
-![](lab9_hw_files/figure-html/unnamed-chunk-13-1.png)<!-- -->
+![](lab9_hw_files/figure-html/unnamed-chunk-11-1.png)<!-- -->
 
 8. The column titled `INSTNM` is the institution name. We are only interested in the University of California colleges. Make a new data frame that is restricted to UC institutions. You can remove `Hastings College of Law` and `UC San Francisco` as we are only interested in undergraduate institutions.
 
@@ -384,21 +273,116 @@ univ_calif_final
 Remove `Hastings College of Law` and `UC San Francisco` and store the final data frame as a new object `univ_calif_final`.
 
 ```r
-#univ_calif_final %>%
-  #filter(str_detect(instnm!="San Francisco"))
+univ_calif_final<- univ_calif_final %>%
+  filter(city!="San Francisco") 
+univ_calif_final
+```
+
+```
+## # A tibble: 8 x 10
+##   instnm       city  stabbr zip   adm_rate sat_avg pcip26 costt4_a c150_4_pooled
+##   <chr>        <chr> <chr>  <chr>    <dbl>   <dbl>  <dbl>    <dbl>         <dbl>
+## 1 University ~ La J~ CA     92093    0.357    1324  0.216    31043         0.872
+## 2 University ~ Irvi~ CA     92697    0.406    1206  0.107    31198         0.876
+## 3 University ~ Rive~ CA     92521    0.663    1078  0.149    31494         0.73 
+## 4 University ~ Los ~ CA     9009~    0.180    1334  0.155    33078         0.911
+## 5 University ~ Davis CA     9561~    0.423    1218  0.198    33904         0.850
+## 6 University ~ Sant~ CA     9506~    0.578    1201  0.193    34608         0.776
+## 7 University ~ Berk~ CA     94720    0.169    1422  0.105    34924         0.916
+## 8 University ~ Sant~ CA     93106    0.358    1281  0.108    34998         0.816
+## # ... with 1 more variable: pftftug1_ef <dbl>
+```
+
+```r
+#Don't have to filter using the instnm, since we know both hastings and ucsf are both in san francisco we can just filter out san francisco schools
 ```
 
 Use `separate()` to separate institution name into two new columns "UNIV" and "CAMPUS".
 
+```r
+univ_calif_final<- univ_calif_final %>%
+  separate(instnm, c("univ", "campus"), sep = "-")
+univ_calif_final
+```
+
+```
+## # A tibble: 8 x 11
+##   univ  campus city  stabbr zip   adm_rate sat_avg pcip26 costt4_a c150_4_pooled
+##   <chr> <chr>  <chr> <chr>  <chr>    <dbl>   <dbl>  <dbl>    <dbl>         <dbl>
+## 1 Univ~ San D~ La J~ CA     92093    0.357    1324  0.216    31043         0.872
+## 2 Univ~ Irvine Irvi~ CA     92697    0.406    1206  0.107    31198         0.876
+## 3 Univ~ River~ Rive~ CA     92521    0.663    1078  0.149    31494         0.73 
+## 4 Univ~ Los A~ Los ~ CA     9009~    0.180    1334  0.155    33078         0.911
+## 5 Univ~ Davis  Davis CA     9561~    0.423    1218  0.198    33904         0.850
+## 6 Univ~ Santa~ Sant~ CA     9506~    0.578    1201  0.193    34608         0.776
+## 7 Univ~ Berke~ Berk~ CA     94720    0.169    1422  0.105    34924         0.916
+## 8 Univ~ Santa~ Sant~ CA     93106    0.358    1281  0.108    34998         0.816
+## # ... with 1 more variable: pftftug1_ef <dbl>
+```
 
 9. The column `ADM_RATE` is the admissions rate by campus. Which UC has the lowest and highest admissions rates? Produce a numerical summary and an appropriate plot.
 
+```r
+univ_calif_final %>%
+  arrange(adm_rate) %>%
+  summarise(campus, adm_rate)
+```
+
+```
+## # A tibble: 8 x 2
+##   campus        adm_rate
+##   <chr>            <dbl>
+## 1 Berkeley         0.169
+## 2 Los Angeles      0.180
+## 3 San Diego        0.357
+## 4 Santa Barbara    0.358
+## 5 Irvine           0.406
+## 6 Davis            0.423
+## 7 Santa Cruz       0.578
+## 8 Riverside        0.663
+```
 
 
+```r
+univ_calif_final %>%
+  ggplot(aes(x=reorder(campus, adm_rate), y=adm_rate))+
+  geom_col()+
+  theme(axis.text.x = element_text(angle = 60, hjust = 1))
+```
+
+![](lab9_hw_files/figure-html/unnamed-chunk-16-1.png)<!-- -->
 
 10. If you wanted to get a degree in biological or biomedical sciences, which campus confers the majority of these degrees? Produce a numerical summary and an appropriate plot.
+PCIP26: Percentage of degrees awarded in Biological And Biomedical Sciences
+
+```r
+univ_calif_final %>%
+  arrange(desc(pcip26)) %>%
+  summarise(campus, pcip26)
+```
+
+```
+## # A tibble: 8 x 2
+##   campus        pcip26
+##   <chr>          <dbl>
+## 1 San Diego      0.216
+## 2 Davis          0.198
+## 3 Santa Cruz     0.193
+## 4 Los Angeles    0.155
+## 5 Riverside      0.149
+## 6 Santa Barbara  0.108
+## 7 Irvine         0.107
+## 8 Berkeley       0.105
+```
 
 
+```r
+univ_calif_final %>%
+  ggplot(aes(x=reorder(campus, pcip26), y=pcip26))+
+  geom_col()+
+  theme(axis.text.x = element_text(angle = 60, hjust = 1))
+```
 
+![](lab9_hw_files/figure-html/unnamed-chunk-18-1.png)<!-- -->
 
 ## Knit Your Output and Post to [GitHub](https://github.com/FRS417-DataScienceBiologists)
