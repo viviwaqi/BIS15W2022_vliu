@@ -1,12 +1,14 @@
 ---
 title: "Data Visualization: `ggplot` part 3"
 output:
-  html_document:
+  html_document: 
     theme: spacelab
     toc: yes
     toc_float: yes
+    keep_md: yes
   pdf_document:
     toc: yes
+    keep_md: yes
 ---
 
 ## Learning Goals
@@ -99,7 +101,7 @@ What does the distribution of body mass look like in the `homerange` data?
 ```{r}
 homerange %>% 
   ggplot(aes(x = log10.mass)) +
-  geom_histogram(alpha = 0.4, color = "black", fill = "deepskyblue4", bins=40)+
+  geom_histogram(alpha = 0.4, color = "black", fill = "salmon", bins=40)+
   labs(title = "Distribution of Body Mass")
 ```
 
@@ -113,7 +115,7 @@ Density plots are similar to histograms but they use a smoothing function to mak
 ```{r}
 homerange %>% 
   ggplot(aes(x = log10.mass)) +
-  geom_density(fill="deepskyblue4", alpha  =0.4, color = "black")+
+  geom_density(fill="dodgerblue2", alpha  =0.4, color = "black")+
   labs(title = "Distribution of Body Mass")
 ```
 
@@ -129,21 +131,33 @@ homerange %>%
 ## Practice
 1. Make a histogram of `log10.hra`. Make sure to add a title.
 ```{r}
-
+homerange %>%
+  ggplot(aes(x=log10.hra))+
+  geom_histogram(fill= "aquamarine2", color="gray37")+
+  labs(title = "Distribution of Homerange (in log10)")
 ```
 
 2. Now plot the same variable using `geom_density()`.
 ```{r}
-
+homerange %>%
+  ggplot(aes(x=log10.hra))+
+  geom_density(fill= "pink2", color="aquamarine")+
+  labs(title = "Distribution of Homerange (in log10)")
 ```
 
 3. Combine them both!
 ```{r}
-
+homerange %>%
+  ggplot(aes(x=log10.hra))+
+  geom_histogram(aes(y = ..density..), fill= "wheat2", color="gray37")+
+  geom_density(color="red3")+
+  labs(title = "Distribution of Homerange (in log10)")
 ```
+Have to use "aes(y = ..density..)," within histogram to create a combined density and histogram plot
 
 ## Create Categories with mutate and case_when()
 `case_when()` is a very handy function from `dplyr` which allows us to calculate a new variable from other variables. We use `case_when()` within `mutate()` to do this.`case_when()` allows us to specify multiple conditions. Let's reclassify the body mass variable into a new factor variable with small, medium, and large animals. 
+Creating a categorical variable out of a continuous one
 ```{r}
 glimpse(homerange)
 ```
@@ -192,15 +206,35 @@ library(gtools)
 quartiles <- quantcut(homerange$log10.hra)
 table(quartiles)
 ```
+```{r}
+homerange <- homerange %>% 
+             mutate(range_category = case_when(log10.hra <= 3.65 ~ "very_small",
+                                              log10.hra > 3.65 & log10.hra <= 4.59 ~ "small",
+                                              log10.hra > 4.59 & log10.hra <= 6.02 ~ "medium",
+                                              log10.hra > 6.02 ~ "large"))
+homerange
+```
 
 2. How many and which taxonomic classes are represented in each of the `range_category` classes?
 ```{r}
-
+homerange %>%
+  group_by(range_category) %>%
+  summarize(taxon, range_category, n=n())
+```
+```{r}
+homerange %>%
+  ggplot(aes(x=range_category, fill=taxon))+
+  geom_bar(position = "dodge")+
+  labs(title = "Range Categories by Taxon")
 ```
 
 3. Isolate the small `range_category` and plot the range of `log10.mass` by taxonomic class.
 ```{r}
-
+homerange %>%
+  filter(range_category == "small") %>%
+  ggplot(aes(x=range_category, y=log10.mass, fill=taxon))+
+  geom_col(position = "dodge")+
+  labs(title = "Range Categories by Taxon")
 ```
 
 ## That's it! Take a break and I will see you on Zoom!  
