@@ -1,7 +1,7 @@
 ---
 title: "Lab 11 Homework"
 author: "Victoria Liu"
-date: "2022-02-11"
+date: "2022-02-13"
 output:
   html_document: 
     theme: spacelab
@@ -88,20 +88,6 @@ naniar::miss_var_summary(gapminder)
 **2. Among the interesting variables in gapminder is life expectancy. How has global life expectancy changed between 1952 and 2007?**
 
 ```r
-colors <- paletteer::palettes_d_names
-```
-
-```r
-my_palette <- paletteer_d("khroma::smooth_rainbow")
-```
-
-```r
-barplot(rep(1,14), axes=FALSE, col=my_palette)
-```
-
-![](lab11_hw_files/figure-html/unnamed-chunk-7-1.png)<!-- -->
-
-```r
 gapminder %>%
   group_by(year) %>%
   summarise(year, mean(life_exp))
@@ -136,11 +122,11 @@ gapminder %>%
   group_by(year) %>%
   summarise(mean_life_exp=mean(life_exp)) %>%
   ggplot(aes(x=year, y=mean_life_exp, color=year))+
-  geom_point()+
-  scale_fill_manual(values=my_palette)
+  geom_point(size=2)+
+  geom_line()
 ```
 
-![](lab11_hw_files/figure-html/unnamed-chunk-9-1.png)<!-- -->
+![](lab11_hw_files/figure-html/unnamed-chunk-6-1.png)<!-- -->
 
 **3. How do the distributions of life expectancy compare for the years 1952 and 2007?**
 
@@ -157,22 +143,147 @@ gapminder %>%
 ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
 ```
 
-![](lab11_hw_files/figure-html/unnamed-chunk-10-1.png)<!-- -->
+![](lab11_hw_files/figure-html/unnamed-chunk-7-1.png)<!-- -->
 
 **4. Your answer above doesn't tell the whole story since life expectancy varies by region. Make a summary that shows the min, mean, and max life expectancy by continent for all years represented in the data.**
 
+```r
+gapminder %>%
+  group_by(continent, year) %>%
+  summarise(continent, year, 
+            min=min(life_exp),
+            mean=mean(life_exp),
+            max=max(life_exp))
+```
+
+```
+## `summarise()` has grouped output by 'continent', 'year'. You can override using
+## the `.groups` argument.
+```
+
+```
+## # A tibble: 1,704 x 5
+## # Groups:   continent, year [60]
+##    continent  year   min  mean   max
+##    <fct>     <int> <dbl> <dbl> <dbl>
+##  1 Africa     1952    30  39.1  52.7
+##  2 Africa     1952    30  39.1  52.7
+##  3 Africa     1952    30  39.1  52.7
+##  4 Africa     1952    30  39.1  52.7
+##  5 Africa     1952    30  39.1  52.7
+##  6 Africa     1952    30  39.1  52.7
+##  7 Africa     1952    30  39.1  52.7
+##  8 Africa     1952    30  39.1  52.7
+##  9 Africa     1952    30  39.1  52.7
+## 10 Africa     1952    30  39.1  52.7
+## # ... with 1,694 more rows
+```
 
 **5. How has life expectancy changed between 1952-2007 for each continent?**
 
+```r
+gapminder %>%
+  group_by(continent, year) %>%
+  summarise(mean_life_exp=mean(life_exp)) %>%
+  ggplot(aes(x=year, y=mean_life_exp, color=continent))+
+  geom_point()+
+  geom_line(alpha=0.5)
+```
+
+```
+## `summarise()` has grouped output by 'continent'. You can override using the
+## `.groups` argument.
+```
+
+![](lab11_hw_files/figure-html/unnamed-chunk-9-1.png)<!-- -->
+
 **6. We are interested in the relationship between per capita GDP and life expectancy; i.e. does having more money help you live longer?**
+
+```r
+gapminder %>%
+  ggplot(aes(x=life_exp, y=gdp_percap, color=continent))+
+  geom_jitter(size=0.8)+
+  facet_wrap(~continent)
+```
+
+![](lab11_hw_files/figure-html/unnamed-chunk-10-1.png)<!-- -->
 
 **7. Which countries have had the largest population growth since 1952?**
 
+```r
+pop_diff_per_country<- gapminder %>% 
+  select(country, year, pop) %>% 
+  filter(year==1952 | year==2007) %>%
+  pivot_wider(names_from = year,
+              names_prefix = "year_",
+              values_from = pop) %>%
+  mutate(difference=year_2007-year_1952) %>%
+  arrange(desc(difference))
+pop_diff_per_country
+```
+
+```
+## # A tibble: 142 x 4
+##    country       year_1952  year_2007 difference
+##    <fct>             <int>      <int>      <int>
+##  1 China         556263527 1318683096  762419569
+##  2 India         372000000 1110396331  738396331
+##  3 United States 157553000  301139947  143586947
+##  4 Indonesia      82052000  223547000  141495000
+##  5 Brazil         56602560  190010647  133408087
+##  6 Pakistan       41346560  169270617  127924057
+##  7 Bangladesh     46886859  150448339  103561480
+##  8 Nigeria        33119096  135031164  101912068
+##  9 Mexico         30144317  108700891   78556574
+## 10 Philippines    22438691   91077287   68638596
+## # ... with 132 more rows
+```
+
 **8. Use your results from the question above to plot population growth for the top five countries since 1952.**
+
+```r
+pop_diff_per_country %>%
+  top_n(5) %>%
+  ggplot(aes(x=country, y=difference, fill=country))+
+  geom_col()+
+  labs(title="Counties With Greatest Population Growth",
+       y="Population Growth from 1952 to 2007")
+```
+
+```
+## Selecting by difference
+```
+
+![](lab11_hw_files/figure-html/unnamed-chunk-12-1.png)<!-- -->
 
 **9. How does per-capita GDP growth compare between these same five countries?**
 
+```r
+gapminder %>% 
+  filter(country=="India" | country=="China" | country=="Indonesia" | country=="Brazil" | country=="United States") %>%
+  ggplot(aes(x=year, y=gdp_percap, color=country))+
+  geom_point()+
+  geom_line(alpha=0.8)+
+  scale_y_log10()+
+  labs(y="gdp per capita (log10)")
+```
+
+![](lab11_hw_files/figure-html/unnamed-chunk-13-1.png)<!-- -->
+
 **10. Make one plot of your choice that uses faceting!**
+
+```r
+gapminder %>%
+  ggplot(aes(x=gdp_percap, y=pop, color=year))+
+  geom_point(size=1)+
+  facet_wrap(~continent)+
+  scale_x_log10()+
+  scale_y_log10()+
+  labs(x="gdp per capita (log10)",
+       y="population (log10)")
+```
+
+![](lab11_hw_files/figure-html/unnamed-chunk-14-1.png)<!-- -->
 
 ## Push your final code to GitHub!
 Please be sure that you check the `keep md` file in the knit preferences. 
