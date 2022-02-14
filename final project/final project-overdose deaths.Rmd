@@ -1,0 +1,38 @@
+---
+title: "final project-overdose deaths"
+author: "victoria liu"
+date: "2/14/2022"
+output: 
+  html_document: 
+    keep_md: yes
+---
+```{r}
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+```
+
+```{r message=FALSE, warning=FALSE}
+library(tidyverse)
+library(janitor)
+library(here)
+library(naniar)
+library(RColorBrewer)
+library(paletteer)
+library(janitor)
+library(ggthemes)
+```
+```{r}
+getwd()
+```
+
+```{r}
+overdoses<- read_csv(here("GitHub", "BIS15W2022_vliu", "final project", "VSRR_Provisional_Drug_Overdose_Death_Counts.csv"))
+overdoses
+```
+```{r}
+overdoses<- clean_names(overdoses)
+names(overdoses)
+```
+
+
