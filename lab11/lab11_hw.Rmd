@@ -58,14 +58,16 @@ gapminder %>%
   group_by(year) %>%
   summarise(year, mean(life_exp))
 ```
+```{r}
+gapminder$year<- as_factor(gapminder$year)
+```
 
 ```{r}
 gapminder %>%
   group_by(year) %>%
   summarise(mean_life_exp=mean(life_exp)) %>%
   ggplot(aes(x=year, y=mean_life_exp, color=year))+
-  geom_point(size=2)+
-  geom_line()
+  geom_point(size=2)
 ```
 
 **3. How do the distributions of life expectancy compare for the years 1952 and 2007?**

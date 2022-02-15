@@ -1,7 +1,7 @@
 ---
 title: "Lab 11 Homework"
 author: "Victoria Liu"
-date: "2022-02-13"
+date: "2022-02-15"
 output:
   html_document: 
     theme: spacelab
@@ -48,6 +48,61 @@ The questions below are open-ended and have many possible solutions. Your approa
 
 ```r
 gapminder<- clean_names(gapminder)
+```
+
+```
+## Warning in FUN(X[[i]], ...): unable to translate '<U+00C4>' to native encoding
+```
+
+```
+## Warning in FUN(X[[i]], ...): unable to translate '<U+00D6>' to native encoding
+```
+
+```
+## Warning in FUN(X[[i]], ...): unable to translate '<U+00DC>' to native encoding
+```
+
+```
+## Warning in FUN(X[[i]], ...): unable to translate '<U+00E4>' to native encoding
+```
+
+```
+## Warning in FUN(X[[i]], ...): unable to translate '<U+00F6>' to native encoding
+```
+
+```
+## Warning in FUN(X[[i]], ...): unable to translate '<U+00FC>' to native encoding
+```
+
+```
+## Warning in FUN(X[[i]], ...): unable to translate '<U+00DF>' to native encoding
+```
+
+```
+## Warning in FUN(X[[i]], ...): unable to translate '<U+00C6>' to native encoding
+```
+
+```
+## Warning in FUN(X[[i]], ...): unable to translate '<U+00E6>' to native encoding
+```
+
+```
+## Warning in FUN(X[[i]], ...): unable to translate '<U+00D8>' to native encoding
+```
+
+```
+## Warning in FUN(X[[i]], ...): unable to translate '<U+00F8>' to native encoding
+```
+
+```
+## Warning in FUN(X[[i]], ...): unable to translate '<U+00C5>' to native encoding
+```
+
+```
+## Warning in FUN(X[[i]], ...): unable to translate '<U+00E5>' to native encoding
+```
+
+```r
 summary(gapminder)
 ```
 
@@ -116,17 +171,20 @@ gapminder %>%
 ## # ... with 1,694 more rows
 ```
 
+```r
+gapminder$year<- as_factor(gapminder$year)
+```
+
 
 ```r
 gapminder %>%
   group_by(year) %>%
   summarise(mean_life_exp=mean(life_exp)) %>%
   ggplot(aes(x=year, y=mean_life_exp, color=year))+
-  geom_point(size=2)+
-  geom_line()
+  geom_point(size=2)
 ```
 
-![](lab11_hw_files/figure-html/unnamed-chunk-6-1.png)<!-- -->
+![](lab11_hw_files/figure-html/unnamed-chunk-7-1.png)<!-- -->
 
 **3. How do the distributions of life expectancy compare for the years 1952 and 2007?**
 
@@ -143,7 +201,7 @@ gapminder %>%
 ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
 ```
 
-![](lab11_hw_files/figure-html/unnamed-chunk-7-1.png)<!-- -->
+![](lab11_hw_files/figure-html/unnamed-chunk-8-1.png)<!-- -->
 
 **4. Your answer above doesn't tell the whole story since life expectancy varies by region. Make a summary that shows the min, mean, and max life expectancy by continent for all years represented in the data.**
 
@@ -164,18 +222,18 @@ gapminder %>%
 ```
 ## # A tibble: 1,704 x 5
 ## # Groups:   continent, year [60]
-##    continent  year   min  mean   max
-##    <fct>     <int> <dbl> <dbl> <dbl>
-##  1 Africa     1952    30  39.1  52.7
-##  2 Africa     1952    30  39.1  52.7
-##  3 Africa     1952    30  39.1  52.7
-##  4 Africa     1952    30  39.1  52.7
-##  5 Africa     1952    30  39.1  52.7
-##  6 Africa     1952    30  39.1  52.7
-##  7 Africa     1952    30  39.1  52.7
-##  8 Africa     1952    30  39.1  52.7
-##  9 Africa     1952    30  39.1  52.7
-## 10 Africa     1952    30  39.1  52.7
+##    continent year    min  mean   max
+##    <fct>     <fct> <dbl> <dbl> <dbl>
+##  1 Africa    1952     30  39.1  52.7
+##  2 Africa    1952     30  39.1  52.7
+##  3 Africa    1952     30  39.1  52.7
+##  4 Africa    1952     30  39.1  52.7
+##  5 Africa    1952     30  39.1  52.7
+##  6 Africa    1952     30  39.1  52.7
+##  7 Africa    1952     30  39.1  52.7
+##  8 Africa    1952     30  39.1  52.7
+##  9 Africa    1952     30  39.1  52.7
+## 10 Africa    1952     30  39.1  52.7
 ## # ... with 1,694 more rows
 ```
 
@@ -193,9 +251,11 @@ gapminder %>%
 ```
 ## `summarise()` has grouped output by 'continent'. You can override using the
 ## `.groups` argument.
+## geom_path: Each group consists of only one observation. Do you need to adjust
+## the group aesthetic?
 ```
 
-![](lab11_hw_files/figure-html/unnamed-chunk-9-1.png)<!-- -->
+![](lab11_hw_files/figure-html/unnamed-chunk-10-1.png)<!-- -->
 
 **6. We are interested in the relationship between per capita GDP and life expectancy; i.e. does having more money help you live longer?**
 
@@ -206,7 +266,7 @@ gapminder %>%
   facet_wrap(~continent)
 ```
 
-![](lab11_hw_files/figure-html/unnamed-chunk-10-1.png)<!-- -->
+![](lab11_hw_files/figure-html/unnamed-chunk-11-1.png)<!-- -->
 
 **7. Which countries have had the largest population growth since 1952?**
 
@@ -254,7 +314,7 @@ pop_diff_per_country %>%
 ## Selecting by difference
 ```
 
-![](lab11_hw_files/figure-html/unnamed-chunk-12-1.png)<!-- -->
+![](lab11_hw_files/figure-html/unnamed-chunk-13-1.png)<!-- -->
 
 **9. How does per-capita GDP growth compare between these same five countries?**
 
@@ -268,7 +328,12 @@ gapminder %>%
   labs(y="gdp per capita (log10)")
 ```
 
-![](lab11_hw_files/figure-html/unnamed-chunk-13-1.png)<!-- -->
+```
+## geom_path: Each group consists of only one observation. Do you need to adjust
+## the group aesthetic?
+```
+
+![](lab11_hw_files/figure-html/unnamed-chunk-14-1.png)<!-- -->
 
 **10. Make one plot of your choice that uses faceting!**
 
@@ -283,7 +348,7 @@ gapminder %>%
        y="population (log10)")
 ```
 
-![](lab11_hw_files/figure-html/unnamed-chunk-14-1.png)<!-- -->
+![](lab11_hw_files/figure-html/unnamed-chunk-15-1.png)<!-- -->
 
 ## Push your final code to GitHub!
 Please be sure that you check the `keep md` file in the knit preferences. 

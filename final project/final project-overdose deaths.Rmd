@@ -6,10 +6,10 @@ output:
   html_document: 
     keep_md: yes
 ---
-```{r}
+##Group Member Names:
+John Abram Flores, Rajesvi, Tobin
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-```
 ```
 
 ```{r message=FALSE, warning=FALSE}
@@ -22,14 +22,16 @@ library(paletteer)
 library(janitor)
 library(ggthemes)
 ```
+
 ```{r}
 getwd()
 ```
 
 ```{r}
-overdoses<- read_csv(here("GitHub", "BIS15W2022_vliu", "final project", "VSRR_Provisional_Drug_Overdose_Death_Counts.csv"))
+overdoses<-read_csv("VSRR_Provisional_Drug_Overdose_Death_Counts.csv")
 overdoses
 ```
+
 ```{r}
 overdoses<- clean_names(overdoses)
 names(overdoses)
