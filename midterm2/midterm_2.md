@@ -33,18 +33,6 @@ library(tidyverse)
 ```
 
 ```
-## Warning: package 'tidyr' was built under R version 4.1.2
-```
-
-```
-## Warning: package 'readr' was built under R version 4.1.2
-```
-
-```
-## Warning: package 'dplyr' was built under R version 4.1.2
-```
-
-```
 ## -- Conflicts ------------------------------------------ tidyverse_conflicts() --
 ## x dplyr::filter() masks stats::filter()
 ## x dplyr::lag()    masks stats::lag()
@@ -70,7 +58,7 @@ library(here)
 ```
 
 ```
-## here() starts at /Users/vcliu/Documents/GitHub/BIS15W2022_vliu
+## here() starts at C:/Users/V/Documents/GitHub/BIS15W2022_vliu
 ```
 
 ```r
@@ -81,6 +69,10 @@ library(janitor)
 library(ggthemes)
 ```
 
+```r
+options(scipen=999)
+```
+
 ## Gapminder
 For this assignment, we are going to use data from  [gapminder](https://www.gapminder.org/). Gapminder includes information about economics, population, social issues, and life expectancy from countries all over the world. We will use three data sets, so please load all three as separate objects.    
 
@@ -89,7 +81,7 @@ getwd()
 ```
 
 ```
-## [1] "/Users/vcliu/Documents/GitHub/BIS15W2022_vliu/midterm2"
+## [1] "C:/Users/V/Documents/GitHub/BIS15W2022_vliu/midterm2"
 ```
 
 1. population_total.csv  
@@ -18496,6 +18488,7 @@ life_exp
 pop_total_long<- pop_total %>%
   pivot_longer(X1800:X2100,
                names_to = "year", 
+               names_prefix = "X",
                values_to = "popsize" ) 
 pop_total_long
 ```
@@ -18504,16 +18497,16 @@ pop_total_long
 ## # A tibble: 58,695 x 3
 ##    country     year  popsize
 ##    <chr>       <chr>   <int>
-##  1 Afghanistan X1800 3280000
-##  2 Afghanistan X1801 3280000
-##  3 Afghanistan X1802 3280000
-##  4 Afghanistan X1803 3280000
-##  5 Afghanistan X1804 3280000
-##  6 Afghanistan X1805 3280000
-##  7 Afghanistan X1806 3280000
-##  8 Afghanistan X1807 3280000
-##  9 Afghanistan X1808 3280000
-## 10 Afghanistan X1809 3280000
+##  1 Afghanistan 1800  3280000
+##  2 Afghanistan 1801  3280000
+##  3 Afghanistan 1802  3280000
+##  4 Afghanistan 1803  3280000
+##  5 Afghanistan 1804  3280000
+##  6 Afghanistan 1805  3280000
+##  7 Afghanistan 1806  3280000
+##  8 Afghanistan 1807  3280000
+##  9 Afghanistan 1808  3280000
+## 10 Afghanistan 1809  3280000
 ## # ... with 58,685 more rows
 ```
 
@@ -18521,6 +18514,7 @@ pop_total_long
 inc_gdp_long<- inc_gdp %>%
   pivot_longer(X1800:X2040,
                names_to = "year", 
+               names_prefix = "X",
                values_to = "income_pp_gdp_pc" ) 
 inc_gdp_long
 ```
@@ -18529,16 +18523,16 @@ inc_gdp_long
 ## # A tibble: 46,513 x 3
 ##    country     year  income_pp_gdp_pc
 ##    <chr>       <chr>            <int>
-##  1 Afghanistan X1800              603
-##  2 Afghanistan X1801              603
-##  3 Afghanistan X1802              603
-##  4 Afghanistan X1803              603
-##  5 Afghanistan X1804              603
-##  6 Afghanistan X1805              603
-##  7 Afghanistan X1806              603
-##  8 Afghanistan X1807              603
-##  9 Afghanistan X1808              603
-## 10 Afghanistan X1809              603
+##  1 Afghanistan 1800               603
+##  2 Afghanistan 1801               603
+##  3 Afghanistan 1802               603
+##  4 Afghanistan 1803               603
+##  5 Afghanistan 1804               603
+##  6 Afghanistan 1805               603
+##  7 Afghanistan 1806               603
+##  8 Afghanistan 1807               603
+##  9 Afghanistan 1808               603
+## 10 Afghanistan 1809               603
 ## # ... with 46,503 more rows
 ```
 
@@ -18547,6 +18541,7 @@ inc_gdp_long
 life_exp_long<- life_exp %>%
    pivot_longer(X1800:X2100,
                names_to = "year", 
+               names_prefix = "X",
                values_to = "life_exp",
                values_drop_na = TRUE) 
 life_exp_long
@@ -18556,16 +18551,16 @@ life_exp_long
 ## # A tibble: 55,528 x 3
 ##    country     year  life_exp
 ##    <chr>       <chr>    <dbl>
-##  1 Afghanistan X1800     28.2
-##  2 Afghanistan X1801     28.2
-##  3 Afghanistan X1802     28.2
-##  4 Afghanistan X1803     28.2
-##  5 Afghanistan X1804     28.2
-##  6 Afghanistan X1805     28.2
-##  7 Afghanistan X1806     28.1
-##  8 Afghanistan X1807     28.1
-##  9 Afghanistan X1808     28.1
-## 10 Afghanistan X1809     28.1
+##  1 Afghanistan 1800      28.2
+##  2 Afghanistan 1801      28.2
+##  3 Afghanistan 1802      28.2
+##  4 Afghanistan 1803      28.2
+##  5 Afghanistan 1804      28.2
+##  6 Afghanistan 1805      28.2
+##  7 Afghanistan 1806      28.1
+##  8 Afghanistan 1807      28.1
+##  9 Afghanistan 1808      28.1
+## 10 Afghanistan 1809      28.1
 ## # ... with 55,518 more rows
 ```
 
@@ -18676,86 +18671,448 @@ life_exp_long %>%
 3. (2 points) Let's limit the data to 100 years (1920-2020). ***For these years, which country has the highest average life expectancy? How about the lowest average life expectancy? ***
 
 ```r
-life_exp_means_per_county<- life_exp%>%
-  select(country, X1920:X2020) %>%
-  na.omit() %>%
-  mutate((across(starts_with("X"), means=mean))) %>%
-  pivot_longer(-country,
-               names_to = "year", 
-               values_to = "avglife_exp") 
-life_exp_means_per_county
+life_exp_100<-life_exp_long %>%
+  filter(year >= 1920 & year <= 2020)
+life_exp_100
 ```
 
 ```
-## # A tibble: 18,584 x 3
-##    country     year  avglife_exp
-##    <chr>       <chr>       <dbl>
-##  1 Afghanistan X1920        30.6
-##  2 Afghanistan X1921        30.7
-##  3 Afghanistan X1922        30.8
-##  4 Afghanistan X1923        30.8
-##  5 Afghanistan X1924        30.9
-##  6 Afghanistan X1925        31  
-##  7 Afghanistan X1926        31  
-##  8 Afghanistan X1927        31.1
-##  9 Afghanistan X1928        31.1
-## 10 Afghanistan X1929        31.2
-## # ... with 18,574 more rows
+## # A tibble: 18,728 x 3
+##    country     year  life_exp
+##    <chr>       <chr>    <dbl>
+##  1 Afghanistan 1920      30.6
+##  2 Afghanistan 1921      30.7
+##  3 Afghanistan 1922      30.8
+##  4 Afghanistan 1923      30.8
+##  5 Afghanistan 1924      30.9
+##  6 Afghanistan 1925      31  
+##  7 Afghanistan 1926      31  
+##  8 Afghanistan 1927      31.1
+##  9 Afghanistan 1928      31.1
+## 10 Afghanistan 1929      31.2
+## # ... with 18,718 more rows
 ```
-
-```r
-life_exp_long$year<- as.factor(life_exp_long$year)
-```
-
 
 
 ```r
-life_exp_means_per_county %>%
-  slice_max(avglife_exp, n=1) 
+life_exp_mean<- life_exp_100 %>%
+  group_by(country) %>%
+  summarise(mean=mean(life_exp, na.rm = TRUE))
+life_exp_mean
 ```
 
 ```
-## # A tibble: 1 x 3
-##   country   year  avglife_exp
-##   <chr>     <chr>       <dbl>
-## 1 Singapore X2020        85.3
+## # A tibble: 187 x 2
+##    country              mean
+##    <chr>               <dbl>
+##  1 Afghanistan          43.8
+##  2 Albania              61.4
+##  3 Algeria              56.3
+##  4 Andorra              79.8
+##  5 Angola               44.0
+##  6 Antigua and Barbuda  63.2
+##  7 Argentina            65.8
+##  8 Armenia              60.2
+##  9 Australia            72.7
+## 10 Austria              68.6
+## # ... with 177 more rows
 ```
 
 ```r
-life_exp_means_per_county %>%
-  slice_min(avglife_exp, n=1)
+life_exp_mean %>%
+  slice_min(mean, n=1)
 ```
 
 ```
-## # A tibble: 1 x 3
-##   country    year  avglife_exp
-##   <chr>      <chr>       <dbl>
-## 1 Kazakhstan X1933        4.07
+## # A tibble: 1 x 2
+##   country                   mean
+##   <chr>                    <dbl>
+## 1 Central African Republic  41.8
+```
+
+```r
+life_exp_mean %>%
+  slice_max(mean, n=1)
+```
+
+```
+## # A tibble: 1 x 2
+##   country  mean
+##   <chr>   <dbl>
+## 1 Andorra  79.8
 ```
 
 4. (3 points) Although we can see which country has the highest life expectancy for the past 100 years, we don't know which countries have changed the most. What are the top 5 countries that have experienced the biggest improvement in life expectancy between 1920-2020?  
 
+```r
+life_exp %>%
+  select(country, X1920, X2020) %>%
+  na.omit() %>%
+  mutate(difference=X2020-X1920) %>%
+  arrange(desc(difference))
+```
+
+```
+##                            country X1920 X2020 difference
+## 1                           Kuwait  26.6  83.4       56.8
+## 2                  Kyrgyz Republic  16.6  73.1       56.5
+## 3                     Turkmenistan  15.2  70.5       55.3
+## 4                      South Korea  28.2  83.2       55.0
+## 5                       Tajikistan  16.7  71.0       54.3
+## 6                        Nicaragua  25.3  79.5       54.2
+## 7                       Kazakhstan  19.3  73.1       53.8
+## 8                           Russia  20.5  72.7       52.2
+## 9                           Israel  32.0  83.4       51.4
+## 10                            Iran  26.8  78.0       51.2
+## 11                        Maldives  31.4  82.4       51.0
+## 12                       Singapore  34.3  85.3       51.0
+## 13                      Bangladesh  23.0  73.9       50.9
+## 14                      Uzbekistan  19.9  70.8       50.9
+## 15                           Qatar  29.9  80.6       50.7
+## 16                          Turkey  30.0  79.7       49.7
+## 17                         Bahrain  30.8  79.9       49.1
+## 18                         Armenia  27.0  76.0       49.0
+## 19                         Algeria  29.6  78.3       48.7
+## 20                         Tunisia  30.8  78.9       48.1
+## 21                       Guatemala  25.2  73.3       48.1
+## 22                           Chile  32.1  80.1       48.0
+## 23                         Lebanon  30.1  78.1       48.0
+## 24                          Jordan  32.0  79.7       47.7
+## 25                       St. Lucia  28.3  76.0       47.7
+## 26                        Thailand  31.1  78.8       47.7
+## 27                        Colombia  33.3  80.7       47.4
+## 28                            Peru  33.9  81.0       47.1
+## 29                       Sri Lanka  30.9  78.0       47.1
+## 30  St. Vincent and the Grenadines  26.0  72.7       46.7
+## 31                        Portugal  35.6  82.0       46.4
+## 32                            Oman  32.0  77.8       45.8
+## 33                           China  32.0  77.7       45.7
+## 34                            Iraq  31.8  77.2       45.4
+## 35                        Slovenia  36.3  81.6       45.3
+## 36                     El Salvador  29.5  74.7       45.2
+## 37                           Samoa  28.2  73.3       45.1
+## 38                          Panama  34.8  79.8       45.0
+## 39                           India  24.9  69.7       44.8
+## 40                        Malaysia  30.6  75.2       44.6
+## 41                         Uruguay  32.9  77.5       44.6
+## 42                           Yemen  23.6  68.2       44.6
+## 43                       Mauritius  30.7  75.2       44.5
+## 44                      Costa Rica  35.6  80.0       44.4
+## 45                         Belarus  30.2  74.6       44.4
+## 46                        Barbados  33.2  77.5       44.3
+## 47                           Spain  39.2  83.5       44.3
+## 48                         Vietnam  30.6  74.8       44.2
+## 49                          Mexico  31.9  75.7       43.8
+## 50                 Solomon Islands  25.2  69.0       43.8
+## 51                          Brazil  32.4  76.1       43.7
+## 52             Antigua and Barbuda  33.9  77.4       43.5
+## 53                       Palestine  33.9  77.3       43.4
+## 54                           Tonga  28.8  72.1       43.3
+## 55                         Albania  35.4  78.6       43.2
+## 56                         Ukraine  27.8  70.9       43.1
+## 57                         Ecuador  34.5  77.4       42.9
+## 58                         Croatia  36.1  79.0       42.9
+## 59                     North Korea  29.8  72.5       42.7
+## 60                       Venezuela  32.5  75.1       42.6
+## 61                           Japan  42.2  84.7       42.5
+## 62            United Arab Emirates  31.3  73.8       42.5
+## 63                          Belize  32.4  74.5       42.1
+## 64              Dominican Republic  31.8  73.7       41.9
+## 65                      Azerbaijan  29.4  71.2       41.8
+## 66                          Uganda  25.3  67.0       41.7
+## 67                    Saudi Arabia  35.6  77.3       41.7
+## 68                          Bhutan  33.4  75.0       41.6
+## 69          Bosnia and Herzegovina  35.5  77.1       41.6
+## 70                       Indonesia  30.5  72.1       41.6
+## 71                          Brunei  34.4  75.8       41.4
+## 72           Micronesia, Fed. Sts.  26.4  67.6       41.2
+## 73                        Pakistan  26.2  67.3       41.1
+## 74                      Montenegro  35.9  76.8       40.9
+## 75                            Fiji  27.6  68.4       40.8
+## 76                         Senegal  28.1  68.9       40.8
+## 77                         Morocco  33.8  74.6       40.8
+## 78                            Cuba  38.0  78.6       40.6
+## 79                         Moldova  32.7  73.2       40.5
+## 80                          Serbia  35.7  76.2       40.5
+## 81                     Timor-Leste  31.2  71.5       40.3
+## 82                      Cape Verde  36.2  76.4       40.2
+## 83                 North Macedonia  36.8  76.9       40.1
+## 84                           Syria  32.3  72.4       40.1
+## 85                         Myanmar  29.2  69.3       40.1
+## 86                        Paraguay  36.5  76.5       40.0
+## 87                           Kenya  27.0  66.9       39.9
+## 88                        Ethiopia  29.7  69.5       39.8
+## 89                         Romania  35.8  75.6       39.8
+## 90                         Vanuatu  25.5  65.1       39.6
+## 91                        Suriname  32.9  72.4       39.5
+## 92                           Sudan  31.5  71.0       39.5
+## 93                         Jamaica  35.7  75.0       39.3
+## 94                         Bahamas  35.0  74.2       39.2
+## 95                         Bolivia  34.5  73.6       39.1
+## 96                        Honduras  35.9  74.5       38.6
+## 97                           Egypt  32.6  71.1       38.5
+## 98                     Philippines  31.6  70.1       38.5
+## 99                        Mongolia  31.2  69.5       38.3
+## 100                            Lao  30.3  68.5       38.2
+## 101                          Italy  45.5  83.6       38.1
+## 102                          Libya  35.8  73.5       37.7
+## 103                     Mauritania  33.6  71.3       37.7
+## 104                          Haiti  28.6  66.0       37.4
+## 105                       Kiribati  25.8  63.1       37.3
+## 106                        Georgia  36.3  73.3       37.0
+## 107                          Gabon  32.5  69.3       36.8
+## 108                         Rwanda  32.7  69.5       36.8
+## 109                          Ghana  29.8  66.4       36.6
+## 110                        Grenada  37.9  74.2       36.3
+## 111                          Nepal  35.5  71.8       36.3
+## 112                       Djibouti  32.8  69.0       36.2
+## 113                        Comoros  33.1  69.3       36.2
+## 114                       Botswana  33.9  70.0       36.1
+## 115                         Greece  45.6  81.5       35.9
+## 116          Sao Tome and Principe  31.7  67.5       35.8
+## 117            Trinidad and Tobago  39.1  74.6       35.5
+## 118                        Hungary  42.0  77.3       35.3
+## 119              Equatorial Guinea  31.5  66.6       35.1
+## 120                         Angola  30.4  65.4       35.0
+## 121                         Cyprus  47.5  82.2       34.7
+## 122                         Guyana  35.0  69.6       34.6
+## 123                        Finland  47.5  81.9       34.4
+## 124                       Cambodia  36.4  70.7       34.3
+## 125                Slovak Republic  43.9  77.9       34.0
+## 126                       Tanzania  34.1  68.1       34.0
+## 127                       Cameroon  30.3  64.2       33.9
+## 128                           Mali  29.4  63.3       33.9
+## 129                    Afghanistan  30.6  64.4       33.8
+## 130                        Namibia  34.2  67.6       33.4
+## 131                         Malawi  31.3  64.6       33.3
+## 132                          Benin  32.7  65.6       32.9
+## 133                   Sierra Leone  28.9  61.7       32.8
+## 134                        Eritrea  31.0  63.8       32.8
+## 135                      Lithuania  43.0  75.6       32.6
+## 136                    Congo, Rep.  31.2  63.5       32.3
+## 137                        Estonia  46.3  78.6       32.3
+## 138                           Togo  33.1  65.3       32.2
+## 139                   South Africa  35.1  67.2       32.1
+## 140                         Gambia  34.8  66.8       32.0
+## 141                     Madagascar  32.5  64.5       32.0
+## 142                         Poland  46.5  78.5       32.0
+## 143                        Austria  50.3  82.1       31.8
+## 144                   Burkina Faso  31.2  62.9       31.7
+## 145                         France  51.7  83.2       31.5
+## 146                        Liberia  34.1  65.5       31.4
+## 147                       Bulgaria  44.4  75.2       30.8
+## 148                        Burundi  32.0  62.6       30.6
+## 149                  Guinea-Bissau  30.5  61.0       30.5
+## 150                          Malta  51.3  81.5       30.2
+## 151                         Zambia  34.2  64.3       30.1
+## 152                  Cote d'Ivoire  33.7  63.7       30.0
+## 153                    Switzerland  54.5  84.4       29.9
+## 154                          Niger  33.7  63.6       29.9
+## 155                 Czech Republic  49.9  79.6       29.7
+## 156                        Nigeria  36.0  65.6       29.6
+## 157               Congo, Dem. Rep.  33.9  63.4       29.5
+## 158                       Eswatini  33.4  62.4       29.0
+## 159                        Iceland  54.6  83.2       28.6
+## 160                    South Sudan  31.5  60.0       28.5
+## 161                        Belgium  53.7  81.9       28.2
+## 162                       Zimbabwe  34.3  62.3       28.0
+## 163                         Guinea  34.3  62.0       27.7
+## 164                         Latvia  47.8  75.5       27.7
+## 165                        Germany  53.6  81.1       27.5
+## 166                      Argentina  49.9  77.1       27.2
+## 167                     Luxembourg  54.9  82.1       27.2
+## 168                     Mozambique  33.3  60.4       27.1
+## 169                        Somalia  32.4  59.5       27.1
+## 170                           Chad  33.9  60.9       27.0
+## 171                        Ireland  56.2  82.5       26.3
+## 172                    New Zealand  56.3  82.1       25.8
+## 173                         Canada  56.6  82.3       25.7
+## 174               Papua New Guinea  33.7  59.1       25.4
+## 175                 United Kingdom  56.6  81.2       24.6
+## 176                         Sweden  58.8  82.9       24.1
+## 177                    Netherlands  57.9  81.9       24.0
+## 178                         Norway  58.8  82.7       23.9
+## 179                        Denmark  57.5  81.1       23.6
+## 180                     Seychelles  50.5  73.8       23.3
+## 181                  United States  55.4  78.6       23.2
+## 182                      Australia  60.6  82.8       22.2
+## 183                        Lesotho  35.1  56.6       21.5
+## 184       Central African Republic  31.9  53.3       21.4
+```
+
+
+```r
+life_exp_100 %>%
+  filter(country == "Kuwait" | country == "Kyrgyz Republic" | country == "Turkmenistan" | country == "South Korea" | country == "Tajikistan") %>%
+  ggplot(aes(x=year, y=life_exp, color=country))+
+  geom_point()+
+  facet_wrap(~country)
+```
+
+![](midterm_2_files/figure-html/unnamed-chunk-21-1.png)<!-- -->
+
 5. (3 points) Make a plot that shows the change over the past 100 years for the country with the biggest improvement in life expectancy. Be sure to add appropriate aesthetics to make the plot clean and clear. Once you have made the plot, do a little internet searching and see if you can discover what historical event may have contributed to this remarkable change.  
+
+
+```r
+life_exp_100 %>%
+  filter(country == "Kuwait") %>%
+  ggplot(aes(x=year, y=life_exp, color=country))+
+  geom_point()
+```
+
+![](midterm_2_files/figure-html/unnamed-chunk-22-1.png)<!-- -->
 
 ## Population Growth
 6. (3 points) Which 5 countries have had the highest population growth over the past 100 years (1920-2020)?  
 
+```r
+pop_100<- pop_total_long %>%
+  filter(year >= 1920 & year <= 2020)
+pop_100
+```
+
+```
+## # A tibble: 19,695 x 3
+##    country     year   popsize
+##    <chr>       <chr>    <int>
+##  1 Afghanistan 1920  10600000
+##  2 Afghanistan 1921  10500000
+##  3 Afghanistan 1922  10300000
+##  4 Afghanistan 1923   9710000
+##  5 Afghanistan 1924   9200000
+##  6 Afghanistan 1925   8720000
+##  7 Afghanistan 1926   8260000
+##  8 Afghanistan 1927   7830000
+##  9 Afghanistan 1928   7420000
+## 10 Afghanistan 1929   7100000
+## # ... with 19,685 more rows
+```
+
+
+```r
+pop_total %>%
+  select(country, X1920, X2020) %>%
+  na.omit() %>%
+  mutate(difference=X2020-X1920) %>%
+  arrange(desc(difference)) %>%
+  slice_head(n=5)
+```
+
+```
+##         country     X1920      X2020 difference
+## 1         India 317000000 1380000000 1063000000
+## 2         China 472000000 1440000000  968000000
+## 3     Indonesia  47300000  274000000  226700000
+## 4 United States 111000000  331000000  220000000
+## 5      Pakistan  21700000  221000000  199300000
+```
+
 7. (4 points) Produce a plot that shows the 5 countries that have had the highest population growth over the past 100 years (1920-2020). Which countries appear to have had exponential growth?  
+
+```r
+pop_100 %>%
+  filter(country == "India" | country == "China" | country == "Indonesia" | country == "United States" | country == "Pakistan") %>%
+  ggplot(aes(x=year, y=popsize, color=country))+
+  geom_point()+
+  facet_wrap(~country)
+```
+
+![](midterm_2_files/figure-html/unnamed-chunk-25-1.png)<!-- -->
+China and India seem to have experienced exponential growth
 
 ## Income
 The units used for income are gross domestic product per person adjusted for differences in purchasing power in international dollars.
 
 8. (4 points) As in the previous questions, which countries have experienced the biggest growth in per person GDP. Show this as a table and then plot the changes for the top 5 countries. With a bit of research, you should be able to explain the dramatic downturns of the wealthiest economies that occurred during the 1980's.  
 
-compare change in gdp, dont just subtract last from fist year, plot the whole time range
+```r
+inc_100<- inc_gdp_long %>%
+  filter(year >= 1920 & year <= 2020)
+inc_100
+```
 
+```
+## # A tibble: 19,493 x 3
+##    country     year  income_pp_gdp_pc
+##    <chr>       <chr>            <int>
+##  1 Afghanistan 1920              1490
+##  2 Afghanistan 1921              1520
+##  3 Afghanistan 1922              1550
+##  4 Afghanistan 1923              1570
+##  5 Afghanistan 1924              1600
+##  6 Afghanistan 1925              1630
+##  7 Afghanistan 1926              1650
+##  8 Afghanistan 1927              1680
+##  9 Afghanistan 1928              1710
+## 10 Afghanistan 1929              1740
+## # ... with 19,483 more rows
+```
+
+
+```r
+inc_gdp %>%
+  select(country, X1920, X2020) %>%
+  na.omit() %>%
+  mutate(difference=X2020-X1920) %>%
+  arrange(desc(difference)) %>%
+  slice_head(n=5)
+```
+
+```
+##      country X1920  X2020 difference
+## 1      Qatar  2300 116000     113700
+## 2 Luxembourg  5730  95100      89370
+## 3  Singapore  2440  90500      88060
+## 4     Brunei  2130  75100      72970
+## 5    Ireland  5170  74100      68930
+```
+
+```r
+inc_100 %>%
+  filter(country == "Qatar" | country == "Luxembourg" | country == "Singapore" | country == "Brunei" | country == "Ireland") %>%
+  ggplot(aes(x=year, y=income_pp_gdp_pc, color=country))+
+  geom_point()+
+  facet_wrap(~country)
+```
+
+![](midterm_2_files/figure-html/unnamed-chunk-28-1.png)<!-- -->
 9. (3 points) Create three new objects that restrict each data set (life expectancy, population, income) to the years 1920-2020. Hint: I suggest doing this with the long form of your data. Once this is done, merge all three data sets using the code I provide below. You may need to adjust the code depending on how you have named your objects. I called mine `life_expectancy_100`, `population_100`, and `income_100`. For some of you, learning these `joins` will be important for your project.  
 
 
 ```r
-#gapminder_join <- inner_join(life_expectancy_100, population_100, by= c("country", "year"))
-#gapminder_join <- inner_join(gapminder_join, income_100, by= c("country", "year"))
-#gapminder_join
+gapminder_join <- inner_join(life_exp_100, pop_100, by= c("country", "year"))
+gapminder_join <- inner_join(gapminder_join, inc_100, by= c("country", "year"))
+gapminder_join
 ```
 
+```
+## # A tibble: 18,728 x 5
+##    country     year  life_exp  popsize income_pp_gdp_pc
+##    <chr>       <chr>    <dbl>    <int>            <int>
+##  1 Afghanistan 1920      30.6 10600000             1490
+##  2 Afghanistan 1921      30.7 10500000             1520
+##  3 Afghanistan 1922      30.8 10300000             1550
+##  4 Afghanistan 1923      30.8  9710000             1570
+##  5 Afghanistan 1924      30.9  9200000             1600
+##  6 Afghanistan 1925      31    8720000             1630
+##  7 Afghanistan 1926      31    8260000             1650
+##  8 Afghanistan 1927      31.1  7830000             1680
+##  9 Afghanistan 1928      31.1  7420000             1710
+## 10 Afghanistan 1929      31.2  7100000             1740
+## # ... with 18,718 more rows
+```
 10. (4 points) Use the joined data to perform an analysis of your choice. The analysis should include a comparison between two or more of the variables `life_expectancy`, `population`, or `income.`  
+
+```r
+gapminder_join %>%
+  ggplot(aes(x=life_exp, y=income_pp_gdp_pc))+
+  geom_point(alpha= 0.2)+
+  geom_smooth()
+```
+
+```
+## `geom_smooth()` using method = 'gam' and formula 'y ~ s(x, bs = "cs")'
+```
+
+![](midterm_2_files/figure-html/unnamed-chunk-30-1.png)<!-- -->
