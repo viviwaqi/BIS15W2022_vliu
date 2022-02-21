@@ -18486,7 +18486,7 @@ life_exp
 
 ```r
 pop_total_long<- pop_total %>%
-  pivot_longer(X1800:X2100,
+  pivot_longer(-country,
                names_to = "year", 
                names_prefix = "X",
                values_to = "popsize" ) 
@@ -18512,7 +18512,7 @@ pop_total_long
 
 ```r
 inc_gdp_long<- inc_gdp %>%
-  pivot_longer(X1800:X2040,
+  pivot_longer(-country,
                names_to = "year", 
                names_prefix = "X",
                values_to = "income_pp_gdp_pc" ) 
@@ -18539,7 +18539,7 @@ inc_gdp_long
 
 ```r
 life_exp_long<- life_exp %>%
-   pivot_longer(X1800:X2100,
+   pivot_longer(-country,
                names_to = "year", 
                names_prefix = "X",
                values_to = "life_exp",
@@ -18940,28 +18940,39 @@ life_exp %>%
 ## 184       Central African Republic  31.9  53.3       21.4
 ```
 
+```r
+life_exp_100$year<- as.numeric(life_exp_100$year)
+```
+
 
 ```r
 life_exp_100 %>%
   filter(country == "Kuwait" | country == "Kyrgyz Republic" | country == "Turkmenistan" | country == "South Korea" | country == "Tajikistan") %>%
   ggplot(aes(x=year, y=life_exp, color=country))+
   geom_point()+
-  facet_wrap(~country)
+  facet_wrap(~country)+
+  labs(title = "Top 5 Countries With Largest Improvement In Life Expectancy",
+       x = "Year",
+       y = "Life Expectancy")
 ```
 
-![](midterm_2_files/figure-html/unnamed-chunk-21-1.png)<!-- -->
+![](midterm_2_files/figure-html/unnamed-chunk-22-1.png)<!-- -->
 
 5. (3 points) Make a plot that shows the change over the past 100 years for the country with the biggest improvement in life expectancy. Be sure to add appropriate aesthetics to make the plot clean and clear. Once you have made the plot, do a little internet searching and see if you can discover what historical event may have contributed to this remarkable change.  
 
+Kuwait started engaging in oil trade in the 1930s which greatly improved their economy. This had a cascading effect that improved standards of living and therefore life expectancy. Kuwait also has a well developed national healthcare system for their citizens.
 
 ```r
 life_exp_100 %>%
   filter(country == "Kuwait") %>%
   ggplot(aes(x=year, y=life_exp, color=country))+
-  geom_point()
+  geom_point()+
+  labs(title = "Country With Largest Improvement In Life Expectancy From 1920-2020",
+       x = "Year",
+       y = "Life Expectancy")
 ```
 
-![](midterm_2_files/figure-html/unnamed-chunk-22-1.png)<!-- -->
+![](midterm_2_files/figure-html/unnamed-chunk-23-1.png)<!-- -->
 
 ## Population Growth
 6. (3 points) Which 5 countries have had the highest population growth over the past 100 years (1920-2020)?  
@@ -19011,20 +19022,30 @@ pop_total %>%
 7. (4 points) Produce a plot that shows the 5 countries that have had the highest population growth over the past 100 years (1920-2020). Which countries appear to have had exponential growth?  
 
 ```r
+pop_100$year<- as.numeric(pop_100$year)
+```
+
+
+```r
 pop_100 %>%
   filter(country == "India" | country == "China" | country == "Indonesia" | country == "United States" | country == "Pakistan") %>%
   ggplot(aes(x=year, y=popsize, color=country))+
   geom_point()+
-  facet_wrap(~country)
+  facet_wrap(~country)+
+  labs(title = "Top 5 Countries With Largest Population Growth From 1920-2020",
+       x = "Year",
+       y = "Population Size")
 ```
 
-![](midterm_2_files/figure-html/unnamed-chunk-25-1.png)<!-- -->
+![](midterm_2_files/figure-html/unnamed-chunk-27-1.png)<!-- -->
 China and India seem to have experienced exponential growth
 
 ## Income
 The units used for income are gross domestic product per person adjusted for differences in purchasing power in international dollars.
 
 8. (4 points) As in the previous questions, which countries have experienced the biggest growth in per person GDP. Show this as a table and then plot the changes for the top 5 countries. With a bit of research, you should be able to explain the dramatic downturns of the wealthiest economies that occurred during the 1980's.  
+
+In the early 1980s there was a global recession. The wealthiest countries at the time (US, Canada, UK, Germany, Italy and Japan) were especially affected by the increase in inflation. This recession was caused in part by a rise in oil prices, and caused high rates of unemployment in many countries. 
 
 ```r
 inc_100<- inc_gdp_long %>%
@@ -19069,14 +19090,22 @@ inc_gdp %>%
 ```
 
 ```r
+inc_100$year<- as.numeric(inc_100$year)
+```
+
+
+```r
 inc_100 %>%
   filter(country == "Qatar" | country == "Luxembourg" | country == "Singapore" | country == "Brunei" | country == "Ireland") %>%
   ggplot(aes(x=year, y=income_pp_gdp_pc, color=country))+
   geom_point()+
-  facet_wrap(~country)
+  facet_wrap(~country)+
+  labs(title = "Top 5 Countries With Largest Increase In Income Per Capita GDP",
+       x = "Year",
+       y = "Income In Per Capita GDP")
 ```
 
-![](midterm_2_files/figure-html/unnamed-chunk-28-1.png)<!-- -->
+![](midterm_2_files/figure-html/unnamed-chunk-31-1.png)<!-- -->
 9. (3 points) Create three new objects that restrict each data set (life expectancy, population, income) to the years 1920-2020. Hint: I suggest doing this with the long form of your data. Once this is done, merge all three data sets using the code I provide below. You may need to adjust the code depending on how you have named your objects. I called mine `life_expectancy_100`, `population_100`, and `income_100`. For some of you, learning these `joins` will be important for your project.  
 
 
@@ -19088,18 +19117,18 @@ gapminder_join
 
 ```
 ## # A tibble: 18,728 x 5
-##    country     year  life_exp  popsize income_pp_gdp_pc
-##    <chr>       <chr>    <dbl>    <int>            <int>
-##  1 Afghanistan 1920      30.6 10600000             1490
-##  2 Afghanistan 1921      30.7 10500000             1520
-##  3 Afghanistan 1922      30.8 10300000             1550
-##  4 Afghanistan 1923      30.8  9710000             1570
-##  5 Afghanistan 1924      30.9  9200000             1600
-##  6 Afghanistan 1925      31    8720000             1630
-##  7 Afghanistan 1926      31    8260000             1650
-##  8 Afghanistan 1927      31.1  7830000             1680
-##  9 Afghanistan 1928      31.1  7420000             1710
-## 10 Afghanistan 1929      31.2  7100000             1740
+##    country      year life_exp  popsize income_pp_gdp_pc
+##    <chr>       <dbl>    <dbl>    <int>            <int>
+##  1 Afghanistan  1920     30.6 10600000             1490
+##  2 Afghanistan  1921     30.7 10500000             1520
+##  3 Afghanistan  1922     30.8 10300000             1550
+##  4 Afghanistan  1923     30.8  9710000             1570
+##  5 Afghanistan  1924     30.9  9200000             1600
+##  6 Afghanistan  1925     31    8720000             1630
+##  7 Afghanistan  1926     31    8260000             1650
+##  8 Afghanistan  1927     31.1  7830000             1680
+##  9 Afghanistan  1928     31.1  7420000             1710
+## 10 Afghanistan  1929     31.2  7100000             1740
 ## # ... with 18,718 more rows
 ```
 10. (4 points) Use the joined data to perform an analysis of your choice. The analysis should include a comparison between two or more of the variables `life_expectancy`, `population`, or `income.`  
@@ -19108,11 +19137,14 @@ gapminder_join
 gapminder_join %>%
   ggplot(aes(x=life_exp, y=income_pp_gdp_pc))+
   geom_point(alpha= 0.2)+
-  geom_smooth()
+  geom_smooth()+
+  labs(title = "Relationship Between Life Expectency and Income Per Capita GDP",
+       x = "Life Expectancy",
+       y = "Income Per Capita GDP")
 ```
 
 ```
 ## `geom_smooth()` using method = 'gam' and formula 'y ~ s(x, bs = "cs")'
 ```
 
-![](midterm_2_files/figure-html/unnamed-chunk-30-1.png)<!-- -->
+![](midterm_2_files/figure-html/unnamed-chunk-33-1.png)<!-- -->
