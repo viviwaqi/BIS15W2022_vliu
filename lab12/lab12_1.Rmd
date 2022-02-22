@@ -6,6 +6,7 @@ output:
     theme: spacelab
     toc: yes
     toc_float: yes
+    keep_md: yes
 ---
 
 ```{r setup, include = FALSE}
@@ -60,7 +61,8 @@ class(spider_list[[3]])
 ## Practice
 1. What are the names of our list elements?
 ```{r}
-
+names(spider_list[5])
+glimpse(spider_list[5])
 ```
 
 ## Naming List Elements
@@ -101,6 +103,14 @@ Let's assume we have a database of customers and their purchases.
 ```{r}
 table_A <- read_csv(here("lab12", "data", "table_A.csv"))
 table_B <- read_csv(here("lab12", "data", "table_B.csv"))
+table_A
+table_B
+```
+```{r}
+glimpse(table_A)
+```
+```{r}
+glimpse(table_B)
 ```
 
 The general syntax for joins is...
@@ -207,23 +217,23 @@ dateformat5 <- "20200922 170000"
 ## Practice 
 1. Convert each of the examples above using lubridate.
 ```{r}
-
+ymd(dateformat1)
 ```
 
 ```{r}
-
+mdy(dateformat2)
 ```
 
 ```{r}
-
+dmy(dateformat3)
 ```
 
 ```{r}
-
+mdy_hms(dateformat4)
 ```
 
 ```{r}
-
+ymd_hms(dateformat5)
 ```
 
 Have a look at these options.
