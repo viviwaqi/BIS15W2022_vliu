@@ -102,47 +102,74 @@ ggplot(ucadmit, aes_string(x = "Ethnicity", y="FilteredCountFR", fill= "Ethnicit
 
 ```r
 ui <- dashboardPage(
-  dashboardHeader(title = "Wolf Populations"),
+  dashboardHeader(title = "Admissions Rates"),
   dashboardSidebar(disable = T),
   dashboardBody(
   fluidPage(
   titlePanel("Admission Rates"),
   box(title = "Plot Options", width = 3,
   selectInput("x", "Select X Variable", choices=c("Ethnicity", "Academic_Yr", "Campus", "Category"), selected="Ethnicity"),
-                plotOutput("plot", width="600px", height="500px")
+                plotOutput("plot", width="800px", height="700px")
   )
   )
   )
   )
-```
 
-```
-## Warning in name %in% fa_tbl$v4_name: strings not representable in native
-## encoding will be translated to UTF-8
-```
-
-```r
 server <- function(input, output, session) {
   session$onSessionEnded(stopApp)
   output$plot <- renderPlot({
     ggplot(data=ucadmit, aes_string(x = input$x, y = "FilteredCountFR", fill="Ethnicity")) +
       geom_col(position="dodge", alpha=0.8) +
-      theme_light(base_size=18)+
+      theme(axis.text.x = element_text(angle = 20, hjust = 1)) +
       labs(title = "Admissions Counts By Ethnicity",
-           x= NULL,
+           x= input$x,
            y= "Admission Count (Filtered)")
   })
-  
-}
+ session$onSessionEnded(stopApp) 
+  }
 
 shinyApp(ui, server)
 ```
 
 `<div style="width: 100% ; height: 400px ; text-align: center; box-sizing: border-box; -moz-box-sizing: border-box; -webkit-box-sizing: border-box;" class="muted well">Shiny applications not supported in static R Markdown documents</div>`{=html}
-
-
 **3. Make alternate version of your app above by tracking enrollment at a campus over all of the represented years while allowing users to interact with campus, category, and ethnicity.**  
 
+```r
+ui <- dashboardPage(
+  dashboardHeader(title = "Admissions Rates"),
+  dashboardSidebar(disable = T),
+  dashboardBody(
+  fluidPage(
+  titlePanel("Admission Rates Over Time"),
+  box(title = "Plot Options", width = 3,
+  selectInput("x", "Select X Variable", choices=c("Berkeley", "Davis", "Irvine", "Los_Angeles", "Merced", "Riverside", "San_Diego", "Santa_Barbara", "Santa_Cruz" ), selected="Ethnicity"),
+  selectInput("y", "Select Fill Variable", choices = c("Campus", "Category", "Ethnicity"),
+              selected = "Campus"),
+                plotOutput("plot", width="800px", height="700px")
+  )
+  )
+  )
+  )
+
+server <- function(input, output, session) {
+  session$onSessionEnded(stopApp)
+  output$plot <- renderPlot({
+    ucadmit %>%
+      filter(Campus == input$x) %>%
+      ggplot(aes_string(x = "Academic_Yr", y = "FilteredCountFR", fill=input$y)) +
+      geom_col(position="dodge", alpha=0.8) +
+      theme(axis.text.x = element_text(angle = 20, hjust = 1)) +
+      labs(title = input$x,
+           x= "Year",
+           y= "Admission Count (Filtered)")
+  })
+ session$onSessionEnded(stopApp) 
+  }
+
+shinyApp(ui, server)
+```
+
+`<div style="width: 100% ; height: 400px ; text-align: center; box-sizing: border-box; -moz-box-sizing: border-box; -webkit-box-sizing: border-box;" class="muted well">Shiny applications not supported in static R Markdown documents</div>`{=html}
 
 ## Option 2
 We will use data from a study on vertebrate community composition and impacts from defaunation in Gabon, Africa. Reference: Koerner SE, Poulsen JR, Blanchard EJ, Okouyi J, Clark CJ. Vertebrate community composition and diversity declines along a defaunation gradient radiating from rural villages in Gabon. _Journal of Applied Ecology_. 2016.   
