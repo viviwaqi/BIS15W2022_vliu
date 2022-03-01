@@ -108,16 +108,24 @@ Try making a violin plot of taxon from the homerange data:
  1. Remind yourself what the data look like:
 
 ```{r}
-
+homerange 
 ```
 
   2. Make a violin plot of `log10.mass` by `taxon`, and a box plot of `log10.mass` by `taxon`. You can use 1 or 2 plots.
 ```{r}
-
+homerange %>%
+  ggplot(aes(x=log10.mass, y=taxon, fill=taxon))+
+  geom_violin(alpha=0.4)
+```
+```{r}
+homerange %>%
+  ggplot(aes(x=log10.mass, y=taxon, fill=taxon))+
+  geom_boxplot(alpha=0.4)
 ```
 
 3. What information can you gather from the violin plot that might have been missed with the box plot?
 
+Mammals are very distributed, don't have any mass that is particularly common. This also occurs a bit in the marine fishes taxon.
 
 ## Heat maps
 
@@ -161,18 +169,21 @@ heartrate_diff
 heartrate_diff %>% 
   ggplot(aes(patient, drug, fill= heartrate)) + 
   geom_tile()+
-  scale_fill_gradient2(low="green", mid = "white", high="red")
+  scale_fill_gradient2(low="blue", mid = "white", high="red")
 # scale_fill_graient2 lets you set a color direction for zero (mid), positive (high), and negative (low)
 ```
 
 
 ## Practice
   1. Which drug lowers heart rate? raises it?
-
+D lowers, C raises
   2. Make a heat map for body mass by species & sex for penguins
 
 ```{r}
-
+penguins %>%
+  ggplot(aes(species, sex, fill=body_mass_g))+
+  geom_tile()+
+  scale_fill_gradient(low="blue", high="pink")
 ```
 
 
