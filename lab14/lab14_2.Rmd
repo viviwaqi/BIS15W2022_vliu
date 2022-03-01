@@ -6,6 +6,7 @@ output:
     theme: spacelab
     toc: yes
     toc_float: yes
+    keep_md: yes
   pdf_document:
     toc: yes
 ---
@@ -50,6 +51,7 @@ Do they fly?
 flying_vec <- homerange %>%
   filter(locomotion == "flying")%>%
   pull(common.name)
+flying_vec
 ```
 
 Do they swim?
@@ -57,6 +59,7 @@ Do they swim?
 swimming_vec <- homerange %>%
   filter(locomotion == "swimming")%>%
   pull(common.name)
+swimming_vec
 ```
 
 To build a Venn diagram of these, we make a list or the vectors that represent our questions. 
@@ -79,7 +82,7 @@ Do they fly? Are they a bird?
 We can recycle the `flying_vec`
 Do they fly?
 ```{r}
-# flying_vec
+flying_vec
 ```
 
 Are they a bird?
@@ -87,6 +90,7 @@ Are they a bird?
 bird_vec <- homerange %>%
   filter(taxon == "birds")%>%
   pull(common.name)
+bird_vec
 ```
 
 
@@ -107,7 +111,10 @@ homerange%>%
 
 what is the flying non-bird?
 ```{r}
-
+homerange%>%
+  filter(taxon != "birds")%>%
+  filter(locomotion == "flying")%>%
+  select(common.name)
 ```
 
 
@@ -120,7 +127,7 @@ Are they an herbivore?
 herbivore_vec <- homerange %>%
   filter(trophic.guild == "herbivore")%>%
   pull(common.name)
-
+herbivore_vec
 ```
 
 ```{r}
@@ -192,13 +199,14 @@ ecto_vec<- homerange %>%
 ```
 
 ```{r}
-
 # Make the list of vectors:
-
-
-# Make the plot:
+scaelist<- list(swimming_vec, carni_vec, aqua_vec, ecto_vec)
 ```
 
+# Make the plot:
+```{r}
+ggVennDiagram(scaelist, category.names = c("Swimming", "Carnivore", "Aquatic", "Ectotherm"), label = "count")
+```
 
 Use dplyr to determine which 20 animals from this plot are:
 - Ectotherms
@@ -207,12 +215,10 @@ Use dplyr to determine which 20 animals from this plot are:
 - NOT Carnivores?
 
 ```{r}
-
+homerange %>%
+  filter(thermoregulation == "ectotherm" & realm == "aquatic" & locomotion == "swimming" & trophic.guild != "carnivore") %>%
+  select(common.name, thermoregulation, realm, locomotion, trophic.guild)
 ```
-
-
-
-
 ## Word Clouds
 
 Check out [this reference](https://lepennec.github.io/ggwordcloud/) on how word clouds are built in R. 
@@ -248,11 +254,21 @@ If they dont fit, try tinkering the `scale_size_area(max_size =   )`
 
 make the count table:
 ```{r}
-
+famcount<- homerange %>%
+  filter(class == "reptilia") %>%
+  count(family)
+famcount
 ```
 
 
 make the plot:
 ```{r}
-
+famcount %>% 
+ggplot(aes(
+  label = family, size = n, color = family
+  )) +
+  geom_text_wordcloud() +
+  scale_size_area(max_size = 10) +
+  theme_minimal()+
+  labs(title = "Frequency of Families in Reptilia")
 ```
